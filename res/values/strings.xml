@@ -3,6 +3,10 @@
 
     <string name="app_name">munch</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-
+    <string name="welcome">Welcome to Munch!</string>
+    <string name="loginText">Please Log In</string>
+    <string name="emailText">Enter Your Email Address</string>
+    <string name="passwordText">Enter Your Password</string>
+	<string name="registerText">Register for an Account</string>
+	<string name="forgotText">Forgot Email/Password</string>
 </resources>
