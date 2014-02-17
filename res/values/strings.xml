@@ -10,4 +10,7 @@
 	<string name="registerText">Register for an Account</string>
 	<string name="forgotText">Forgot Email/Password</string>
 	<string name="munchLogo">Munch Logo</string>
+	<string name="chooseRole">Please choose your role:</string>
+	<string name="shopperText">Shopper</string>
+	<string name="hungryPersonText">Hungry Person</string>
 </resources>
