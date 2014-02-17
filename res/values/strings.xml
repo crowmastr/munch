@@ -9,4 +9,5 @@
     <string name="passwordText">Enter Your Password</string>
 	<string name="registerText">Register for an Account</string>
 	<string name="forgotText">Forgot Email/Password</string>
+	<string name="munchLogo">Munch Logo</string>
 </resources>
