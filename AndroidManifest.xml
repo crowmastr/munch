@@ -5,8 +5,11 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="8" 
         android:targetSdkVersion="18" />
+    
+     <!-- Allow to connect with internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -39,8 +42,11 @@
                   android:label="Register New Account"></activity>
         
         <!--  Entry for LoginActivity.class -->
+        <activity android:name=".DashboardActivity"
+                  android:label="Munch Dashboard"></activity>
+        
+        <!--  Entry for LoginActivity.class -->
         <activity android:name=".LoginActivity"
                   android:label="Login to Munch"></activity>
     </application>
-
 </manifest>

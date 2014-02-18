@@ -16,11 +16,11 @@ public class Splash extends Activity {
         	public void run() {
         		try{
         			int splashTimer = 0;
-        			while(splashTimer < 5000) {
+        			while(splashTimer < 1000) {
         				sleep(100);
         				splashTimer = splashTimer + 100;
         			}
-        			Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+        			Intent i = new Intent(getApplicationContext(), DashboardActivity.class);
                     startActivity(i);
         		} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
