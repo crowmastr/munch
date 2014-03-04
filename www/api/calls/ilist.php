@@ -71,6 +71,20 @@ class ilist extends API
 			$this->removeIngredient($l, $uid, $id);
 			return array();
 		}
+		else if ($op == "list")
+		{
+			$res = $this->db->execute("SELECT `id`,`ingredient`,`created` FROM `user_ingredient_list` WHERE `type` = '%s' AND `user` = '%s'",
+				$l, $uid);
+			$response = array();
+			$num = 0;
+			while (($row = $res->fetch()))
+			{
+				$num++;
+				$response[] = array("id" => $row['id'], "ingredient" => $row['ingredient'], "created" => $row['created']);
+			}
+			$response["num"] = $num;
+			return $response;
+		}
 		else
 			throw new Exception("Unsupported operation");
 	}
