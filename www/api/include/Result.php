@@ -27,6 +27,11 @@ class Result
 		return mysql_num_rows($this->res);
 	}
 
+	public function affectedRows()
+	{
+		return mysql_affected_rows($this->db->con);
+	}
+
 	public function fetch()
 	{
 		return mysql_fetch_array($this->res);
