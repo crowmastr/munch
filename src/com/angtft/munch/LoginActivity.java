@@ -121,9 +121,10 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPostExecute (String logged){
             super.onPostExecute(logged);
+            
             //your stuff
-            //you can pass params, launch a new Intent, a Toast...            
-            if (Integer.parseInt(logged) != 1) {
+            //you can pass params, launch a new Intent, a Toast...     
+            if (!logged.equals("1")) {
             	loginErrorMsg.setText("Incorrect username/password");
             }
             else {
