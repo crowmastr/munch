@@ -22,14 +22,29 @@ require("calls/".$tag.".php");
 $c = new $tag();
 $c->db = Database::get();
 
+$res = array();
+$res["tag"] = $tag;
+if (isset($_POST['cookie']))
+	$res["cookie"] = $_POST['cookie'];
+
 try
 {
-	$res = $c->call($_POST);
-	echo json_encode($res);
+	$r = $c->call($_POST);
+
+	// We succeed
+	$res["success"] = 1;
+
+	// Merge r into res
+	$r = array_merge($r, $res);
+
+	echo json_encode($r);
 }
 catch (Exception $e)
 {
-	die($e->getMessage());
+	$res["error"] = 1;
+	$res["error_msg"] = $e->getMessage();
+
+	echo json_encode($res);
 }
 
 ?>

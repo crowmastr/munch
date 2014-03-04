@@ -4,7 +4,7 @@ class login extends API
 	/**
 	 * Get user by email and password
 	 */
-	public function getUserByEmailAndPassword($email, $password)
+	private function getUserByEmailAndPassword($email, $password)
 	{
 		$result = $this->db->execute("SELECT * FROM users WHERE email = '%s'", $email);
 		if ($result->numRows() == 0)
@@ -12,9 +12,6 @@ class login extends API
 			return false;
 
 		$result = $result->fetch();
-
-		//$result = mysql_query("SELECT * FROM users WHERE email = '$email'") or die(mysql_error());
-		// check for result
 
 		$salt = $result['salt'];
 		$encrypted_password = $result['encrypted_password'];
@@ -25,6 +22,13 @@ class login extends API
 			return $result;
 
 		return false;
+	}
+
+	private function createAuthToken($id, $uid)
+	{
+		$token = sha1($id.$uid.rand());
+		$this->db->execute("INSERT INTO user_auth_tokens (uid, token, created) VALUES('%s', '%s', %d)", $uid, $token, time());
+		return $token;
 	}
 
 	public function call($data)
@@ -41,9 +45,12 @@ class login extends API
 		if ($user != false)
 		{
 			// user found
-			// echo json with success = 1
-			$response["success"] = 1;
+
+			// insert auth token
+			$token = $this->createAuthToken($user["uid"], $user["unique_id"]);
+
 			$response["uid"] = $user["unique_id"];
+			$response["token"] = $token;
 			$response["user"]["name"] = $user["name"];
 			$response["user"]["email"] = $user["email"];
 			$response["user"]["created_at"] = $user["created_at"];
@@ -52,11 +59,7 @@ class login extends API
 		}
 		else
 		{
-			// user not found
-			// echo json with error = 1
-			$response["error"] = 1;
-			$response["error_msg"] = "Incorrect email or password!";
-			return $response;
+			throw new Exception("Incorrect email or password!");
 		}
 	}
 }

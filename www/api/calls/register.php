@@ -51,9 +51,7 @@ class register extends API
 		if ($this->doesEmailExist($email))
 		{
 			// user is already exists - error response
-			$response["error"] = 2;
-			$response["error_msg"] = "User already exists";
-			return $response;
+			throw new Exception("User already exists");
 		}
 
 		// store user
@@ -61,7 +59,6 @@ class register extends API
 		if ($user)
 		{
 			// user stored successfully
-			$response["success"] = 1;
 			$response["uid"] = $user["unique_id"];
 			$response["user"]["name"] = $user["name"];
 			$response["user"]["email"] = $user["email"];
@@ -70,10 +67,7 @@ class register extends API
 			return $response;
 		}
 
-		// user failed to store
-		$response["error"] = 1;
-		$response["error_msg"] = "Error occurred in registration";
-		return $response;
+		throw new Exception("Error occurred in registration");
 	}
 }
 ?>
