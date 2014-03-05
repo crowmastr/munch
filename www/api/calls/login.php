@@ -24,13 +24,6 @@ class login extends API
 		return false;
 	}
 
-	private function createAuthToken($id, $uid)
-	{
-		$token = sha1($id.$uid.rand());
-		$this->db->execute("INSERT INTO user_auth_tokens (uid, token, created) VALUES('%s', '%s', %d)", $uid, $token, time());
-		return $token;
-	}
-
 	public function call($data)
 	{
 		// Request type is check Login
@@ -47,7 +40,7 @@ class login extends API
 			// user found
 
 			// insert auth token
-			$token = $this->createAuthToken($user["uid"], $user["unique_id"]);
+			$token = Util::createAuthToken($user["uid"], $user["unique_id"]);
 
 			$response["uid"] = $user["unique_id"];
 			$response["token"] = $token;

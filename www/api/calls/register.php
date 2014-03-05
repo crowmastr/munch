@@ -59,7 +59,10 @@ class register extends API
 		if ($user)
 		{
 			// user stored successfully
+			$token = Util::createAuthToken($user["uid"], $user["unique_id"]);
+
 			$response["uid"] = $user["unique_id"];
+			$response["token"] = $token;
 			$response["user"]["name"] = $user["name"];
 			$response["user"]["email"] = $user["email"];
 			$response["user"]["created_at"] = $user["created_at"];

@@ -23,5 +23,13 @@ class Util
 	{
 		return base64_encode(sha1($password . $salt, true) . $salt);
 	}
+
+
+	public static function createAuthToken($id, $uid)
+	{
+		$token = sha1($id.$uid.rand());
+		$this->db->execute("INSERT INTO user_auth_tokens (uid, token, created) VALUES('%s', '%s', %d)", $uid, $token, time());
+		return $token;
+	}
 }
 ?>
