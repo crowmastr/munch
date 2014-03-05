@@ -1,20 +1,36 @@
 package com.angtft.munch;
 
+import java.util.HashMap;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
  
+import com.angtft.munch.library.DatabaseHandler;
 import com.angtft.munch.library.UserFunctions;
  
 public class DashboardActivity extends Activity {
-    UserFunctions userFunctions;
+	private static String KEY_TOKEN = "token";
+	UserFunctions userFunctions;
     Button btnLogout;
+        
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-         
+        DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+        HashMap<String,String> user = new HashMap<String,String>();
+        user = db.getUserDetails();
+        String token = user.get(KEY_TOKEN);
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_LONG;
+        
+        Toast toast = Toast.makeText(context, token, duration);
+        toast.show();
+  
         /**
          * Dashboard Screen for the application
          * */       
@@ -24,6 +40,7 @@ public class DashboardActivity extends Activity {
        // user already logged in show databoard
             setContentView(R.layout.dashboard);
             btnLogout = (Button) findViewById(R.id.btnLogout);
+            
              
             btnLogout.setOnClickListener(new View.OnClickListener() {
                  

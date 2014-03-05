@@ -25,6 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_NAME = "name";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_UID = "uid";
+    private static final String KEY_TOKEN = "token";
     private static final String KEY_CREATED_AT = "created_at";
  
     public DatabaseHandler(Context context) {
@@ -39,7 +40,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_NAME + " TEXT,"
                 + KEY_EMAIL + " TEXT UNIQUE,"
                 + KEY_UID + " TEXT,"
-                + KEY_CREATED_AT + " TEXT" + ")";
+                + KEY_CREATED_AT + " TEXT,"
+                + KEY_TOKEN + " TEXT" + ")";
         db.execSQL(CREATE_LOGIN_TABLE);
     }
  
@@ -56,7 +58,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Storing user details in database
      * */
-    public void addUser(String name, String email, String uid, String created_at) {
+    public void addUser(String name, String email, String uid, String created_at, String token) {
         SQLiteDatabase db = this.getWritableDatabase();
  
         ContentValues values = new ContentValues();
@@ -64,6 +66,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_EMAIL, email); // Email
         values.put(KEY_UID, uid); // Email
         values.put(KEY_CREATED_AT, created_at); // Created At
+        values.put(KEY_TOKEN, token); // Created At
  
         // Inserting Row
         db.insert(TABLE_LOGIN, null, values);
@@ -86,6 +89,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             user.put("email", cursor.getString(2));
             user.put("uid", cursor.getString(3));
             user.put("created_at", cursor.getString(4));
+            user.put("token", cursor.getString(5));
         }
         cursor.close();
         db.close();
