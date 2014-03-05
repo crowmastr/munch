@@ -8,10 +8,21 @@ class recipe extends API
 		$op = $data['op'];
 		if ($op == 'list')
 		{
-			$this->validateExists($data, 'ts');
-			$ts = $data['ts'];
+			$result = $this->db->execute("SELECT * FROM recipes");
+			$resp = array();
+			while (($row = $result->fetch()))
+				$resp[] = $row;
+			return $resp;
+		}
+		else if ($op == 'ingredients')
+		{
+			$this->validateExists($data, 'id');
+			$id = $data['id'];
 
-			$result = $this->db->execute("SELECT * FROM recipes WHERE `last_modified` > %d", $ts);
+			$result = $this->db->execute("SELECT * FROM recipe_ingredients WHERE `recipe` = %d", $id);
+			if (!$result->ok() || $result->numRows() == 0)
+				throw new Exception("Invalid recipe id");
+
 			$resp = array();
 			while (($row = $result->fetch()))
 				$resp[] = $row;
