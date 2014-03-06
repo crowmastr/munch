@@ -3,11 +3,8 @@ package com.angtft.munch;
 
 import org.json.JSONException;
 import org.json.JSONObject;
- 
-import com.angtft.munch.LoginActivity.UserLoginTask;
 import com.angtft.munch.library.DatabaseHandler;
 import com.angtft.munch.library.UserFunctions;
- 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -17,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
  
 public class RegisterActivity extends Activity {
     Button btnRegister;
@@ -99,9 +95,6 @@ public class RegisterActivity extends Activity {
                         userFunction.logoutUser(getApplicationContext());
                         db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT), "token not implemented in register yet");                        
                          
-                        // Clear all previous data in database
-                        //userFunction.logoutUser(getApplicationContext());
-                        //db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));                        
                         // Launch Dashboard Screen
                         Intent dashboard = new Intent(getApplicationContext(), DashboardActivity.class);
                         //dashboard.putExtra("TOKEN", token);
