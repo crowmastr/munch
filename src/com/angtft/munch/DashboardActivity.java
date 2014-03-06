@@ -1,10 +1,17 @@
 package com.angtft.munch;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,9 +21,21 @@ import com.angtft.munch.library.DatabaseHandler;
 import com.angtft.munch.library.UserFunctions;
  
 public class DashboardActivity extends Activity {
-	private static String KEY_TOKEN = "token";
+	
+	// JSON Response node names
+    private static String KEY_SUCCESS = "success";
+    private static String KEY_ERROR = "error";
+    private static String KEY_ERROR_MSG = "error_msg";
+    private static String KEY_UID = "uid";
+    private static String KEY_NAME = "name";
+    private static String KEY_EMAIL = "email";
+    private static String KEY_TOKEN = "token";
+    private static String KEY_CREATED_AT = "created_at";
+    String token;
+    
 	UserFunctions userFunctions;
     Button btnLogout;
+    String ingredients;
         
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,7 +43,7 @@ public class DashboardActivity extends Activity {
         DatabaseHandler db = new DatabaseHandler(getApplicationContext());
         HashMap<String,String> user = new HashMap<String,String>();
         user = db.getUserDetails();
-        String token = user.get(KEY_TOKEN);
+        token = user.get(KEY_TOKEN);
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_LONG;
         
@@ -63,5 +82,92 @@ public class DashboardActivity extends Activity {
             // Closing dashboard screen
             finish();
         }        
+    }
+    /**
+     * Adding spinner data
+     * 
+    private void populateSpinner() {
+        List<String> lables = new ArrayList<String>();
+         
+        for (int i = 0; i < categoriesList.size(); i++) {
+            lables.add(categoriesList.get(i).getName());
+        }
+     
+        // Creating adapter for spinner
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, lables);
+     
+        // Drop down layout style - list view with radio button
+        spinnerAdapter
+                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+     
+        // attaching data adapter to spinner
+        spinnerFood.setAdapter(spinnerAdapter);
+    } */
+    
+    public class UserLoginTask extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... params) {
+        	
+            UserFunctions userFunction = new UserFunctions();
+            JSONObject json = userFunction.listIngredients();
+            String res = "";
+            String id = "";
+            String name = "";
+            
+
+            // check for login response
+            try {
+                if (json.getString(KEY_SUCCESS) != null) {
+                    res = json.getString(KEY_SUCCESS); 
+                    if(Integer.parseInt(res) == 1){
+
+                    	Iterator<?> keys = json.keys();
+                    	while( keys.hasNext() ){
+                            String key = (String)keys.next();
+                            if( json.get(key) instanceof JSONObject ){
+                            	//this data will need to go in the spinner.
+                            	id = json.getString("id");
+                            	name = json.getString("name");
+                            	
+                            }
+                        }
+                    	
+                    	
+                    	
+                        // Launch Dashboard Screen
+                        Intent dashboard = new Intent(getApplicationContext(), DashboardActivity.class);
+                        //dashboard.putExtra("TOKEN", token);
+                         
+                        // Close all views before launching Dashboard
+                        dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(dashboard);
+                        
+                        // Close Login Screen
+                        finish();
+                    }else{
+                        // Error in login
+                    	//do nothing here, action is done in onPostExecute
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return res;
+        }
+        
+        @Override
+        protected void onPostExecute (String logged){
+            super.onPostExecute(logged);
+            
+            //your stuff
+            //you can pass params, launch a new Intent, a Toast...     
+            if (!logged.equals("1")) {
+            	
+            }
+            else {
+            	
+            }
+        }
     }
 }
