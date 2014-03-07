@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 07, 2014 at 12:47 AM
+-- Generation Time: Mar 07, 2014 at 12:57 AM
 -- Server version: 5.1.69
 -- PHP Version: 5.3.3
 
@@ -110,7 +110,8 @@ CREATE TABLE IF NOT EXISTS `user_ingredient_list` (
   `created` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user` (`user`,`type`,`ingredient`),
-  UNIQUE KEY `type` (`type`,`user`,`id`)
+  UNIQUE KEY `type` (`type`,`user`,`id`),
+  KEY `ingredient` (`ingredient`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
@@ -134,4 +135,5 @@ ALTER TABLE `user_auth_tokens`
 -- Constraints for table `user_ingredient_list`
 --
 ALTER TABLE `user_ingredient_list`
+  ADD CONSTRAINT `user_ingredient_list_ibfk_2` FOREIGN KEY (`ingredient`) REFERENCES `ingredients` (`id`),
   ADD CONSTRAINT `user_ingredient_list_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`unique_id`);
