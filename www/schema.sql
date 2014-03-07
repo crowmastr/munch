@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 04, 2014 at 02:29 AM
+-- Generation Time: Mar 06, 2014 at 11:38 PM
 -- Server version: 5.0.96-community-log
 -- PHP Version: 5.3.17
 
@@ -30,24 +30,6 @@ CREATE TABLE IF NOT EXISTS `ingredients` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `recipes`
---
-
-CREATE TABLE IF NOT EXISTS `recipes` (
-  `id` int(11) NOT NULL,
-  `name` tinytext NOT NULL,
-  `yield` int(11) NOT NULL,
-  `instructions` text NOT NULL,
-  `cost_per_recipe` float NOT NULL,
-  `cost_per_serving` float NOT NULL,
-  `source` tinytext NOT NULL,
-  `notes` text NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `recipe_ingredients`
 --
 
@@ -63,22 +45,20 @@ CREATE TABLE IF NOT EXISTS `recipe_ingredients` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Table structure for table `recipes`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
-  `uid` int(11) NOT NULL auto_increment,
-  `unique_id` varchar(23) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `encrypted_password` varchar(80) NOT NULL,
-  `salt` varchar(10) NOT NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`uid`),
-  UNIQUE KEY `unique_id` (`unique_id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+CREATE TABLE IF NOT EXISTS `recipes` (
+  `id` int(11) NOT NULL,
+  `name` tinytext NOT NULL,
+  `yield` int(11) NOT NULL,
+  `instructions` text NOT NULL,
+  `cost_per_recipe` float NOT NULL,
+  `cost_per_serving` float NOT NULL,
+  `source` tinytext NOT NULL,
+  `notes` text NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -110,3 +90,23 @@ CREATE TABLE IF NOT EXISTS `user_ingredient_list` (
   UNIQUE KEY `user` (`user`,`type`,`ingredient`),
   UNIQUE KEY `type` (`type`,`user`,`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `uid` int(11) NOT NULL auto_increment,
+  `unique_id` varchar(23) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `encrypted_password` varchar(80) NOT NULL,
+  `salt` varchar(10) NOT NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`uid`),
+  UNIQUE KEY `unique_id` (`unique_id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
