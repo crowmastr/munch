@@ -1198,7 +1198,6 @@ containing a value of this type.
         public static final int emailText=0x7f0a0013;
         public static final int forgotText=0x7f0a0016;
         public static final int fullName=0x7f0a001c;
-        public static final int hello_world=0x7f0a0026;
         public static final int hungryPersonText=0x7f0a001a;
         public static final int login=0x7f0a0011;
         public static final int loginHere=0x7f0a001f;

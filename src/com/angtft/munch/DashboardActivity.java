@@ -13,13 +13,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.angtft.munch.LoginActivity.UserLoginTask;
 import com.angtft.munch.library.DatabaseHandler;
 import com.angtft.munch.library.UserFunctions;
  
@@ -61,6 +61,10 @@ public class DashboardActivity extends Activity {
             setContentView(R.layout.dashboard);
             
             /* Load up the spinner with necessary information 
+             * Commented out because it bugs out,
+             * When ready to test, change PopulateSpinner to accept List<String>
+             * Also, uncomment the PopulateSpinner Call within LoadSpinner()
+             * 
             LoadSpinner ingredientSpinner = new LoadSpinner();
             ingredientSpinner.execute();
             */
@@ -108,12 +112,27 @@ public class DashboardActivity extends Activity {
     	
         // Creating adapter for spinner
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, testString);
+                android.R.layout.simple_spinner_item);
      
-        /*
-        for( int i = 0; i < ingredientList.size(); ++i)
-        	spinnerAdapter.add(ingredientList.get(i));
-        	*/
+        /* Comment out when LoadSpinner is being tested. Remove when LoadSpinner is fixed */
+    	for( int i = 0; i < testString.size(); ++i)
+    		spinnerAdapter.add(testString.get(i));
+        /* Commented out for testing, this requires that populate Spinner receives a list. When LoadSpinner is called,
+         * This should be active.
+
+        if(ingredientList.isEmpty())
+        {
+        	for( int i = 0; i < testString.size(); ++i)
+        		spinnerAdapter.add(testString.get(i));
+        }
+        else
+        {
+	        for( int i = 0; i < ingredientList.size(); ++i)
+	        	spinnerAdapter.add(ingredientList.get(i));
+        }
+        
+        */
+        
         // Drop down layout style - list view with radio button
         spinnerAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -129,15 +148,18 @@ public class DashboardActivity extends Activity {
         protected String doInBackground(Void... params) {
         	
             UserFunctions userFunction = new UserFunctions();
+            android.util.Log.w("Before listIngredients","We are about to enter listIngredients");
             JSONObject json = userFunction.listIngredients();
             String res = "";
+            
             //String id = "";
             //String name = "";
             
 
             // check for login response
             try {
-                if (json.getString(KEY_SUCCESS) != null) {
+                if (json.getString(KEY_SUCCESS) != null){
+                	android.util.Log.w("Succesful Get String", "We were able to successfully get jsonStriong");
                     res = json.getString(KEY_SUCCESS); 
                     if(Integer.parseInt(res) == 1){
 
@@ -145,12 +167,24 @@ public class DashboardActivity extends Activity {
                     	Iterator<?> keys = json.keys();
                     	while( keys.hasNext() ){
                             String key = (String)keys.next();
-                            if( json.get(key) instanceof JSONObject ){
+                            if( json.get(key) instanceof JSONObject ){ 
+                            	//android.util.Log.i("successful Get Key", json.getString());
                             	//Load the json name key into list
-                            	ingredientNameList.add(json.getString("id")); 	
+                            	try
+                            	{
+                            		ingredientNameList.add(json.getString("name"));
+                                	Log.i("LoadSpinner", "Successfully added ingredient to ingredientNameList ");
+                            	}
+                            	catch(JSONException e)
+                            	{
+                            		Log.e("LoadSpinner","Could not get string");
+                            		//e.printStackTrace();
+                            	}
+
                             }
                         }
                     	//PopulateSpinner(ingredientNameList);
+                    	Log.i("LoadSpinner","Returned from PopulateSpinner()");
                     	
                     	
                     	
@@ -170,6 +204,7 @@ public class DashboardActivity extends Activity {
                     }
                 }
             } catch (JSONException e) {
+            	android.util.Log.w("JSON Exception", "Something went wrong in the try");
                 e.printStackTrace();
             }
             return res;

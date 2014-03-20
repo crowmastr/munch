@@ -26,6 +26,5 @@
     <string name="title_activity_add__ingredient">Add_Ingredient</string>
     <string name="selectIngredients">Select Ingredients</string>
     <string name="submitButton">submit</string>
-    <string name="hello_world">yuppers</string>
 
 </resources>

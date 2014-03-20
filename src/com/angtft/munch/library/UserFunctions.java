@@ -21,7 +21,7 @@ public class UserFunctions {
     private static String registerURL = "http://munchapp.org/api/";
     private static String recipeURL = "http://munchapp.org/api/";
     private static String ilistURL = "http://munchapp.org/api/";
-    private static String ingredientURL = "http://munchapp.org/api/";
+    private static String ingredientURL = "http://munchapp.org/api2/";
      
     private static String login_tag = "login";
     private static String register_tag = "register";
@@ -273,9 +273,11 @@ public class UserFunctions {
         params.add(new BasicNameValuePair("tag", ingredient_tag));
         params.add(new BasicNameValuePair("op", ingredient_op_list));
         
+        android.util.Log.w("listIngredients()","Before the jsonParser");
         JSONObject json = jsonParser.getJSONFromUrl(ingredientURL, params);
         // return json
         // Log.e("JSON", json.toString());
+        android.util.Log.w("listIngredients()","Before the return");
         return json;
     }
      

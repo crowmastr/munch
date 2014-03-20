@@ -44,10 +44,13 @@ public class JSONParser {
             is = httpEntity.getContent();
  
         } catch (UnsupportedEncodingException e) {
+        	Log.e("JSONParser","getJSONFromUrl - UnsupportedEncodingException");
             e.printStackTrace();
         } catch (ClientProtocolException e) {
+        	Log.e("JSONParser","getJSONFromUrl - ClientProtocolException");
             e.printStackTrace();
         } catch (IOException e) {
+        	Log.e("JSONParser","getJSONFromUrl - IOException");
             e.printStackTrace();
         }
  
@@ -61,6 +64,8 @@ public class JSONParser {
             }
             is.close();
             json = sb.toString();
+            
+            /* Jeremy Question: Why is this printing as an error?? */
             Log.e("JSON", json);
         } catch (Exception e) {
             Log.e("Buffer Error", "Error converting result " + e.toString());
