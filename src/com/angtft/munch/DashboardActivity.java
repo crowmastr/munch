@@ -14,9 +14,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
- 
+
 import com.angtft.munch.library.DatabaseHandler;
 import com.angtft.munch.library.UserFunctions;
  
@@ -36,6 +38,7 @@ public class DashboardActivity extends Activity {
 	UserFunctions userFunctions;
     Button btnLogout;
     String ingredients;
+	private Object spinIngredients;
         
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,39 +84,39 @@ public class DashboardActivity extends Activity {
             startActivity(login);
             // Closing dashboard screen
             finish();
-        }        
+        } 
+        new LoadSpinner();
     }
     /**
      * Adding spinner data
-     * 
-    private void populateSpinner() {
-        List<String> lables = new ArrayList<String>();
-         
-        for (int i = 0; i < categoriesList.size(); i++) {
-            lables.add(categoriesList.get(i).getName());
-        }
-     
+     *
+     */
+    private void PopulateSpinner(List<String> ingredientNames) {
+
+    	
+    	
         // Creating adapter for spinner
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, lables);
+                android.R.layout.simple_spinner_item, ingredientNames);
      
         // Drop down layout style - list view with radio button
         spinnerAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
      
         // attaching data adapter to spinner
+        Spinner spinnerFood = (Spinner) this.findViewById(R.id.spinIngredients);
         spinnerFood.setAdapter(spinnerAdapter);
-    } */
+    } 
     
-    public class UserLoginTask extends AsyncTask<Void, Void, String> {
+    public class LoadSpinner extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... params) {
         	
             UserFunctions userFunction = new UserFunctions();
             JSONObject json = userFunction.listIngredients();
             String res = "";
-            String id = "";
-            String name = "";
+            //String id = "";
+            //String name = "";
             
 
             // check for login response
@@ -122,16 +125,16 @@ public class DashboardActivity extends Activity {
                     res = json.getString(KEY_SUCCESS); 
                     if(Integer.parseInt(res) == 1){
 
+                        List<String> ingredientNameList = new ArrayList<String>();
                     	Iterator<?> keys = json.keys();
                     	while( keys.hasNext() ){
                             String key = (String)keys.next();
                             if( json.get(key) instanceof JSONObject ){
-                            	//this data will need to go in the spinner.
-                            	id = json.getString("id");
-                            	name = json.getString("name");
-                            	
+                            	//Load the json name key into list
+                            	ingredientNameList.add(json.getString("id")); 	
                             }
                         }
+                    	PopulateSpinner(ingredientNameList);
                     	
                     	
                     	
@@ -168,6 +171,7 @@ public class DashboardActivity extends Activity {
             else {
             	
             }
+            //new LoadSpinner();
         }
     }
 }

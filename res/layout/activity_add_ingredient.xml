@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.angtft.munch.AddIngredient"
+    tools:ignore="MergeRootFrame" >
+   
+   	<EditText
+   	    android:id="@+id/ingredientSearch"
+   	    android:layout_width="wrap_content"
+   	    android:layout_height="wrap_content"
+   	    android:layout_alignParentLeft="true"
+   	    android:layout_toLeftOf="@+id/ingredientSearchButton"
+   	    android:hint="@string/typeIngredient" >
+
+   	</EditText>
+
+   	<Button
+   	    android:id="@+id/ingredientSearchButton"
+   	    android:layout_width="wrap_content"
+   	    android:layout_height="wrap_content"
+   	    android:layout_alignParentRight="true"
+   	    android:text="@string/submitButton"
+   	    android:layout_alignTop="@id/ingredientSearch"
+   	    android:layout_alignBottom="@id/ingredientSearch"
+   	    android:onClick="SearchForIngredients" >
+   	</Button>
+
+   	<Spinner
+   	    android:id="@+id/categoryPromptSpinner"
+   	    android:layout_width="fill_parent"
+   	    android:layout_height="wrap_content"
+   	    android:layout_below="@id/ingredientSearch" >
+
+    </Spinner>
+    
+   	<Spinner
+   	    android:id="@+id/ingredientPromptSpinner"
+   	    android:layout_width="fill_parent"
+   	    android:layout_height="wrap_content"
+   	    android:layout_below="@id/categoryPromptSpinner" >
+
+    </Spinner>
+
+   	<ExpandableListView
+   	    android:id="@+id/activeIngredientList"
+   	    android:layout_width="match_parent"
+   	    android:layout_height="wrap_content"
+   	    android:layout_alignParentLeft="true"
+   	    android:layout_alignTop="@+id/ingredientPromptSpinner"
+   	    android:layout_marginTop="47dp" >
+   	</ExpandableListView>
+   	
+   	<Button
+   	    android:id="@+id/searchRecipeButton"
+   	    android:layout_width="fill_parent"
+   	    android:layout_height="wrap_content"
+   	    android:layout_below="@+id/activeIngredientList" >
+   	</Button>
+
+</RelativeLayout>
+

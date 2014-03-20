@@ -9,18 +9,23 @@
     <string name="logout">Log me out</string>
     <string name="emailText">Enter Your Email Address</string>
     <string name="passwordText">Enter Your Password</string>
-	<string name="registerText">Register New Account</string>
-	<string name="forgotText">Forgot Email/Password</string>
-	<string name="munchLogo">Munch Logo</string>
-	<string name="chooseRole">Please choose your role:</string>
-	<string name="shopperText">Shopper</string>
-	<string name="hungryPersonText">Hungry Person</string>
-	<string name="registerNewText">New to Munch? Register here</string>
-	<string name="fullName">Full Name</string>
-	<string name="email">Email</string>
-	<string name="password">Password</string>
-	<string name="loginHere">Already have account? Login here</string>
-	<string name="already">I don\'t have account. Register Me!</string>
-	
-	
+    <string name="registerText">Register New Account</string>
+    <string name="forgotText">Forgot Email/Password</string>
+    <string name="munchLogo">Munch Logo</string>
+    <string name="chooseRole">Please choose your role:</string>
+    <string name="shopperText">Shopper</string>
+    <string name="hungryPersonText">Hungry Person</string>
+    <string name="registerNewText">New to Munch? Register here</string>
+    <string name="fullName">Full Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="loginHere">Already have account? Login here</string>
+    <string name="already">I don\'t have account. Register Me!</string>
+    <string name="title_activity_add_ingredient">AddIngredient</string>
+    <string name="typeIngredient">Type Ingredient Here</string>
+    <string name="title_activity_add__ingredient">Add_Ingredient</string>
+    <string name="selectIngredients">Select Ingredients</string>
+    <string name="submitButton">submit</string>
+    <string name="hello_world">yuppers</string>
+
 </resources>

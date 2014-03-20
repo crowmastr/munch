@@ -11,14 +11,19 @@
               android:textSize="40sp"
               android:gravity="center"
               android:layout_marginTop="20dip"
-              android:textColor="#FFFFFF"/>
+              android:textColor="@color/white"/>
     <TextView android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Select ingredients"/>
+        android:text="@string/selectIngredients"/>
      
-    <Spinner android:id="@+id/spinIngredients"
+    <Spinner
+        android:id="@+id/spinIngredients"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="50dp"
+        android:textColor="@color/white"
+        android:spinnerMode="dropdown" >
+        
+    </Spinner>
 
     <Button
         android:id="@+id/btnLogout"
