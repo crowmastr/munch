@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.angtft.munch.LoginActivity.UserLoginTask;
 import com.angtft.munch.library.DatabaseHandler;
 import com.angtft.munch.library.UserFunctions;
  
@@ -38,7 +39,6 @@ public class DashboardActivity extends Activity {
 	UserFunctions userFunctions;
     Button btnLogout;
     String ingredients;
-	private Object spinIngredients;
         
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,15 +52,24 @@ public class DashboardActivity extends Activity {
         
         Toast toast = Toast.makeText(context, token, duration);
         toast.show();
-  
-        /**
-         * Dashboard Screen for the application
-         * */       
+        
+     
         // Check login status in database
         userFunctions = new UserFunctions();
         if(userFunctions.isUserLoggedIn(getApplicationContext())){
        // user already logged in show databoard
             setContentView(R.layout.dashboard);
+            
+            /* Load up the spinner with necessary information 
+            LoadSpinner ingredientSpinner = new LoadSpinner();
+            ingredientSpinner.execute();
+            */
+            PopulateSpinner();
+            /**
+             * Dashboard Screen for the application
+             * */  
+            
+            
             btnLogout = (Button) findViewById(R.id.btnLogout);
             
              
@@ -76,7 +85,7 @@ public class DashboardActivity extends Activity {
                     finish();
                 }
             });
-             
+
         }else{
             // user is not logged in show login screen
             Intent login = new Intent(getApplicationContext(), LoginActivity.class);
@@ -84,31 +93,38 @@ public class DashboardActivity extends Activity {
             startActivity(login);
             // Closing dashboard screen
             finish();
-        } 
-        new LoadSpinner();
+        }
+
     }
     /**
      * Adding spinner data
-     *
+     *	List<String> ingredientList
      */
-    private void PopulateSpinner(List<String> ingredientNames) {
-
-    	
+    private void PopulateSpinner() 
+    {
+    	List<String> testString = new ArrayList<String>();
+    	testString.add("First ingredient");
+    	testString.add("Second Ingredient");
     	
         // Creating adapter for spinner
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, ingredientNames);
+                android.R.layout.simple_spinner_item, testString);
      
+        /*
+        for( int i = 0; i < ingredientList.size(); ++i)
+        	spinnerAdapter.add(ingredientList.get(i));
+        	*/
         // Drop down layout style - list view with radio button
         spinnerAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
      
-        // attaching data adapter to spinner
+        // attaching data adapter to spinner, should populate
         Spinner spinnerFood = (Spinner) this.findViewById(R.id.spinIngredients);
         spinnerFood.setAdapter(spinnerAdapter);
     } 
     
-    public class LoadSpinner extends AsyncTask<Void, Void, String> {
+    public class LoadSpinner extends AsyncTask<Void, Void, String> 
+    {
         @Override
         protected String doInBackground(Void... params) {
         	
@@ -134,7 +150,7 @@ public class DashboardActivity extends Activity {
                             	ingredientNameList.add(json.getString("id")); 	
                             }
                         }
-                    	PopulateSpinner(ingredientNameList);
+                    	//PopulateSpinner(ingredientNameList);
                     	
                     	
                     	
@@ -171,7 +187,6 @@ public class DashboardActivity extends Activity {
             else {
             	
             }
-            //new LoadSpinner();
         }
     }
 }
