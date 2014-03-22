@@ -66,7 +66,7 @@ public class JSONParser {
             json = sb.toString();
             
             /* Jeremy Question: Why is this printing as an error?? */
-            Log.e("JSON", json);
+            Log.i("JSON", json);
         } catch (Exception e) {
             Log.e("Buffer Error", "Error converting result " + e.toString());
         }

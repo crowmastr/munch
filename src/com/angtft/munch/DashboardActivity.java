@@ -60,6 +60,7 @@ public class DashboardActivity extends Activity {
         if(userFunctions.isUserLoggedIn(getApplicationContext())){
        // user already logged in show databoard
             setContentView(R.layout.dashboard);
+ 
             
             /* Load up the spinner with necessary information 
              * Commented out because it bugs out,
@@ -73,8 +74,7 @@ public class DashboardActivity extends Activity {
             //PopulateSpinner();
             /**
              * Dashboard Screen for the application
-             * */  
-            
+             * */ 
             
             btnLogout = (Button) findViewById(R.id.btnLogout);
             
@@ -106,34 +106,22 @@ public class DashboardActivity extends Activity {
      * Adding spinner data
      *	List<String> ingredientList
      */
-    private void PopulateSpinner() 
+    public void PopulateSpinner(List<String> ingredientList) 
     {
-    	List<String> testString = new ArrayList<String>();
-    	testString.add("First ingredient");
-    	testString.add("Second Ingredient");
+    	try
+    	{
+    	Log.i("PopulateSpinner", "Entering PopulateSpinner");
+    	
     	
         // Creating adapter for spinner
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item);
-     
-        /* Comment out when LoadSpinner is being tested. Remove when LoadSpinner is fixed */
-    	for( int i = 0; i < testString.size(); ++i)
-    		spinnerAdapter.add(testString.get(i));
-        /* Commented out for testing, this requires that populate Spinner receives a list. When LoadSpinner is called,
-         * This should be active.
 
-        if(ingredientList.isEmpty())
-        {
-        	for( int i = 0; i < testString.size(); ++i)
-        		spinnerAdapter.add(testString.get(i));
-        }
-        else
-        {
-	        for( int i = 0; i < ingredientList.size(); ++i)
-	        	spinnerAdapter.add(ingredientList.get(i));
-        }
+
+        for( int i = 0; i < ingredientList.size(); ++i)
+        	spinnerAdapter.add(ingredientList.get(i));
+
         
-        */
         
         // Drop down layout style - list view with radio button
         spinnerAdapter
@@ -142,10 +130,16 @@ public class DashboardActivity extends Activity {
         // attaching data adapter to spinner, should populate
         Spinner spinnerFood = (Spinner) this.findViewById(R.id.spinIngredients);
         spinnerFood.setAdapter(spinnerAdapter);
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
     } 
     
     public class LoadSpinner extends AsyncTask<Void, Void, String> 
     {
+        List<String> ingredientNameList = new ArrayList<String>();
         @Override
         protected String doInBackground(Void... params) {
         	
@@ -161,21 +155,38 @@ public class DashboardActivity extends Activity {
                     res = json.getString(KEY_SUCCESS); 
                     if(Integer.parseInt(res) == 1){
 
-                        List<String> ingredientNameList = new ArrayList<String>();
+
                     	Iterator<?> keys = json.keys();
                     	while( keys.hasNext() ){
                             String key = (String)keys.next();
-                            JSONObject json_ingredient = json.getJSONObject(key);
+                            int i = 1;
+                        	JSONObject json_ingredient = new JSONObject();
+
+
+                            try
+                            {
+                            	json_ingredient = json.getJSONObject(key);
+                            	Log.i("GetKey", "Success" + i + "Retreiving: " + json_ingredient.getString("name") + ": " + json_ingredient.getString("id"));
+                            	++i;
+                            }
+                            catch(JSONException e)
+                            {
+                            	if (key.equals("tag"))	
+                            		Log.w("JsonGet-Exception", "key = tag");
+                            	else
+                            		e.printStackTrace();
+                            }
+
+                            //System.out.println("This is the key string: " + key);
                             
-                            System.out.println("This is the key string: " + key);
                             if( json_ingredient != null){ 
                             	//android.util.Log.i("successful Get Key", json.getString());
                             	//Load the json name key into list
                             	try
                             	{
                             		ingredientNameList.add(json_ingredient.getString("name"));
-                            		System.out.println("Trying to add " + json_ingredient.getString("name") + "\nCount is: " + ++counterIngredients);
-                                	Log.i("LoadSpinner", "Successfully added ingredient to ingredientNameList ");
+                            		//System.out.println("Trying to add " + json_ingredient.getString("name") + "\nCount is: " + ++counterIngredients);
+                                	//Log.i("LoadSpinner", "Successfully added" + json_ingredient.getString("name") + " to ingredientNameList ");
                             	}
                             	catch(JSONException e)
                             	{
@@ -184,9 +195,9 @@ public class DashboardActivity extends Activity {
                             	}
 
                             }
+                            
                         }
-                    	//PopulateSpinner(ingredientNameList);
-                    	Log.i("LoadSpinner","Returned from PopulateSpinner()");
+
                     	
                     }else{
                         // Error in login
@@ -197,15 +208,20 @@ public class DashboardActivity extends Activity {
             	android.util.Log.w("JSON Exception", "Something went wrong in the try");
                 e.printStackTrace();
             }
+            
+
             return res;
         }
+        
+        
         
         @Override
         protected void onPostExecute (String logged){
             super.onPostExecute(logged);
             
-            //your stuff
-            PopulateSpinner();
+            Log.i("LoadSpinner()-onPostExecute", "Entering Populate Spinner");
+            PopulateSpinner(ingredientNameList);
+            Log.i("LoadSpinner()-onPostExecute", "Returned from Populate Spinner");
             //you can pass params, launch a new Intent, a Toast...     
             if (!logged.equals("1")) {
             	

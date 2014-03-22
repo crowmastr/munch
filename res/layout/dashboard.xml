@@ -19,9 +19,9 @@
     <Spinner
         android:id="@+id/spinIngredients"
         android:layout_width="fill_parent"
-        android:layout_height="200dp"
-        android:textColor="#ffffff"
-        android:spinnerMode="dropdown" >
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"
+        android:textColor="@color/white" >
         
     </Spinner>
 
