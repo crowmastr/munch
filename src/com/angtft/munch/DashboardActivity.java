@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.angtft.munch.LoginActivity.UserLoginTask;
 import com.angtft.munch.library.DatabaseHandler;
 import com.angtft.munch.library.UserFunctions;
  
@@ -64,11 +65,12 @@ public class DashboardActivity extends Activity {
              * Commented out because it bugs out,
              * When ready to test, change PopulateSpinner to accept List<String>
              * Also, uncomment the PopulateSpinner Call within LoadSpinner()
-             * 
-            LoadSpinner ingredientSpinner = new LoadSpinner();
-            ingredientSpinner.execute();
-            */
-            PopulateSpinner();
+             */ 
+            LoadSpinner AsyncIngredientSpinner = new LoadSpinner();
+            AsyncIngredientSpinner.execute();
+          
+            /*
+            //PopulateSpinner();
             /**
              * Dashboard Screen for the application
              * */  
@@ -151,15 +153,11 @@ public class DashboardActivity extends Activity {
             android.util.Log.w("Before listIngredients","We are about to enter listIngredients");
             JSONObject json = userFunction.listIngredients();
             String res = "";
-            
-            //String id = "";
-            //String name = "";
-            
-
-            // check for login response
+            Integer counterIngredients = 0;
+            // check for json response
             try {
                 if (json.getString(KEY_SUCCESS) != null){
-                	android.util.Log.w("Succesful Get String", "We were able to successfully get jsonStriong");
+                	android.util.Log.w("Succesful Get String", "We were able to successfully get jsonString");
                     res = json.getString(KEY_SUCCESS); 
                     if(Integer.parseInt(res) == 1){
 
@@ -167,12 +165,16 @@ public class DashboardActivity extends Activity {
                     	Iterator<?> keys = json.keys();
                     	while( keys.hasNext() ){
                             String key = (String)keys.next();
-                            if( json.get(key) instanceof JSONObject ){ 
+                            JSONObject json_ingredient = json.getJSONObject(key);
+                            
+                            System.out.println("This is the key string: " + key);
+                            if( json_ingredient != null){ 
                             	//android.util.Log.i("successful Get Key", json.getString());
                             	//Load the json name key into list
                             	try
                             	{
-                            		ingredientNameList.add(json.getString("name"));
+                            		ingredientNameList.add(json_ingredient.getString("name"));
+                            		System.out.println("Trying to add " + json_ingredient.getString("name") + "\nCount is: " + ++counterIngredients);
                                 	Log.i("LoadSpinner", "Successfully added ingredient to ingredientNameList ");
                             	}
                             	catch(JSONException e)
@@ -186,18 +188,6 @@ public class DashboardActivity extends Activity {
                     	//PopulateSpinner(ingredientNameList);
                     	Log.i("LoadSpinner","Returned from PopulateSpinner()");
                     	
-                    	
-                    	
-                        // Launch Dashboard Screen
-                        Intent dashboard = new Intent(getApplicationContext(), DashboardActivity.class);
-                        //dashboard.putExtra("TOKEN", token);
-                         
-                        // Close all views before launching Dashboard
-                        dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(dashboard);
-                        
-                        // Close Login Screen
-                        finish();
                     }else{
                         // Error in login
                     	//do nothing here, action is done in onPostExecute
@@ -215,6 +205,7 @@ public class DashboardActivity extends Activity {
             super.onPostExecute(logged);
             
             //your stuff
+            PopulateSpinner();
             //you can pass params, launch a new Intent, a Toast...     
             if (!logged.equals("1")) {
             	

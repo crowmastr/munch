@@ -56,10 +56,6 @@
             android:name="com.angtft.munch.AddIngredient"
             android:label="@string/title_activity_add_ingredient" >
         </activity>
-        <activity
-            android:name="com.angtft.munch.Add_Ingredient"
-            android:label="@string/title_activity_add__ingredient" >
-        </activity>
     </application>
 
 </manifest>
