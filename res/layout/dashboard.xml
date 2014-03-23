@@ -1,39 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@layout/background">
-     
-    <TextView android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:text="@string/welcome"
-              android:textSize="40sp"
-              android:gravity="center"
-              android:layout_marginTop="20dip"
-              android:textColor="@color/white"/>
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/selectIngredients"/>
-     
-    <Spinner
-        android:id="@+id/spinIngredients"
+    android:background="@layout/background"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/selectIngredientLabel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:spinnerMode="dialog"
-        android:textColor="@color/white" >
-        
-    </Spinner>
+        android:text="@string/selectIngredients" 
+        android:textColor="@color/white"
+        android:layout_below="@+id/Welcome"/>
+
+    <Button
+        android:id="@+id/btnFilterIngredients"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/filter" 
+        android:onClick="PopulateSpinner"
+        android:layout_below="@+id/selectIngredientLabel"
+        android:layout_alignTop="@+id/filterEditText"
+        android:layout_alignBottom="@+id/filterEditText"
+        android:layout_alignParentRight="true" />"
+
+    <EditText
+        android:id="@+id/filterEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/selectIngredientLabel"
+        android:layout_toLeftOf="@+id/btnFilterIngredients"
+        android:ems="10"
+        android:hint="@string/filterHint" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/tvMyIngredients"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinIngredients"
+        android:text="@string/activeIngredientText"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
         android:background="@null"
         android:text="@string/logout"
         android:textColor="#21dbd4"
         android:textSize="20sp"
         android:textStyle="bold" />
- 
-</LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinIngredients"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/btnFilterIngredients"
+        android:spinnerMode="dialog"
+        android:textColor="@color/white" />
+
+    <ListView
+        android:id="@+id/activeIngredientListView"
+        android:layout_width="match_parent"
+        android:layout_height="137dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvMyIngredients"
+        android:layout_marginTop="13dp"
+        android:choiceMode="singleChoice"
+        android:listSelector="@color/white" >
+    </ListView>
+
+    <TextView
+        android:id="@+id/Welcome"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:text="@string/welcome"
+        android:textColor="@color/white"
+        android:textSize="40sp" />
+
+    <Button
+        android:id="@+id/addActiveIngredient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/activeIngredientListView"
+        android:layout_marginTop="35dp"
+        android:text="@string/addButton" />
+
+    <Button
+        android:id="@+id/removeActiveIngredient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/addActiveIngredient"
+        android:text="@string/removeButton" />
+
+</RelativeLayout>

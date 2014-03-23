@@ -26,5 +26,10 @@
     <string name="title_activity_add__ingredient">Add_Ingredient</string>
     <string name="selectIngredients">Select Ingredients</string>
     <string name="submitButton">submit</string>
+    <string name="filterHint">Type to filter ingredients</string>
+    <string name="filter">filter</string>
+    <string name="activeIngredientText">My Ingredients</string>
+    <string name="addButton">Add Ingredient</string>
+    <string name="removeButton">Remove Ingredient</string>
 
 </resources>

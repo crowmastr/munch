@@ -15,12 +15,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.angtft.munch.LoginActivity.UserLoginTask;
 import com.angtft.munch.library.DatabaseHandler;
 import com.angtft.munch.library.UserFunctions;
  
@@ -39,7 +42,21 @@ public class DashboardActivity extends Activity {
     
 	UserFunctions userFunctions;
     Button btnLogout;
-    String ingredients;
+    String ingredients;  
+    
+    /**
+     *  Variables for finding Ingredients from Server and adding to list of active ingredients
+     */
+	ArrayAdapter<String> activeIngredientAdapter;
+    Button btnSubmit;    // Used to submit the filter in the edit text 
+    Spinner spinnerFood; // contains all ingredients that pass by filter
+    List<String> ingredientList = new ArrayList<String>(); //List of all ingredients
+    List<String> spnIngredientList = new ArrayList<String>(); //List of ingredients in the spinner
+    List<String> activeIngredientList = new ArrayList<String>(); //List of chosen ingredients
+    Button btnAddIngredient; // Used to select the spinner's item and add to the Active list
+    Button btnRemIngredient; // Used to remove the selected ingredient from Active List
+ 	ListView activeIngredientListView;
+    boolean startUpFlag = true;
         
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +84,7 @@ public class DashboardActivity extends Activity {
              * When ready to test, change PopulateSpinner to accept List<String>
              * Also, uncomment the PopulateSpinner Call within LoadSpinner()
              */ 
-            LoadSpinner AsyncIngredientSpinner = new LoadSpinner();
+            LoadIngredients AsyncIngredientSpinner = new LoadIngredients();
             AsyncIngredientSpinner.execute();
           
             /*
@@ -79,7 +96,8 @@ public class DashboardActivity extends Activity {
             btnLogout = (Button) findViewById(R.id.btnLogout);
             
              
-            btnLogout.setOnClickListener(new View.OnClickListener() {
+            btnLogout.setOnClickListener(new View.OnClickListener() 
+            {
                  
                 public void onClick(View arg0) {
                     // TODO Auto-generated method stub
@@ -91,7 +109,75 @@ public class DashboardActivity extends Activity {
                     finish();
                 }
             });
+            
+            btnSubmit = (Button) findViewById(R.id.btnFilterIngredients);
+            btnSubmit.setOnClickListener(new View.OnClickListener()
+            {
+				
+				@Override
+				public void onClick(View v) 
+				{
+					// TODO Auto-generated method stub
+					PopulateSpinner();
+					
+				}
+			});
+            
+            spinnerFood = (Spinner) this.findViewById(R.id.spinIngredients);
+            /*
+            spinnerFood.setOnItemSelectedListener(new OnItemSelectedListener()
+            {
 
+				@Override
+				public void onItemSelected(AdapterView<?> parent, View view,
+						int position, long id) {
+					// TODO Auto-generated method stub
+					
+					if(startUpFlag)
+						startUpFlag = false; // Do not add ingredient if First run
+					else
+						AddActiveIngredient(spinnerFood.getItemAtPosition(position).toString());
+				}
+
+				@Override
+				public void onNothingSelected(AdapterView<?> parent) {
+					// TODO Auto-generated method stub
+					
+				}
+            	
+			});
+			*/
+
+            activeIngredientListView = (ListView) findViewById(R.id.activeIngredientListView);
+            btnAddIngredient = (Button) this.findViewById(R.id.addActiveIngredient);
+            btnAddIngredient.setOnClickListener(new View.OnClickListener()
+            {
+            
+            	@Override
+            	public void onClick(View v)
+            	{
+            		Log.d("AddIngredient", "Attempting to add Ingredient");
+                	Log.i("AddIngredient", "Selected Spinner: " + spinnerFood.getSelectedItem().toString());
+            		AddActiveIngredient(spinnerFood.getSelectedItem().toString());
+            	}
+            	
+            }
+            );
+            
+            btnRemIngredient = (Button) this.findViewById(R.id.removeActiveIngredient);
+            btnRemIngredient.setOnClickListener(new View.OnClickListener()
+            {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					if(!(activeIngredientListView.getSelectedItem() == null))
+						Log.e("Remove Active Ingredient", "Attempt to remove:" + activeIngredientListView.getSelectedItem().toString());
+					if(!activeIngredientListView.getSelectedItem().toString().equals(null))
+						RemoveActiveIngredient(activeIngredientListView.getSelectedItem().toString());
+					
+				}
+			});
         }else{
             // user is not logged in show login screen
             Intent login = new Intent(getApplicationContext(), LoginActivity.class);
@@ -106,8 +192,9 @@ public class DashboardActivity extends Activity {
      * Adding spinner data
      *	List<String> ingredientList
      */
-    public void PopulateSpinner(List<String> ingredientList) 
+    public void PopulateSpinner() 
     {
+    	FilterIngredients();
     	try
     	{
     	Log.i("PopulateSpinner", "Entering PopulateSpinner");
@@ -118,8 +205,8 @@ public class DashboardActivity extends Activity {
                 android.R.layout.simple_spinner_item);
 
 
-        for( int i = 0; i < ingredientList.size(); ++i)
-        	spinnerAdapter.add(ingredientList.get(i));
+        for( int i = 0; i < spnIngredientList.size(); ++i)
+        	spinnerAdapter.add(spnIngredientList.get(i));
 
         
         
@@ -128,7 +215,6 @@ public class DashboardActivity extends Activity {
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
      
         // attaching data adapter to spinner, should populate
-        Spinner spinnerFood = (Spinner) this.findViewById(R.id.spinIngredients);
         spinnerFood.setAdapter(spinnerAdapter);
     	}
     	catch(Exception e)
@@ -137,16 +223,69 @@ public class DashboardActivity extends Activity {
     	}
     } 
     
-    public class LoadSpinner extends AsyncTask<Void, Void, String> 
+    public void AddActiveIngredient(String ingredient)
     {
-        List<String> ingredientNameList = new ArrayList<String>();
-        @Override
+    	
+    	for(String activeIngredient : activeIngredientList)
+    	{
+    		if(activeIngredient.equals(ingredient))
+    			return;
+    	}
+    	Log.i("PopulateActiveIngredientView", "Entering PopulateActiveIngredientView");
+
+
+    	activeIngredientList.add(ingredient);
+    	
+    	activeIngredientAdapter = new ArrayAdapter<String>(this, 
+    			android.R.layout.simple_list_item_1,
+    			activeIngredientList);
+    	
+    	activeIngredientListView.setAdapter(activeIngredientAdapter);
+    	activeIngredientAdapter.notifyDataSetChanged();
+    	
+    }
+    
+    public void RemoveActiveIngredient(String ingredient)
+    {
+    	Log.i("RemoveActievIngredient", "Attempting to remove ingredient");
+    	for(String activeIngredient : activeIngredientList)
+    	{
+    		if(activeIngredient.equals(ingredient))
+    		{
+    			activeIngredientList.remove(activeIngredient);
+    			activeIngredientAdapter.notifyDataSetChanged();
+    		}
+    	}
+    	
+    }
+    
+    public void FilterIngredients()
+    {
+    	spnIngredientList.clear();
+    	EditText filterEditText = (EditText) findViewById(R.id.filterEditText);
+    	String filter = filterEditText.getText().toString();
+    	for(String ingredientName : ingredientList)
+    	{
+    		if (ingredientName.toLowerCase().contains(filter.toLowerCase()))
+    			spnIngredientList.add(ingredientName);    		
+    	}
+    		
+    }
+    
+    
+
+    
+    public class LoadIngredients extends AsyncTask<Void, Void, String> 
+    {
+       
+        @Override   
         protected String doInBackground(Void... params) {
         	
             UserFunctions userFunction = new UserFunctions();
             android.util.Log.w("Before listIngredients","We are about to enter listIngredients");
             JSONObject json = userFunction.listIngredients();
             String res = "";
+            
             Integer counterIngredients = 0;
             // check for json response
             try {
@@ -179,12 +318,15 @@ public class DashboardActivity extends Activity {
 
                             //System.out.println("This is the key string: " + key);
                             
-                            if( json_ingredient != null){ 
+                            if( json_ingredient != null)
+                            { 
                             	//android.util.Log.i("successful Get Key", json.getString());
                             	//Load the json name key into list
                             	try
                             	{
-                            		ingredientNameList.add(json_ingredient.getString("name"));
+                            		String name = new String(json_ingredient.getString("name"));
+                            		if (!name.equals(null))
+                            			ingredientList.add(name);
                             		//System.out.println("Trying to add " + json_ingredient.getString("name") + "\nCount is: " + ++counterIngredients);
                                 	//Log.i("LoadSpinner", "Successfully added" + json_ingredient.getString("name") + " to ingredientNameList ");
                             	}
@@ -213,6 +355,7 @@ public class DashboardActivity extends Activity {
             return res;
         }
         
+
         
         
         @Override
@@ -220,7 +363,7 @@ public class DashboardActivity extends Activity {
             super.onPostExecute(logged);
             
             Log.i("LoadSpinner()-onPostExecute", "Entering Populate Spinner");
-            PopulateSpinner(ingredientNameList);
+            PopulateSpinner();
             Log.i("LoadSpinner()-onPostExecute", "Returned from Populate Spinner");
             //you can pass params, launch a new Intent, a Toast...     
             if (!logged.equals("1")) {
@@ -231,4 +374,6 @@ public class DashboardActivity extends Activity {
             }
         }
     }
+
+    
 }
