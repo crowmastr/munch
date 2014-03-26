@@ -31,5 +31,30 @@
     <string name="activeIngredientText">My Ingredients</string>
     <string name="addButton">Add Ingredient</string>
     <string name="removeButton">Remove Ingredient</string>
+    
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item >Home</item>
+        <item >My Inventory</item>
+        <item >Browse Recipes</item>
+        <item >Shopping List</item>
+        <item >Nearby Stores</item>
+        <item >About Munch</item>
+    </string-array>
+     
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/ic_home</item>
+        <item>@drawable/ic_people</item>
+        <item>@drawable/ic_photos</item>
+        <item>@drawable/ic_communities</item>
+        <item>@drawable/ic_pages</item>
+        <item>@drawable/ic_whats_hot</item>
+    </array>
 
+    
+    <!-- Content Description -->
+    <string name="desc_list_item_icon">Item Icon</string>
+ 
 </resources>

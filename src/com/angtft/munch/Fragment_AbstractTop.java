@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public abstract class AbstractTopFragment extends Fragment {
+public abstract class Fragment_AbstractTop extends Fragment {
 	
 	// JSON Response node names
 	protected static String KEY_SUCCESS = "success";

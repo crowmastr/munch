@@ -20,7 +20,7 @@ public class Splash extends Activity {
         				sleep(100);
         				splashTimer = splashTimer + 100;
         			}
-        			Intent i = new Intent(getApplicationContext(), DashboardActivity.class);
+        			Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(i);
         		} catch (InterruptedException e) {
 					// TODO Auto-generated catch block

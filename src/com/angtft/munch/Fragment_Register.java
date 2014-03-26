@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import com.angtft.munch.library.DatabaseHandler;
 import com.angtft.munch.library.UserFunctions;
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -18,7 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
  
-public class RegisterFragment extends AbstractTopFragment {
+public class Fragment_Register extends Fragment_AbstractTop {
     Button btnRegister;
     Button btnLinkToLogin;
     EditText inputFullName;
@@ -28,16 +29,16 @@ public class RegisterFragment extends AbstractTopFragment {
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-      View view = inflater.inflate(R.layout.register,
+      View view = inflater.inflate(R.layout.fragment_register,
           container, false);
  
-      // Importing all assets like buttons, text fields
-      inputFullName = (EditText) getView().findViewById(R.id.registerName);
-      inputEmail = (EditText) getView().findViewById(R.id.registerEmail);
-      inputPassword = (EditText) getView().findViewById(R.id.registerPassword);
-      btnRegister = (Button) getView().findViewById(R.id.btnRegister);
-      btnLinkToLogin = (Button) getView().findViewById(R.id.btnLinkToLoginScreen);
-      registerErrorMsg = (TextView) getView().findViewById(R.id.register_error);
+   // Importing all assets like buttons, text fields
+      inputFullName = (EditText) view.findViewById(R.id.registerName);
+      inputEmail = (EditText) view.findViewById(R.id.registerEmail);
+      inputPassword = (EditText) view.findViewById(R.id.registerPassword);
+      btnRegister = (Button) view.findViewById(R.id.btnRegister);
+      btnLinkToLogin = (Button) view.findViewById(R.id.btnLinkToLoginScreen);
+      registerErrorMsg = (TextView) view.findViewById(R.id.register_error);
          
       // Register Button Click event
       btnRegister.setOnClickListener(new View.OnClickListener() {         
@@ -51,15 +52,17 @@ public class RegisterFragment extends AbstractTopFragment {
       //TODO build out fragments for replacement
       btnLinkToLogin.setOnClickListener(new View.OnClickListener() {
     	  public void onClick(View view){
-    		  FragmentTransaction ftm = getFragmentManager().beginTransaction();
-
-    		  ftm.commit();
+    		  Fragment fragment = new Fragment_Login();
+              android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+              ft.replace(R.id.frame_container, fragment);
+              ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+              ft.addToBackStack(null);
+              ft.commit();
     	  }
       });
+      
       return view;
     }
-    
-    
     public class UserRegisterTask extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... params) {
@@ -87,17 +90,13 @@ public class RegisterFragment extends AbstractTopFragment {
                         userFunction.logoutUser(getActivity());
                         db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT), "token not implemented in register yet");                        
                          
-                        
-                        //TODO replace Intent switch with fragment switching
-                        // Launch Dashboard Screen
-                        Intent dashboard = new Intent(getActivity(), DashboardActivity.class);
-                        //dashboard.putExtra("TOKEN", token);
-
-                        // Close all views before launching Dashboard
-                        dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(dashboard);
-                        // Close Registration Screen
-                        //finish();
+                        // Launch Home Screen
+                        Fragment fragment = new Fragment_Home();
+	                    android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+	                    ft.replace(R.id.frame_container, fragment);
+	                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	                    ft.addToBackStack(null);
+	                    ft.commit();
                     }else{
                         // Error in login
                     	//do nothing here, action is done in onPostExecute

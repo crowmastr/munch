@@ -1,3 +1,5 @@
+//this needs to check if already logged in show a different fragment (aka already_logged_in)
+
 package com.angtft.munch;
 
 import android.os.AsyncTask;
@@ -10,6 +12,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,26 +24,24 @@ import android.widget.TextView;
 import com.angtft.munch.library.DatabaseHandler;
 import com.angtft.munch.library.UserFunctions;
  
-public class LoginFragment extends AbstractTopFragment {
+public class Fragment_Login extends Fragment_AbstractTop {
     Button btnLogin;
     Button btnLinkToRegister;
     EditText inputEmail;
     EditText inputPassword;
     TextView loginErrorMsg;
-
- 
+      
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.login,
-            container, false);
+    	View loginView = inflater.inflate(R.layout.fragment_login,
+    		container, false);
  
-        // Importing all assets like buttons, text fields
-        inputEmail = (EditText) getView().findViewById(R.id.loginEmail);
-        inputPassword = (EditText) getView().findViewById(R.id.loginPassword);
-        btnLogin = (Button) getView().findViewById(R.id.btnLogin);
-        btnLinkToRegister = (Button) getView().findViewById(R.id.btnLinkToRegisterScreen);
-        loginErrorMsg = (TextView) getView().findViewById(R.id.login_error); 
- 
-        // Login button Click Event
+    	// Importing all assets like buttons, text fields
+        inputEmail = (EditText) loginView.findViewById(R.id.loginEmail);
+        inputPassword = (EditText) loginView.findViewById(R.id.loginPassword);
+        btnLogin = (Button) loginView.findViewById(R.id.btnLogin);
+        btnLinkToRegister = (Button) loginView.findViewById(R.id.btnLinkToRegisterScreen);
+        loginErrorMsg = (TextView) loginView.findViewById(R.id.login_error); 
+     // Login button Click Event
         btnLogin.setOnClickListener(new View.OnClickListener() {
  
             public void onClick(View view) {
@@ -55,17 +56,19 @@ public class LoginFragment extends AbstractTopFragment {
  
         // Link to Register Screen
         btnLinkToRegister.setOnClickListener(new View.OnClickListener() {
-//TODO convert to Fragment transaction
+ 
             public void onClick(View view) {
-//            	loginErrorMsg.setText("");
-  //              Intent i = new Intent(getApplicationContext(),
-   //                     RegisterActivity.class);
-     //           startActivity(i);
-       //         finish();
-                
+            	loginErrorMsg.setText("");
+            	Fragment fragment = new Fragment_Register();
+                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.frame_container, fragment);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.addToBackStack(null);
+                ft.commit();
             }
         });
-        return view;
+        
+        return loginView;
     }
     
     public class UserLoginTask extends AsyncTask<Void, Void, String> {
@@ -95,17 +98,13 @@ public class LoginFragment extends AbstractTopFragment {
                         userFunction.logoutUser(getActivity());
                         db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT), token);                        
                          
-                        // Launch Dashboard Screen
-                        //TODO convert Intent to fragment management
-                        Intent dashboard = new Intent(getActivity(), DashboardActivity.class);
-                        //dashboard.putExtra("TOKEN", token);
-                         
-                        // Close all views before launching Dashboard
-                        dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(dashboard);
-                        
-                        // Close Login Screen
-                        //finish();
+                        // Launch Home Screen
+                        Fragment fragment = new Fragment_Home();
+	                    android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+	                    ft.replace(R.id.frame_container, fragment);
+	                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	                    ft.addToBackStack(null);
+	                    ft.commit();
                     }else{
                         // Error in login
                     	//do nothing here, action is done in onPostExecute
