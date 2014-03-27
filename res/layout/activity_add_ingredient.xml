@@ -27,38 +27,30 @@
    	    android:layout_alignBottom="@id/ingredientSearch"
    	    android:onClick="SearchForIngredients" >
    	</Button>
-
-   	<Spinner
-   	    android:id="@+id/categoryPromptSpinner"
-   	    android:layout_width="fill_parent"
-   	    android:layout_height="wrap_content"
-   	    android:layout_below="@id/ingredientSearch" >
-
-    </Spinner>
     
    	<Spinner
    	    android:id="@+id/ingredientPromptSpinner"
    	    android:layout_width="fill_parent"
    	    android:layout_height="wrap_content"
-   	    android:layout_below="@id/categoryPromptSpinner" >
+   	    android:layout_below="@id/ingredientSearch" >
 
     </Spinner>
-
-   	<ExpandableListView
-   	    android:id="@+id/activeIngredientList"
-   	    android:layout_width="match_parent"
-   	    android:layout_height="wrap_content"
-   	    android:layout_alignParentLeft="true"
-   	    android:layout_alignTop="@+id/ingredientPromptSpinner"
-   	    android:layout_marginTop="47dp" >
-   	</ExpandableListView>
    	
    	<Button
    	    android:id="@+id/searchRecipeButton"
    	    android:layout_width="fill_parent"
    	    android:layout_height="wrap_content"
-   	    android:layout_below="@+id/activeIngredientList" >
+   	    android:layout_alignTop="@+id/ingredientPromptSpinner" >
+
    	</Button>
+
+   	<ListView
+   	    android:id="@+id/activeIngredientListView"
+   	    android:layout_width="match_parent"
+   	    android:layout_height="wrap_content"
+   	    android:layout_alignParentLeft="true"
+   	    android:layout_below="@+id/ingredientPromptSpinner" >
+   	</ListView>
 
 </RelativeLayout>
 
