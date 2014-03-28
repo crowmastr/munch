@@ -47,7 +47,6 @@ import com.angtft.munch.library.UserFunctions;
 	     * private String                ingredients;
 	     */
 		private UserFunctions 		 userFunctions;
-	    private Button 				 btnLogout;
 		private ArrayAdapter<String> inventoryAdapter;
 	    private Button 				 btnFilter;    /** Used to submit the filter in the edit text */
 	    private Spinner 			 spinnerFood; /** contains all ingredients that pass by filter */    
@@ -84,26 +83,6 @@ import com.angtft.munch.library.UserFunctions;
 	        userFunctions = new UserFunctions();
 	        if(userFunctions.isUserLoggedIn(container.getContext())){
 	        	/** If the user is already Logged in, Proceed to load the rest of the content */
-	            
-	            btnLogout = (Button) view.findViewById(R.id.btnLogout);
-	            
-	             
-	            btnLogout.setOnClickListener(new View.OnClickListener() 
-	            {
-	                /** Performs LogOut, slated to be removed from Fragment and added to side menu */ 
-	                public void onClick(View arg0) 
-	                {
-	                	Context context = getActivity();
-	                    userFunctions.logoutUser(context);
-	                    Fragment fragment = new Fragment_Login();
-
-	                    android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-	                    ft.replace(R.id.frame_container, fragment);
-	                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-	                    ft.addToBackStack(null);
-	                    ft.commit();
-	                }
-	            });
 	            
 	            btnFilter = (Button) view.findViewById(R.id.btnFilterIngredients);
 	            btnFilter.setOnClickListener(new View.OnClickListener()
