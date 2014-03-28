@@ -58,7 +58,7 @@ import com.angtft.munch.library.UserFunctions;
 	    private boolean 			 filter = false; /** Flag to determine whether to filter ingredientList before adding to spinner */
 	    private int 				 selectedIngredientID = -1; /** Holds the position of the selected inventoryList item, initialized to sentinel value */
 	    
-	    /** Called when the view is created, Initializes key Variables, and loads the view with any necessary data */
+	    /* Called when the view is created, Initializes key Variables, and loads the view with any necessary data */
 	    @Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	        View view = inflater.inflate(R.layout.fragment_iventory,
