@@ -282,7 +282,7 @@ import com.angtft.munch.library.UserFunctions;
 	    	{
 		    	EditText filterEditText = (EditText) getActivity().findViewById(R.id.filterEditText);
 		    	String filter = filterEditText.getText().toString();
-		    	for(String ingredientName : DataArrays.allIngredients)
+		    	for(String ingredientName : Ingredient.ingredients.keySet())
 		    	{
 		    		if (ingredientName.toLowerCase().contains(filter.toLowerCase()))
 		    			spnIngredientList.add(ingredientName);    		
@@ -290,7 +290,7 @@ import com.angtft.munch.library.UserFunctions;
 	    	}
 	    	/** Otherwise, add all ingredients in the database */
 	    	else
-	    		for(String ingredientName : DataArrays.allIngredients)
+	    		for(String ingredientName : Ingredient.ingredients.keySet())
 	    			spnIngredientList.add(ingredientName);
 		    		
 	    }
@@ -325,7 +325,7 @@ import com.angtft.munch.library.UserFunctions;
 	                    	while( keys.hasNext() ){
 	                            String key = (String)keys.next();
 	                            int i = 1;
-	                        	JSONObject json_ingredient = new JSONObject();
+	                        	JSONObject json_ingredient = null;
 
 
 	                            try
@@ -349,9 +349,10 @@ import com.angtft.munch.library.UserFunctions;
 	                            	/** Load the json name key into list */
 	                            	try
 	                            	{
-	                            		String name = new String(json_ingredient.getString("name"));
-	                            		if (!name.equals(null))
-	                            			DataArrays.allIngredients.add(name);
+	                            		String name = json_ingredient.getString("name");
+	                            		int id = Integer.parseInt(json_ingredient.getString("id"));
+	                            		if (name != null)
+	                            			new Ingredient(id, name);
 	                            	}
 	                            	catch(JSONException e)
 	                            	{
@@ -411,7 +412,7 @@ import com.angtft.munch.library.UserFunctions;
 	    	}
 	    	
 	    	/** If the complete ingredient list is empty, then LoadIngredients must be called */
-	    	if (DataArrays.allIngredients.isEmpty())
+	    	if (Ingredient.ingredients.isEmpty())
 	    	{
 	            LoadIngredients AsyncIngredientSpinner = new LoadIngredients();
 	            AsyncIngredientSpinner.execute();
