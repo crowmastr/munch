@@ -313,7 +313,7 @@ import com.angtft.munch.library.UserFunctions;
 	    	{
 		    	recipeAdapter = new ArrayAdapter<String>(getActivity(), 
 		    			android.R.layout.simple_list_item_1,
-		    			DataArrays.allRecipes);
+		    			new ArrayList<String>(DataArrays.allRecipes));
 		    	
 		    	recipeListView.setAdapter(recipeAdapter);
 		    	recipeAdapter.notifyDataSetChanged();
