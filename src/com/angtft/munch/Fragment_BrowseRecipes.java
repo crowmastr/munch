@@ -110,7 +110,7 @@ import com.angtft.munch.library.UserFunctions;
 		    	/** Set adapter for inventoryListView */
 		    	recipeAdapter = new ArrayAdapter<String>(getActivity(), 
 		    			android.R.layout.simple_list_item_1,
-		    			new ArrayList<String>(DataArrays.allRecipes));
+		    			new ArrayList<String>(Recipe.recipes.keySet()));
 		    	
 		    	recipeListView.setAdapter(recipeAdapter);
 
@@ -183,7 +183,7 @@ import com.angtft.munch.library.UserFunctions;
 	    		Log.i("FilterRecipes", "Filter was true");
 		    	EditText filterEditText = (EditText) getActivity().findViewById(R.id.filterEditText);
 		    	String filter = filterEditText.getText().toString();
-		    	for(String recipeName : DataArrays.allRecipes)
+		    	for(String recipeName : Recipe.recipes.keySet())
 		    	{
 		    		if (recipeName.toLowerCase().contains(filter.toLowerCase()))
 		    			recipeAdapter.add(recipeName);    		
@@ -193,7 +193,7 @@ import com.angtft.munch.library.UserFunctions;
 	    	else
 	    	{
 	    		android.util.Log.w("Browse Recipes", "START: We are in Filter and filter was not true.");
-	    		for(String recipeName : DataArrays.allRecipes)
+	    		for(String recipeName : Recipe.recipes.keySet())
 	    		{
 	    			recipeAdapter.add(recipeName);
 	    			Log.w("Browse Recipes - Filter", "name = " + recipeName);
@@ -232,7 +232,7 @@ import com.angtft.munch.library.UserFunctions;
 	                    	while( keys.hasNext() ){
 	                            String key = (String)keys.next();
 	                            int i = 1;
-	                        	JSONObject json_recipe = new JSONObject();
+	                        	JSONObject json_recipe = null;
 
 
 	                            try
@@ -256,9 +256,10 @@ import com.angtft.munch.library.UserFunctions;
 	                            	/** Load the json name key into list */
 	                            	try
 	                            	{
-	                            		String name = new String(json_recipe.getString("name"));
-	                            		if (!name.equals(null)){
-	                            			DataArrays.allRecipes.add(name);
+	                            		String name = json_recipe.getString("name");
+	                            		if (name != null)
+	                            		{
+	                            			new Recipe(Integer.parseInt(json_recipe.getString("id")), json_recipe.getString("name"));
 	                            			Log.i("LoadArray", "Loaded: " + json_recipe.getString("name") + ": " + json_recipe.getString("id"));
 	                            		}
 	                            	}
@@ -309,18 +310,18 @@ import com.angtft.munch.library.UserFunctions;
 	    	 * If the inventory List of ingredients is not empty, initialize The adapter that loads the chosen ingredients
 	    	 * into the list view display.
 	    	 */
-	    	if (!DataArrays.allRecipes.isEmpty())
+	    	if (!Recipe.recipes.isEmpty())
 	    	{
 		    	recipeAdapter = new ArrayAdapter<String>(getActivity(), 
 		    			android.R.layout.simple_list_item_1,
-		    			new ArrayList<String>(DataArrays.allRecipes));
+		    			new ArrayList<String>(Recipe.recipes.keySet()));
 		    	
 		    	recipeListView.setAdapter(recipeAdapter);
 		    	recipeAdapter.notifyDataSetChanged();
 	    	}
 	    	
 	    	/** If the complete ingredient list is empty, then LoadRecipes must be called */
-	    	if (DataArrays.allRecipes.isEmpty())
+	    	if (Recipe.recipes.isEmpty())
 	    	{
 	            LoadRecipes AsyncRecipeList = new LoadRecipes();
 	            AsyncRecipeList.execute();
