@@ -87,7 +87,7 @@ import com.angtft.munch.library.UserFunctions;
 					{
 						/** When filter button is selected, change filter flag to true and proceed to populate */
 						filter = true;
-						//PopulateSpinner();
+						PopulateList();
 						
 					}
 				});
@@ -110,7 +110,7 @@ import com.angtft.munch.library.UserFunctions;
 		    	/** Set adapter for inventoryListView */
 		    	recipeAdapter = new ArrayAdapter<String>(getActivity(), 
 		    			android.R.layout.simple_list_item_1,
-		    			DataArrays.allRecipes);
+		    			new ArrayList<String>(DataArrays.allRecipes));
 		    	
 		    	recipeListView.setAdapter(recipeAdapter);
 
@@ -150,7 +150,7 @@ import com.angtft.munch.library.UserFunctions;
 	    public void PopulateList() 
 	    {
 	    	/** CallFilterIngredients before loading Ingredients.*/
-	    	//FilterRecipes();
+	    	FilterRecipes();
 	    	try
 	    	{
 		    	Log.i("PopulateList", "Entering PopulateList");
