@@ -41,32 +41,32 @@ public class Fragment_Login extends Fragment_AbstractTop {
     	View loginView = inflater.inflate(R.layout.fragment_login,
     		container, false);
  
-    	// Importing all assets like buttons, text fields
+    	/** Importing all assets like buttons, text fields */
         inputEmail = (EditText) loginView.findViewById(R.id.loginEmail);
         inputPassword = (EditText) loginView.findViewById(R.id.loginPassword);
         btnLogin = (Button) loginView.findViewById(R.id.btnLogin);
         btnLinkToRegister = (Button) loginView.findViewById(R.id.btnLinkToRegisterScreen);
         loginErrorMsg = (TextView) loginView.findViewById(R.id.login_error); 
         
-        // login button listener
+        /** login button listener */
         btnLogin.setOnClickListener(new View.OnClickListener() {
  
             public void onClick(View view) {
-            	/* create async task to get data from remote server.  android requires any data retrieved over
+            	/** create async task to get data from remote server.  android requires any data retrieved over
             	a network connection be async to prevent the app from freezing in the case of network or data issues */
                 UserLoginTask AsyncLogin = new UserLoginTask();
                 AsyncLogin.execute();
             }
         });
  
-        // register button listener
+        /** register button listener */
         btnLinkToRegister.setOnClickListener(new View.OnClickListener() {
  
             public void onClick(View view) {
-            	// clear error message textview
+            	/** clear error message textview */
             	loginErrorMsg.setText("");
             	
-            	// change to register fragment view
+            	/** change to register fragment view */
             	Fragment fragment = new Fragment_Register();
                 android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.frame_container, fragment);
@@ -87,39 +87,39 @@ public class Fragment_Login extends Fragment_AbstractTop {
     public class UserLoginTask extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... params) {
-        	// get input from user
+        	/** get input from user */
         	String email = inputEmail.getText().toString();
             String password = inputPassword.getText().toString();
             
-            // create network connection and retrieve response
+            /** create network connection and retrieve response */
             UserFunctions userFunction = new UserFunctions();
             JSONObject json = userFunction.loginUser(email, password);
             String res = "";
             
 
-            // check for login response
+            /** check for login response */
             try {
-                if (json.getString(KEY_SUCCESS) != null) { //check for null response
-                    res = json.getString(KEY_SUCCESS); //response is not null, store success value
+                if (json.getString(KEY_SUCCESS) != null) { /** check for null response */
+                    res = json.getString(KEY_SUCCESS); /** response is not null, store success value */
                     if(Integer.parseInt(res) == 1){  
-                        /* user successfully logged in
+                        /** user successfully logged in
                         Store user details in SQLite Database */
                     	
-                    	// get unique token for user for future authentication for this session
+                    	/** get unique token for user for future authentication for this session */
                     	String token;
                     	token = json.getString(KEY_TOKEN);
                     	                         
-                    	// get response user object from json
+                    	/** get response user object from json */
                         DatabaseHandler db = new DatabaseHandler(getActivity());
                         JSONObject json_user = json.getJSONObject("user");
                          
-                        // Clear all previous data in local database
+                        /** Clear all previous data in local database */
                         userFunction.logoutUser(getActivity());
                         
-                        // add data from json to local database for future reference
+                        /** add data from json to local database for future reference */
                         db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT), token);                        
                          
-                        // Load Home Screen fragment
+                        /** Load Home Screen fragment */
                         Fragment fragment = new Fragment_Home();
 	                    android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
 	                    ft.replace(R.id.frame_container, fragment);
@@ -127,21 +127,21 @@ public class Fragment_Login extends Fragment_AbstractTop {
 	                    ft.addToBackStack(null);
 	                    ft.commit();
                     }else{
-                        // Error in login
-                    	// do nothing here, action is done in onPostExecute
+                        /** Error in login
+                    	do nothing here, action is done in onPostExecute */
                     }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            return res; // string containing success string value
+            return res; /** string containing success string value */
         }
         
         @Override
         protected void onPostExecute (String logged){
             super.onPostExecute(logged);
             
-            //check if login failed
+            /** check if login failed */
             if (!logged.equals("1")) {
             	loginErrorMsg.setText("Incorrect username/password");
             }
