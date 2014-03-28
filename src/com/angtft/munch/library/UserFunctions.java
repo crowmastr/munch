@@ -19,7 +19,7 @@ public class UserFunctions {
     // use http://10.0.2.2/ to connect to your localhost ie http://localhost/
     private static String loginURL = "http://munchapp.org/api/";
     private static String registerURL = "http://munchapp.org/api/";
-    private static String recipeURL = "http://munchapp.org/api/";
+    private static String recipeURL = "http://munchapp.org/api2/";
     private static String ilistURL = "http://munchapp.org/api/";
     private static String ingredientURL = "http://munchapp.org/api2/";
      
