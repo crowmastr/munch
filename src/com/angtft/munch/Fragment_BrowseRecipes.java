@@ -257,9 +257,24 @@ import com.angtft.munch.library.UserFunctions;
 	                            	try
 	                            	{
 	                            		String name = json_recipe.getString("name");
+	                            		int id = Integer.parseInt(json_recipe.getString("id"));
+	                            		int yield = Integer.parseInt(json_recipe.getString("yield"));
+	                            		String instructions = json_recipe.getString("instructions");
+	                            		float cpr = (float) json_recipe.getDouble("cost_per_recipe");
+	                            		float cps = (float) json_recipe.getDouble("cost_per_serving");
+	                            		String source = json_recipe.getString("source");
+	                            		String notes = json_recipe.getString("notes");
+	                            		
+	                            		
 	                            		if (name != null)
 	                            		{
-	                            			new Recipe(Integer.parseInt(json_recipe.getString("id")), json_recipe.getString("name"));
+	                            			Recipe r = new Recipe(Integer.parseInt(json_recipe.getString("id")), json_recipe.getString("name"));
+	                            			r.yield = yield;
+	                            			r.instructions = instructions;
+	                            			r.costPerRecipe = cpr;
+	                            			r.costPerServing = cps;
+	                            			r.source = source;
+	                            			r.notes = notes;
 	                            			Log.i("LoadArray", "Loaded: " + json_recipe.getString("name") + ": " + json_recipe.getString("id"));
 	                            		}
 	                            	}
