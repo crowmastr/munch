@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@layout/background"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/selectIngredientLabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/selectIngredients"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btnFilterIngredients"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/filter" 
+        android:onClick="PopulateSpinner"
+        android:layout_below="@+id/selectIngredientLabel"
+        android:layout_alignTop="@+id/filterEditText"
+        android:layout_alignBottom="@+id/filterEditText"
+        android:layout_alignParentRight="true" />
+
+    <EditText
+        android:id="@+id/filterEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/selectIngredientLabel"
+        android:layout_toLeftOf="@+id/btnFilterIngredients"
+        android:ems="10"
+        android:hint="@string/filterHint" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/tvMyIngredients"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnFilterIngredients"
+        android:text="@string/inventory"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/addShoppingList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/addShopping" />
+
+    <Button
+        android:id="@+id/addInventory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/addShoppingList"
+        android:layout_alignParentLeft="true"
+        android:text="@string/addInventory" />
+
+    <ListView
+        android:id="@+id/activeIngredientListView"
+        android:layout_width="match_parent"
+        android:layout_height="137dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvMyIngredients"
+        android:layout_above="@+id/addInventory"
+        android:choiceMode="singleChoice"
+        android:listSelector="@color/white" >
+    </ListView>
+
+</RelativeLayout>
