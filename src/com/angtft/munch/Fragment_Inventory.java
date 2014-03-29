@@ -1,3 +1,18 @@
+/**  Fragment_Inventory 
+ *	 This Module is used to read in Ingredients from the database.
+ *	 At that point, the user can select ingredients to be added to his or her inventory.
+ *	 The selected ingredient in the Spinner will be added to inventory when the user presses the Add Ingredient button.
+ *	 The inventory will later be used to find Recipes that have matching ingredients.
+ *	 The inventory is displayed to the user as a ListView at the bottom of the page.
+ *	 An item in inventory can be selected and then removed by pressing the Remove Ingredient button.
+ *	 
+ *	 Created: 		  2/19/2014
+ *	 Latest Revision: 3/27/2014
+ *
+ *	 Author: Jeremy Noel
+ *
+ */
+
 package com.angtft.munch;
 
 /** Import Listing */
@@ -25,20 +40,7 @@ import android.widget.Spinner;
 import com.angtft.munch.library.UserFunctions;
 	 
 
-	/**  Fragment_Inventory 
-	 *	 This Module is used to read in Ingredients from the database.
-	 *	 At that point, the user can select ingredients to be added to his or her inventory.
-	 *	 The selected ingredient in the Spinner will be added to inventory when the user presses the Add Ingredient button.
-	 *	 The inventory will later be used to find Recipes that have matching ingredients.
-	 *	 The inventory is displayed to the user as a ListView at the bottom of the page.
-	 *	 An item in inventory can be selected and then removed by pressing the Remove Ingredient button.
-	 *	 
-	 *	 Created: 		  2/19/2014
-	 *	 Latest Revision: 3/27/2014
-	 *
-	 *	 Author: Jeremy Noel
-	 *
-	 */
+
 	public class Fragment_Inventory extends Fragment_AbstractTop {
 
 		/** Class Field Declarations */
@@ -380,12 +382,8 @@ import com.angtft.munch.library.UserFunctions;
 	                            		 */
 	                            		Log.w("LoadSpinner","Could not get string");
 	                            	}
-
-	                            }
-	                            
-	                        }
-
-	                    	
+	                            }           
+	                        }	
 	                    }
 	                }
 	            } 

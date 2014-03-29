@@ -23,7 +23,7 @@
         android:layout_below="@+id/selectIngredientLabel"
         android:layout_alignTop="@+id/filterEditText"
         android:layout_alignBottom="@+id/filterEditText"
-        android:layout_alignParentRight="true" />"
+        android:layout_alignParentRight="true" />
 
     <EditText
         android:id="@+id/filterEditText"
