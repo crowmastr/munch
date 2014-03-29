@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.angtft.munch.library.DataArrays;
+import com.angtft.munch.library.Ingredient;
 import com.angtft.munch.library.UserFunctions;
 	 
 

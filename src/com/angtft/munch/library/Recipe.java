@@ -1,4 +1,4 @@
-package com.angtft.munch;
+package com.angtft.munch.library;
 
 import java.util.HashMap;
 

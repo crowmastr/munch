@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.angtft.munch.library.DataArrays;
+import com.angtft.munch.library.Recipe;
 import com.angtft.munch.library.UserFunctions;
 	 
 
