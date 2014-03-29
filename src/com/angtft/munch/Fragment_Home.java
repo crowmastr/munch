@@ -30,7 +30,6 @@ public class Fragment_Home extends Fragment_AbstractTop {
         token = user.get(KEY_TOKEN);
         Context context = getActivity();
         int duration = Toast.LENGTH_LONG;
-        Button btnLogout; 
         
         Toast toast = Toast.makeText(context, token, duration);
         toast.show();
@@ -48,32 +47,6 @@ public class Fragment_Home extends Fragment_AbstractTop {
             ft.addToBackStack(null);
             ft.commit();
         }    
-        
-        btnLogout = (Button) view.findViewById(R.id.btnLogout);
-        
-        
-        btnLogout.setOnClickListener(new View.OnClickListener() 
-        {
-             
-            public void onClick(View arg0) {
-                // TODO Auto-generated method stub
-            	Context context = getActivity();
-                userFunctions.logoutUser(context);
-                /*
-                Intent login = new Intent(container.getContext(), LoginActivity.class);
-                login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(login);
-                // Closing dashboard screen
-                finish(); */
-                Fragment fragment = new Fragment_Login();
-
-                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.frame_container, fragment);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
         
         return view;
     }

@@ -22,7 +22,6 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -37,6 +36,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+
+import com.angtft.munch.library.DataArrays;
+import com.angtft.munch.library.Ingredient;
 import com.angtft.munch.library.UserFunctions;
 	 
 
@@ -49,7 +51,6 @@ import com.angtft.munch.library.UserFunctions;
 	     * private String                ingredients;
 	     */
 		private UserFunctions 		 userFunctions;
-	    private Button 				 btnLogout;
 		private ArrayAdapter<String> inventoryAdapter;
 	    private Button 				 btnFilter;    /** Used to submit the filter in the edit text */
 	    private Spinner 			 spinnerFood; /** contains all ingredients that pass by filter */    
@@ -87,26 +88,6 @@ import com.angtft.munch.library.UserFunctions;
 	        if(userFunctions.isUserLoggedIn(container.getContext())){
 	        	/** If the user is already Logged in, Proceed to load the rest of the content */
 	            
-	            btnLogout = (Button) view.findViewById(R.id.btnLogout);
-	            
-	             
-	            btnLogout.setOnClickListener(new View.OnClickListener() 
-	            {
-	                /** Performs LogOut, slated to be removed from Fragment and added to side menu */ 
-	                public void onClick(View arg0) 
-	                {
-	                	Context context = getActivity();
-	                    userFunctions.logoutUser(context);
-	                    Fragment fragment = new Fragment_Login();
-
-	                    android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-	                    ft.replace(R.id.frame_container, fragment);
-	                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-	                    ft.addToBackStack(null);
-	                    ft.commit();
-	                }
-	            });
-	            
 	            btnFilter = (Button) view.findViewById(R.id.btnFilterIngredients);
 	            btnFilter.setOnClickListener(new View.OnClickListener()
 	            {
@@ -142,7 +123,7 @@ import com.angtft.munch.library.UserFunctions;
 		    	/** Set adapter for inventoryListView */
 		    	inventoryAdapter = new ArrayAdapter<String>(getActivity(), 
 		    			android.R.layout.simple_list_item_1,
-		    			Ingredients.inventoryList);
+		    			DataArrays.inventoryList);
 		    	
 		    	inventoryListView.setAdapter(inventoryAdapter);
 
@@ -257,7 +238,7 @@ import com.angtft.munch.library.UserFunctions;
 	    {
 	    	
 	    	/** Verify that ingredient is not already in the List*/
-	    	for(String activeIngredient : Ingredients.inventoryList)
+	    	for(String activeIngredient : DataArrays.inventoryList)
 	    	{
 	    		if(activeIngredient.equals(ingredient))
 	    			return;
@@ -266,7 +247,7 @@ import com.angtft.munch.library.UserFunctions;
 
 
 	    	/** Add Ingredient to List */
-	    	Ingredients.inventoryList.add(ingredient);
+	    	DataArrays.inventoryList.add(ingredient);
 	    	/** Inform adapter of change */
 	    	inventoryAdapter.notifyDataSetChanged();
 	    }
@@ -281,7 +262,7 @@ import com.angtft.munch.library.UserFunctions;
 	    	/** Check sentinel value, and if valid remove item */
 	    	if(selectedIngredientID != -1)
 	    	{
-	    		Ingredients.inventoryList.remove(selectedIngredientID);
+	    		DataArrays.inventoryList.remove(selectedIngredientID);
 	    		inventoryAdapter.notifyDataSetChanged();
 	    	}
 	   
@@ -304,7 +285,7 @@ import com.angtft.munch.library.UserFunctions;
 	    	{
 		    	EditText filterEditText = (EditText) getActivity().findViewById(R.id.filterEditText);
 		    	String filter = filterEditText.getText().toString();
-		    	for(String ingredientName : Ingredients.allIngredients)
+		    	for(String ingredientName : Ingredient.ingredients.keySet())
 		    	{
 		    		if (ingredientName.toLowerCase().contains(filter.toLowerCase()))
 		    			spnIngredientList.add(ingredientName);    		
@@ -312,7 +293,7 @@ import com.angtft.munch.library.UserFunctions;
 	    	}
 	    	/** Otherwise, add all ingredients in the database */
 	    	else
-	    		for(String ingredientName : Ingredients.allIngredients)
+	    		for(String ingredientName : Ingredient.ingredients.keySet())
 	    			spnIngredientList.add(ingredientName);
 		    		
 	    }
@@ -347,7 +328,7 @@ import com.angtft.munch.library.UserFunctions;
 	                    	while( keys.hasNext() ){
 	                            String key = (String)keys.next();
 	                            int i = 1;
-	                        	JSONObject json_ingredient = new JSONObject();
+	                        	JSONObject json_ingredient = null;
 
 
 	                            try
@@ -371,9 +352,10 @@ import com.angtft.munch.library.UserFunctions;
 	                            	/** Load the json name key into list */
 	                            	try
 	                            	{
-	                            		String name = new String(json_ingredient.getString("name"));
-	                            		if (!name.equals(null))
-	                            			Ingredients.allIngredients.add(name);
+	                            		String name = json_ingredient.getString("name");
+	                            		int id = Integer.parseInt(json_ingredient.getString("id"));
+	                            		if (name != null)
+	                            			new Ingredient(id, name);
 	                            	}
 	                            	catch(JSONException e)
 	                            	{
@@ -418,18 +400,18 @@ import com.angtft.munch.library.UserFunctions;
 	    	 * If the inventory List of ingredients is not empty, initialize The adapter that loads the chosen ingredients
 	    	 * into the list view display.
 	    	 */
-	    	if (!Ingredients.inventoryList.isEmpty())
+	    	if (!DataArrays.inventoryList.isEmpty())
 	    	{
 		    	inventoryAdapter = new ArrayAdapter<String>(getActivity(), 
 		    			android.R.layout.simple_list_item_1,
-		    			Ingredients.inventoryList);
+		    			DataArrays.inventoryList);
 		    	
 		    	inventoryListView.setAdapter(inventoryAdapter);
 		    	inventoryAdapter.notifyDataSetChanged();
 	    	}
 	    	
 	    	/** If the complete ingredient list is empty, then LoadIngredients must be called */
-	    	if (Ingredients.allIngredients.isEmpty())
+	    	if (Ingredient.ingredients.isEmpty())
 	    	{
 	            LoadIngredients AsyncIngredientSpinner = new LoadIngredients();
 	            AsyncIngredientSpinner.execute();

@@ -47,18 +47,6 @@
         android:textColor="@color/white"
         android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="@null"
-        android:text="@string/logout"
-        android:textColor="#21dbd4"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
     <Spinner
         android:id="@+id/spinIngredients"
         android:layout_width="fill_parent"

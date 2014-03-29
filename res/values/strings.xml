@@ -25,6 +25,7 @@
     <string name="typeIngredient">Type Ingredient Here</string>
     <string name="title_activity_add__ingredient">Add_Ingredient</string>
     <string name="selectIngredients">Select Ingredients</string>
+    <string name="selectRecipes">Select Recipe</string>
     <string name="submitButton">submit</string>
     <string name="filterHint">Type to filter ingredients</string>
     <string name="filter">filter</string>
@@ -40,6 +41,7 @@
         <item >Shopping List</item>
         <item >Nearby Stores</item>
         <item >About Munch</item>
+        <item >Logout</item>
     </string-array>
      
     <!-- Nav Drawer List Item Icons -->
@@ -51,6 +53,7 @@
         <item>@drawable/ic_communities</item>
         <item>@drawable/ic_pages</item>
         <item>@drawable/ic_whats_hot</item>
+        <item>@drawable/ic_logout</item>
     </array>
 
     

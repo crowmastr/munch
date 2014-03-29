@@ -1,5 +1,6 @@
 package com.angtft.munch;
 
+import com.angtft.munch.library.UserFunctions;
 import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 import com.angtft.munch.slidingmenu.model.NavDrawerItem;
  
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -70,6 +72,8 @@ public class MainActivity extends Activity {
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
         // What's hot, We  will add a counter here
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
+        // What's hot, We  will add a counter here
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
          
  
         // Recycle the typed array
@@ -180,6 +184,11 @@ public class MainActivity extends Activity {
             break;
         case 5:
             fragment = new Fragment_About();
+            break;
+        case 6:
+        	UserFunctions userFunctions = new UserFunctions();;
+            userFunctions.logoutUser(this);
+            fragment = new Fragment_Home();
             break;
  
         default:

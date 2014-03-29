@@ -20,7 +20,7 @@ public class Fragment_ShoppingList extends Fragment_AbstractTop {
    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_browse_recipes,
+        View view = inflater.inflate(R.layout.fragment_shopping_list,
                 container, false);
        
         

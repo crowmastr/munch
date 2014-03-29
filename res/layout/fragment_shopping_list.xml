@@ -9,7 +9,8 @@
         android:id="@+id/welcome"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/welcome" 
+        android:text="shopping list placeholder" 
         android:textColor="@color/white"/>
 
+    
 </RelativeLayout>

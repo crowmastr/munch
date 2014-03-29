@@ -1,18 +1,19 @@
 /*
- * AbstractTopFragment.java
+ * Fragment_AbstractTop.java
  * 
- * Base class for DashboardFragment
- * 				  RegisterFragment
- *  			  LoginFragment 
+ * Base class for Fragment_About
+ * 				  Fragment_BrowseRecipes
+ *  			  Fragment_Home
+ *  			  Fragment_Inventory
+ *  			  Fragment_Login
+ *  			  Fragment_NearbyStores
+ *  			  Fragment_Register
+ *  			  Fragment_ShoppingList
  */
 
 package com.angtft.munch;
 
 import android.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 public abstract class Fragment_AbstractTop extends Fragment {
 	
@@ -26,7 +27,4 @@ public abstract class Fragment_AbstractTop extends Fragment {
 	protected static String KEY_TOKEN = "token";
 	protected static String KEY_CREATED_AT = "created_at";
 	
-	@Override
-    public abstract View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
-
 }
