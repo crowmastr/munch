@@ -45,7 +45,7 @@ import com.angtft.munch.library.UserFunctions;
 	 
 
 
-	public class Inventory_II extends Fragment_AbstractTop {
+	public class Fragment_Build_Inventory extends Fragment_AbstractTop {
 
 		/** Class Field Declarations */
 	    /** Unused at this time 

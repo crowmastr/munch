@@ -33,7 +33,7 @@
     <string name="addButton">Add Ingredient</string>
     <string name="removeButton">Remove Ingredient</string>
     <string name="browseIngredients">Browse Ingredients</string>
-    <string name="inventory">Inventory</string>
+    <string name="inventory">My Inventory</string>
     <string name="addInventory">Add to Inventory</string>
     <string name="addShopping">Add to Shopping List</string>
     
@@ -46,7 +46,8 @@
         <item >Nearby Stores</item>
         <item >About Munch</item>
         <item >Logout</item>
-        <item >New Inventory</item>
+        <item >Browse Ingredients</item>
+        <item >View Inventory</item>
     </string-array>
      
     <!-- Nav Drawer List Item Icons -->

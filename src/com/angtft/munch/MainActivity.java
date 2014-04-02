@@ -74,9 +74,10 @@ public class MainActivity extends Activity {
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
         // What's hot, We  will add a counter here
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
-        // Testing
+        // Build Inventory / Browse Ingredients
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
-         
+        // View Inventory
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1)));
  
         // Recycle the typed array
         navMenuIcons.recycle();
@@ -193,7 +194,11 @@ public class MainActivity extends Activity {
             fragment = new Fragment_Home();
             break;
         case 7:
-        	fragment = new Inventory_II();
+        	fragment = new Fragment_Build_Inventory();
+        	break;
+        case 8:
+        	fragment = new Fragment_View_Inventory();
+        	break;
  
         default:
             break;
