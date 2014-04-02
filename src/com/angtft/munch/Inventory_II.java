@@ -19,8 +19,10 @@ package com.angtft.munch;
 import java.util.ArrayList; 
 import java.util.Iterator;
 import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,7 +45,7 @@ import com.angtft.munch.library.UserFunctions;
 	 
 
 
-	public class Fragment_Inventory extends Fragment_AbstractTop {
+	public class Inventory_II extends Fragment_AbstractTop {
 
 		/** Class Field Declarations */
 	    /** Unused at this time 
@@ -51,20 +53,18 @@ import com.angtft.munch.library.UserFunctions;
 	     * private String                ingredients;
 	     */
 		private UserFunctions 		 userFunctions;
-		private ArrayAdapter<String> inventoryAdapter;
-	    private Button 				 btnFilter;    /** Used to submit the filter in the edit text */
-	    private Spinner 			 spinnerFood; /** contains all ingredients that pass by filter */    
-	    private List<String> 		 spnIngredientList = new ArrayList<String>(); /** List of ingredients in the spinner */
-	    private Button 				 btnAddIngredient; /** Used to select the spinner's item and add to the Active list */
-	    private Button 				 btnRemIngredient; /** Used to remove the selected ingredient from Active List */
-	 	private ListView 			 inventoryListView; /** Displays inventoryList */	
+		private ArrayAdapter<String> filteredIngredientAdapter;
+	    private Button 				 btnFilter;    /** Used to submit the filter in the edit text */ 
+	    private List<String> 		 filteredIngredientList = new ArrayList<String>(); /** List of ingredients in the spinner */
+	    private Button 				 btnAddIngredient; /** Used to select the spinner's item and add to the Active list */	
+	    private ListView			 lvIngredients; /** Used to display all ingredients passing filter */
+	    private int					 selectedIngredientID; /** keeps track of position in the list that has been seleccted */
 	    private boolean 			 filter = false; /** Flag to determine whether to filter ingredientList before adding to spinner */
-	    private int 				 selectedIngredientID = -1; /** Holds the position of the selected inventoryList item, initialized to sentinel value */
 	    
 	    /** Called when the view is created, Initializes key Variables, and loads the view with any necessary data */
 	    @Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-	        View view = inflater.inflate(R.layout.fragment_iventory,
+	        View view = inflater.inflate(R.layout.fragment_browse_inventory,
 	                container, false);
 	        
 	        
@@ -97,77 +97,59 @@ import com.angtft.munch.library.UserFunctions;
 					{
 						/** When filter button is selected, change filter flag to true and proceed to populate */
 						filter = true;
-						PopulateSpinner();
+						FilterIngredients();
 						
 					}
 				});
 	            
 	            /** Initialize spinner for ingredient selection */
-	            spinnerFood = (Spinner) view.findViewById(R.id.spinIngredients);
-
-	            /** Initialize ListView for displaying the chosen ingredients known as inventory */
-	            inventoryListView = (ListView) view.findViewById(R.id.ingredientsListView);
-	            inventoryListView.setOnItemClickListener(new OnItemClickListener(){
+	            lvIngredients = (ListView) view.findViewById(R.id.ingredientsListView);
+	            lvIngredients.setOnItemClickListener(new OnItemClickListener(){
 
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 
-						/** Get the string at the selected Item position and save it to selectedIngredient */
-						selectedIngredientID = position;
-						Log.i("ActiveIngredientListener", Integer.toString(selectedIngredientID));
+						if(filteredIngredientList.size() != 0)
+						{
+							/** Get the string at the selected Item position and save it to selectedIngredient */
+						    selectedIngredientID = position;
+							Log.i("ActiveIngredientListener", Integer.toString(selectedIngredientID));
+						}
 					}
 	            	
 	            });
 		    	
-		    	/** Set adapter for inventoryListView */
-		    	inventoryAdapter = new ArrayAdapter<String>(getActivity(), 
-		    			android.R.layout.simple_list_item_1,
-		    			DataArrays.inventoryList);
-		    	
-		    	inventoryListView.setAdapter(inventoryAdapter);
-
-		    	
 	        		
 	            
 	            /** Initialize Button to add the selected Spinner ingredient to the inventoryList */
-	            btnAddIngredient = (Button) view.findViewById(R.id.addActiveIngredient);
+	            btnAddIngredient = (Button) view.findViewById(R.id.addInventory);
 	            btnAddIngredient.setOnClickListener(new View.OnClickListener()
 	            {
 	            
 	            	@Override
 	            	public void onClick(View v)
 	            	{
-	            		Log.d("AddIngredient", "Attempting to add Ingredient");
-	                	Log.i("AddIngredient", "Selected Spinner: " + spinnerFood.getSelectedItem().toString());
-	            		AddIngredient(spinnerFood.getSelectedItem().toString());
+	        	    	Log.i("AddIngredient", "Attempting to add ingredient to inventory");
+
+	        	    	/** Check sentinel value, and if valid remove item */
+	        	    	if(selectedIngredientID != -1)
+	        	    	{
+		            		AddIngredient(selectedIngredientID);
+	        	    		filteredIngredientAdapter.notifyDataSetChanged();
+	        	    	}
+
 	            	}
 	            	
 	            }
 	            );
 	            
-	            /** Initalize Button to remove the selected inventoryList from the inventoryList */
-	            btnRemIngredient = (Button) view.findViewById(R.id.removeActiveIngredient);
-	            btnRemIngredient.setOnClickListener(new View.OnClickListener()
-	            {
-					
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						if(selectedIngredientID == -1)
-						{
-							Log.d("RemoveIngredient", "No Selected Ingredient, Exiting");
-							return;
-						}
-						else
-						{
-							Log.d("RemoveIngredient", "Calling RemoveIngredient");
-							RemoveIngredient();
-						}
-							
-							
-					}
-				});
+		        filteredIngredientAdapter = new ArrayAdapter<String>(getActivity(),
+		                android.R.layout.simple_list_item_1, filteredIngredientList);
+		     
+		        /** attaching data adapter to spinner, should populate */
+		        lvIngredients.setAdapter(filteredIngredientAdapter);
+	            
 	            
 	            /** 
 	             * On create, Re-Populate inventoryListView if there are any items in the List
@@ -198,76 +180,35 @@ import com.angtft.munch.library.UserFunctions;
 	     * 		   : btnFilter.onClick()
 	     */
 	    
-	    public void PopulateSpinner() 
-	    {
-	    	/** CallFilterIngredients before loading Ingredients.*/
-	    	FilterIngredients();
-	    	try
-	    	{
-		    	Log.i("PopulateSpinner", "Entering PopulateSpinner");
-		    	
-		    	
-		        /** Creating adapter for spinner */
-		        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getActivity(),
-		                android.R.layout.simple_spinner_item);
-	
-	
-		        for( int i = 0; i < spnIngredientList.size(); ++i)
-		        	spinnerAdapter.add(spnIngredientList.get(i));
-	
-		        
-		        
-		        /** Drop down layout style - list view with radio button */
-		        spinnerAdapter
-		                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		     
-		        /** attaching data adapter to spinner, should populate */
-		        spinnerFood.setAdapter(spinnerAdapter);
-	    	}
-	    	catch(Exception e)
-	    	{
-	    		/** Should an exception take place, print it out to Log */
-	    		e.printStackTrace();
-	    	}
-	    } 
 	    
 	    /** Function used to Add provided ingredient to the inventoryList
 	     *  Called by: btnAddIngredient.onClick 
 	     */
-	    public void AddIngredient(String ingredient)
+	    public void AddIngredient(int i)
 	    {
 	    	
 	    	/** Verify that ingredient is not already in the List*/
 	    	for(String activeIngredient : DataArrays.inventoryList)
 	    	{
-	    		if(activeIngredient.equals(ingredient))
+	    		if(activeIngredient.equals(filteredIngredientList.get(i)))
 	    			return;
 	    	}
 	    	Log.i("PopulateActiveIngredientView", "Entering PopulateActiveIngredientView");
 
 
 	    	/** Add Ingredient to List */
-	    	DataArrays.inventoryList.add(ingredient);
+	    	DataArrays.inventoryList.add(filteredIngredientList.get(i));
 	    	/** Inform adapter of change */
-	    	inventoryAdapter.notifyDataSetChanged();
+	    	filteredIngredientAdapter.notifyDataSetChanged();
+	    	if(DataArrays.inventoryList.size() != 0)
+	    		Log.i("AddIngredient", DataArrays.inventoryList.get(DataArrays.inventoryList.size() - 1) + " added to inventory.");
+	    	else
+	    		Log.w("AddIngredient", "It is very likely that the ingredient was added to the inventoryList");
 	    }
 	    
-	    /** Function used to Remove selected ingredient from inventoryList
+	    /** Fucntion used to Remove selected ingredient from inventoryList
 	     *  Called by: btnRemoveIngredint.onClick
 	     */
-	    public void RemoveIngredient()
-	    {
-	    	Log.i("RemoveActiveIngredient", "Attempting to remove ingredient");
-
-	    	/** Check sentinel value, and if valid remove item */
-	    	if(selectedIngredientID != -1)
-	    	{
-	    		DataArrays.inventoryList.remove(selectedIngredientID);
-	    		inventoryAdapter.notifyDataSetChanged();
-	    	}
-	   
-	    	
-	    }
 	    
 	    /** Function used to find filter value from EditText on view and only add 
 	     *  ingredients to the spinner that meet the filter's requirements.
@@ -275,26 +216,35 @@ import com.angtft.munch.library.UserFunctions;
 	     */
 	    public void FilterIngredients()
 	    {
+	    	Log.i("FilterIngredients", "Entering FilterIngredients");
 	    	/** Clear out current contents. Faster cleaner way to make sure there are no duplicates
 	    	 * than to iterate through list and find if it already exists else add.
 	    	 */
-	    	spnIngredientList.clear();
+	    	filteredIngredientList.clear();
 	    	
 	    	/** Validate that filtering is necessary, if so check each ingredient for filter value */
 	    	if(filter)
 	    	{
+	    		Log.i("FilterIngredients", "There is a filter, Apply.");
 		    	EditText filterEditText = (EditText) getActivity().findViewById(R.id.filterEditText);
 		    	String filter = filterEditText.getText().toString();
 		    	for(String ingredientName : Ingredient.ingredients.keySet())
 		    	{
 		    		if (ingredientName.toLowerCase().contains(filter.toLowerCase()))
-		    			spnIngredientList.add(ingredientName);    		
+		    			filteredIngredientList.add(ingredientName);    		
 		    	}
 	    	}
 	    	/** Otherwise, add all ingredients in the database */
 	    	else
+	    	{
+	    		Log.i("FilterIngredients", "There was no filter, add all ingredients");
 	    		for(String ingredientName : Ingredient.ingredients.keySet())
-	    			spnIngredientList.add(ingredientName);
+	    		{
+	    			Log.i("FilteIngredients", "Adding: " + ingredientName);
+	    			filteredIngredientList.add(ingredientName);
+	    		}
+	    	}
+	    	filteredIngredientAdapter.notifyDataSetChanged();
 		    		
 	    }
 	    
@@ -385,7 +335,7 @@ import com.angtft.munch.library.UserFunctions;
 	            super.onPostExecute(logged);
 	            
 	            /** Upon completion of LoadIngredients , Populate the spinner with the found ingredients */
-	            PopulateSpinner();
+	            FilterIngredients();
 
 	        }
 	    }
@@ -396,19 +346,6 @@ import com.angtft.munch.library.UserFunctions;
 	     */
 	    private void LoadIngredientsLists()
 	    {
-	    	/**
-	    	 * If the inventory List of ingredients is not empty, initialize The adapter that loads the chosen ingredients
-	    	 * into the list view display.
-	    	 */
-	    	if (!DataArrays.inventoryList.isEmpty())
-	    	{
-		    	inventoryAdapter = new ArrayAdapter<String>(getActivity(), 
-		    			android.R.layout.simple_list_item_1,
-		    			DataArrays.inventoryList);
-		    	
-		    	inventoryListView.setAdapter(inventoryAdapter);
-		    	inventoryAdapter.notifyDataSetChanged();
-	    	}
 	    	
 	    	/** If the complete ingredient list is empty, then LoadIngredients must be called */
 	    	if (Ingredient.ingredients.isEmpty())
@@ -418,6 +355,6 @@ import com.angtft.munch.library.UserFunctions;
 	    	}
 	    	/** Else call PopulateSpinner to reinitialize */
 	    	else
-	    		PopulateSpinner();	    	
+	    		FilterIngredients();	    	
 	    }
 	}

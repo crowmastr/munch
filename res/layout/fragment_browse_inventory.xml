@@ -37,15 +37,6 @@
         <requestFocus />
     </EditText>
 
-    <TextView
-        android:id="@+id/tvMyIngredients"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btnFilterIngredients"
-        android:text="@string/inventory"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
-
     <Button
         android:id="@+id/addShoppingList"
         android:layout_width="match_parent"
@@ -63,14 +54,15 @@
         android:text="@string/addInventory" />
 
     <ListView
-        android:id="@+id/activeIngredientListView"
+        android:id="@+id/ingredientsListView"
         android:layout_width="match_parent"
         android:layout_height="137dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvMyIngredients"
         android:layout_above="@+id/addInventory"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/btnFilterIngredients"
         android:choiceMode="singleChoice"
         android:listSelector="@color/white" >
+
     </ListView>
 
 </RelativeLayout>

@@ -74,6 +74,8 @@ public class MainActivity extends Activity {
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
         // What's hot, We  will add a counter here
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
+        // Testing
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
          
  
         // Recycle the typed array
@@ -190,6 +192,8 @@ public class MainActivity extends Activity {
             userFunctions.logoutUser(this);
             fragment = new Fragment_Home();
             break;
+        case 7:
+        	fragment = new Inventory_II();
  
         default:
             break;
