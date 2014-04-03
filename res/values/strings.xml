@@ -67,5 +67,8 @@
     
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
+    
+    <!-- Google Maps v2 API key(debug) -->
+    <string name="mapkey">AIzaSyA_X1p_F03ROo2GwfoBMhn_NwI3Ziao6d8</string>
  
 </resources>
