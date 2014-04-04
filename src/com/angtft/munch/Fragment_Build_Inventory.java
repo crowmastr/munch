@@ -23,7 +23,9 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -42,6 +44,8 @@ import android.widget.Spinner;
 import com.angtft.munch.library.DataArrays;
 import com.angtft.munch.library.Ingredient;
 import com.angtft.munch.library.UserFunctions;
+import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
+import com.angtft.munch.slidingmenu.model.NavDrawerItem;
 	 
 
 
@@ -60,6 +64,8 @@ import com.angtft.munch.library.UserFunctions;
 	    private ListView			 lvIngredients; /** Used to display all ingredients passing filter */
 	    private int					 selectedIngredientID; /** keeps track of position in the list that has been seleccted */
 	    private boolean 			 filter = false; /** Flag to determine whether to filter ingredientList before adding to spinner */
+
+	    	
 	    
 	    /** Called when the view is created, Initializes key Variables, and loads the view with any necessary data */
 	    @Override
@@ -115,6 +121,7 @@ import com.angtft.munch.library.UserFunctions;
 							/** Get the string at the selected Item position and save it to selectedIngredient */
 						    selectedIngredientID = position;
 							Log.i("ActiveIngredientListener", Integer.toString(selectedIngredientID));
+
 						}
 					}
 	            	
@@ -204,6 +211,23 @@ import com.angtft.munch.library.UserFunctions;
 	    		Log.i("AddIngredient", DataArrays.inventoryList.get(DataArrays.inventoryList.size() - 1) + " added to inventory.");
 	    	else
 	    		Log.w("AddIngredient", "It is very likely that the ingredient was added to the inventoryList");
+	    	
+	    	/** increment counter on side menu */
+	    	
+	    	try {
+	    		
+	    		String count = ((MainActivity)getActivity()).navDrawerItems.get(2).getCount();
+	    		((MainActivity)getActivity()).navDrawerItems.get(2).setCount(Integer.toString(Integer.parseInt(count) + 1));
+	    	    Log.i("AddIngredient", "count: " + Integer.toString(Integer.parseInt(count) + 1));
+	    	 
+	    	    NavDrawerListAdapter adapter = new NavDrawerListAdapter(getActivity(),
+	    	    		((MainActivity)getActivity()).navDrawerItems);
+	    	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
+	    	    
+	    	    
+	    	} catch(NumberFormatException nfe) {}
+	    	//navDrawerItems.get(8).setCount(Integer.toString(count + 1));
+	    	
 	    }
 	    
 	    /** Fucntion used to Remove selected ingredient from inventoryList
@@ -357,4 +381,6 @@ import com.angtft.munch.library.UserFunctions;
 	    	else
 	    		FilterIngredients();	    	
 	    }
+	    
+	    
 	}

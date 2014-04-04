@@ -27,4 +27,5 @@ public abstract class Fragment_AbstractTop extends Fragment {
 	protected static String KEY_TOKEN = "token";
 	protected static String KEY_CREATED_AT = "created_at";
 	
+	
 }

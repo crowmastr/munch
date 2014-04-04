@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
  
 import com.angtft.munch.library.DatabaseHandler;
@@ -16,23 +16,34 @@ import com.angtft.munch.library.UserFunctions;
  
 public class Fragment_Home extends Fragment_AbstractTop {
 
-    String token;
+    String userName;
 	UserFunctions userFunctions;
+	static boolean userHintFlag = true;
+	private TextView welcomeText; /** Welcome Text Object */	
    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home,
                 container, false);
-       
+        Context context = getActivity();
+        
+        /** Set welcome message */
         DatabaseHandler db = new DatabaseHandler(getActivity());
         HashMap<String,String> user = new HashMap<String,String>();
         user = db.getUserDetails();
-        token = user.get(KEY_TOKEN);
-        Context context = getActivity();
-        int duration = Toast.LENGTH_LONG;
+        userName = user.get(KEY_NAME);
+        welcomeText = (TextView) view.findViewById(R.id.welcome);
+        welcomeText.setText("Welcome to Munch\n" + userName + "!");
         
-        Toast toast = Toast.makeText(context, token, duration);
-        toast.show();
+        if (userHintFlag){
+        	
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context, context.getString(R.string.useMenu), duration);
+            toast.show();
+            userHintFlag = false;
+        }
+        
+        
   
         /**
          * Dashboard Screen for the application

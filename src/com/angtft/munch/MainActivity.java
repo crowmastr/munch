@@ -24,7 +24,7 @@ import android.widget.ListView;
  
 public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
+    public ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
  
     // nav drawer title
@@ -37,9 +37,10 @@ public class MainActivity extends Activity {
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
  
-    private ArrayList<NavDrawerItem> navDrawerItems;
+    public ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
- 
+    
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,22 +63,21 @@ public class MainActivity extends Activity {
         // adding nav drawer items to array
         // Home
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-        // Find People
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-        // Photos
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-        // Communities, Will add a counter here
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22"));
-        // Pages
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-        // What's hot, We  will add a counter here
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
-        // What's hot, We  will add a counter here
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
         // Build Inventory / Browse Ingredients
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
         // View Inventory
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1)));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(1, -1), true, "0"));
+        // Browse Recipes
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(2, -1)));
+        // Shopping List
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(3, -1)));
+        // Nearby Stores
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(4, -1)));
+        // About Munch
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(5, -1)));
+        // Logout
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
+        
  
         // Recycle the typed array
         navMenuIcons.recycle();
@@ -174,32 +174,28 @@ public class MainActivity extends Activity {
             fragment = new Fragment_Home();
             break;
         case 1:
-            fragment = new Fragment_Inventory();
+        	fragment = new Fragment_Build_Inventory();
             break;
         case 2:
+        	fragment = new Fragment_View_Inventory();
+        	break;
+        case 3:
             fragment = new Fragment_BrowseRecipes();
             break;
-        case 3:
+        case 4:
             fragment = new Fragment_ShoppingList();
             break;
-        case 4:
+        case 5:
             fragment = new Fragment_NearbyStores();
             break;
-        case 5:
+        case 6:
             fragment = new Fragment_About();
             break;
-        case 6:
+        case 7:
         	UserFunctions userFunctions = new UserFunctions();;
             userFunctions.logoutUser(this);
             fragment = new Fragment_Home();
             break;
-        case 7:
-        	fragment = new Fragment_Build_Inventory();
-        	break;
-        case 8:
-        	fragment = new Fragment_View_Inventory();
-        	break;
- 
         default:
             break;
         }
@@ -241,8 +237,8 @@ public class MainActivity extends Activity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
+        // Pass any configuration change to the drawer toggles
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
- 
+    
 }

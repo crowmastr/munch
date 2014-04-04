@@ -16,25 +16,6 @@
         android:textColor="@color/white"/>
 
     
-    <RelativeLayout
-			android:orientation="vertical"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_below="@id/welcome"
-			android:layout_marginTop="13dp"
-			android:layout_centerInParent="true"
-			android:background="@drawable/rounded_edges">
-     <TextView
-        android:id="@+id/useMenu"
-        android:layout_centerInParent="true"
-        android:layout_width="100sp"
-        android:layout_height="wrap_content"
-        android:text="@string/useMenu" 
-        
-        android:layout_marginTop="13dp"
-        android:textSize="14sp"
-        android:background="@drawable/rounded_edges"
-        android:textColor="@color/white"/>
-     </RelativeLayout>
+    
 
 </RelativeLayout>
