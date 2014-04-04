@@ -42,6 +42,7 @@ import android.widget.Spinner;
 import com.angtft.munch.library.DataArrays;
 import com.angtft.munch.library.Ingredient;
 import com.angtft.munch.library.UserFunctions;
+import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 	 
 
 
@@ -166,7 +167,20 @@ import com.angtft.munch.library.UserFunctions;
 	    		DataArrays.inventoryList.remove(selectedIngredientID);
 	    		inventoryAdapter.notifyDataSetChanged();
 	    	}
-	   
+	    	/** decrement counter on side menu */
+	    	
+	    	try {
+	    		
+	    		String count = ((MainActivity)getActivity()).navDrawerItems.get(2).getCount();
+	    		((MainActivity)getActivity()).navDrawerItems.get(2).setCount(Integer.toString(Integer.parseInt(count) - 1));
+	    	    Log.i("AddIngredient", "count: " + Integer.toString(Integer.parseInt(count) - 1));
+	    	 
+	    	    NavDrawerListAdapter adapter = new NavDrawerListAdapter(getActivity(),
+	    	    		((MainActivity)getActivity()).navDrawerItems);
+	    	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
+	    	    
+	    	    
+	    	} catch(NumberFormatException nfe) {}	
 	    	
 	    }
 	    

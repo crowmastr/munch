@@ -225,9 +225,7 @@ import com.angtft.munch.slidingmenu.model.NavDrawerItem;
 	    	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
 	    	    
 	    	    
-	    	} catch(NumberFormatException nfe) {}
-	    	//navDrawerItems.get(8).setCount(Integer.toString(count + 1));
-	    	
+	    	} catch(NumberFormatException nfe) {}	    	
 	    }
 	    
 	    /** Fucntion used to Remove selected ingredient from inventoryList
