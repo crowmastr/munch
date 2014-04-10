@@ -188,7 +188,7 @@ public class Fragment_Home extends Fragment_AbstractTop {
                             if( json_ingredient != null)
                             { 
                             	/** Load the json name key into list */
-                            	try
+                            	try 
                             	{
                     	    		for(String ingredientName : Ingredient.ingredients.keySet())
                     	    		{
@@ -196,6 +196,10 @@ public class Fragment_Home extends Fragment_AbstractTop {
                     	    			{
                     	    				Log.i("LoadShopping", Ingredient.ingredients.get(ingredientName).GetId() + " matches " + json_ingredient.getString("ingredient"));
                     	    				DataArrays.shoppingList.add(ingredientName);
+                    	    				Integer myInt = json_ingredient.getInt("id");
+                    	    				DataArrays.shoppingListID.add(myInt);
+                    	    				Log.i("LoadShopping", json_ingredient.getInt("id") + " Added to idlist"); 
+                    	    				
                     	    			}
                     	    		}
                             	}

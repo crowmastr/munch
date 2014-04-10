@@ -76,10 +76,6 @@ public class MainActivity extends Activity {
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
         // Build Inventory / Browse Ingredients
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
-        // View Inventory
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1)));
-        // View Shopping List
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[9], navMenuIcons.getResourceId(9, -1)));
  
         // Recycle the typed array
         navMenuIcons.recycle();
@@ -176,13 +172,13 @@ public class MainActivity extends Activity {
             fragment = new Fragment_Home();
             break;
         case 1:
-            fragment = new Fragment_Inventory();
+            fragment = new Fragment_View_Inventory();
             break;
         case 2:
             fragment = new Fragment_BrowseRecipes();
             break;
         case 3:
-            fragment = new Fragment_ShoppingList();
+            fragment = new Fragment_View_Shopping_List();
             break;
         case 4:
             fragment = new Fragment_NearbyStores();
@@ -198,13 +194,7 @@ public class MainActivity extends Activity {
         case 7:
         	fragment = new Fragment_Build_Inventory();
         	break;
-        case 8:
-        	fragment = new Fragment_View_Inventory();
-        	break;
-        case 9:
-        	fragment = new Fragment_View_Shopping_List();
-        	break;
- 
+
         default:
             break;
         }

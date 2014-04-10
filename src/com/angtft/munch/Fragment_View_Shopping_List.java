@@ -105,7 +105,7 @@ import com.angtft.munch.library.UserFunctions;
 							{
 								/** Get the string at the selected Item position and save it to selectedIngredient */
 							    selectedIngredientID = position;
-								Log.i("ActiveIngredientListener", Integer.toString(selectedIngredientID));
+								Log.w("ActiveIngredientListener", Integer.toString(selectedIngredientID));
 							}
 						}
 		            	
@@ -136,8 +136,8 @@ import com.angtft.munch.library.UserFunctions;
 					}
 				});
 	            
-	            Log.i("Fragment_View_Shopping", "About to load ShoppingList");
-	            Log.i("Fragment_View_Shopping", "Shopping List believed to be loaded.");
+	            Log.w("Fragment_View_Shopping", "About to load ShoppingList");
+	            Log.w("Fragment_View_Shopping", "Shopping List believed to be loaded.");
 	            
 	            
 	            /** 
@@ -174,13 +174,38 @@ import com.angtft.munch.library.UserFunctions;
 		        @Override   
 		        protected String doInBackground(Void... params)
 		        {
+		        	if(DataArrays.shoppingListID.size() == 0)
+		        		Log.i("ShoppingListID", "The list is empty");
+		        	else
+		        	{
+		        		try
+		        		{
+				        	for(int i = 0; i < DataArrays.shoppingListID.size(); ++i)
+				        	{
+				        		Log.i("ShoppingListId", DataArrays.shoppingListID.get(i).toString());
+				        	}
+		        		}
+		        		catch(Exception e)
+		        		{
+		        			e.printStackTrace();
+		        		}
+		        	} 
+ 
 
 			    	UserFunctions myUser = new UserFunctions();
-			    	Log.i("RemoveIngredient", "Attempting to remove: " + Ingredient.ingredients.get(DataArrays.shoppingList.get(selectedIngredientID)).GetId());
 			    	Log.i("RemoveIngredient", "My token is: " + token);
 		            //myUser.delIngredientShopping(Ingredient.ingredients.get(DataArrays.shoppingList.get(selectedIngredientID)).GetId(), token);
-			    	myUser.delIngredientInventory(958, token);
+			    	Log.i("RemoveIngredient", "Id attempting to remove: " + (int)DataArrays.shoppingListID.get(selectedIngredientID));
+			    	try
+			    	{
+			    	myUser.delIngredientInventory((int)DataArrays.shoppingListID.get(selectedIngredientID), token);
+			    	}
+			    	catch(Exception e)
+			    	{
+			    		e.printStackTrace();
+			    	}
 		            DataArrays.shoppingList.remove(selectedIngredientID);
+		            DataArrays.shoppingListID.remove(selectedIngredientID);
 
 		            return res;
 		        }  
