@@ -136,8 +136,7 @@ import com.angtft.munch.library.UserFunctions;
 					}
 				});
 	            
-	            Log.w("Fragment_View_Shopping", "About to load ShoppingList");
-	            Log.w("Fragment_View_Shopping", "Shopping List believed to be loaded.");
+	            inventoryAdapter.notifyDataSetChanged();
 	            
 	            
 	            /** 
@@ -198,8 +197,8 @@ import com.angtft.munch.library.UserFunctions;
 			    	Log.i("RemoveIngredient", "Id attempting to remove: " + (int)DataArrays.shoppingListID.get(selectedIngredientID));
 			    	try
 			    	{
-			    	myUser.delIngredientInventory((int)DataArrays.shoppingListID.get(selectedIngredientID), token);
-			    	}
+			    	myUser.delIngredientShopping((int)DataArrays.shoppingListID.get(selectedIngredientID), token);
+			    	} 
 			    	catch(Exception e)
 			    	{
 			    		e.printStackTrace();

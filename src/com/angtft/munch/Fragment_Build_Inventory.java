@@ -246,30 +246,54 @@ import com.angtft.munch.library.UserFunctions;
 
 	    		String res = "";
 		       
-		        @Override   
+
+				@Override   
 		        protected String doInBackground(Void... params)
 		        {
-			    	for(int j = 0; j < DataArrays.shoppingList.size(); ++j)
+					Log.i("Why isnt' it adding", Integer.toString(DataArrays.shoppingList.size()));
+					/**
+			    	for(int k = 0; k < DataArrays.shoppingList.size(); ++k)
 			    	{
-			    		if(DataArrays.shoppingList.get(j).toString().equals(filteredIngredientList.get(i)));
+			    		Log.w("Why isn't it adding" , DataArrays.shoppingList.get(k));
+			    		Log.w("Why isn't it adding" , filteredIngredientList.get(i));
+			    		if(filteredIngredientList.get(i) == (DataArrays.shoppingList.get(k)));
 			    		{
 			    			Log.w("AddToShoppingList", "Function believes ingredient is already in shoppingList");
 			    			/**
 			    			Context context = container.getContext();
 					        Toast toast = Toast.makeText(context, token, duration);
 					        toast.show();
-					        */
+					        
 			    			return res;
 			    		}
 
 			    	}
+	    			*/
 
 			    	UserFunctions myUser = new UserFunctions();
-		            myUser.addIngredientShopping(Ingredient.ingredients.get(filteredIngredientList.get(i)).GetId(), token);
-		            DataArrays.shoppingList.add(filteredIngredientList.get(i));
+		            JSONObject json = myUser.addIngredientShopping(Ingredient.ingredients.get(filteredIngredientList.get(i)).GetId(), token);
 
+		            
+		            Integer myInt = -1;
+		            try
+		            {
+		            	 myInt= json.getInt("ingredient_id");
+		            }
+		            catch(JSONException e)
+		            {
+		            	e.printStackTrace();
+		            }
+		            if(myInt < 0) 
+		            	Log.e("AddShopping", "Could not add ingredient");
+		            else
+		            {
+		            DataArrays.shoppingListID.add(myInt);
+		            DataArrays.shoppingList.add(filteredIngredientList.get(i));
+		            }
 		            return res;
 		        }   
+		        
+		        
 		    }
 	    	AddShopping as = new AddShopping();
 	    	as.execute();
