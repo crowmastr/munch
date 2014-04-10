@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@layout/background" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/recipeName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Recipe Name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white" />
+
+        
+        <TextView
+            android:id="@+id/titleYield"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/recipeName"
+            android:layout_marginTop="30dp"
+            android:text="Yeild:"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/yield"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/recipeName"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@+id/titleYield"
+            android:text="Yeild"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/titleCostPerR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/titleYield"
+            android:layout_marginTop="5dp"
+            android:text="Cost Per Recipe:"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/costPerR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/titleYield"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/titleCostPerR"
+            android:text="Cost Per Recipe"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/titleCostPerS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/titleCostPerR"
+            android:layout_marginTop="5dp"
+            android:text="Cost Per Serving:"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/costPerS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/titleCostPerR"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/titleCostPerS"
+            android:text="Cost Per Serving"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/titleIngredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/titleCostPerS"
+            android:layout_marginTop="10dp"
+            android:text="Ingredients:"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/ingredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/titleIngredients"
+            android:text="Ingredients"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/titleInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ingredients"
+            android:layout_marginTop="30dp"
+            android:text="Instructions:"
+            android:textColor="@color/white" />
+        
+        <TextView
+            android:id="@+id/instructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/titleInstructions"
+            android:text="Instructions"
+            android:textColor="@color/white" />
+        
+        <TextView
+            android:id="@+id/titleNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/instructions"
+            android:layout_marginTop="30dp"
+            android:text="Notes:"
+            android:textColor="@color/white" />
+        
+        <TextView
+            android:id="@+id/notes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/titleNotes"
+            android:text="Notes"
+            android:textColor="@color/white" />
+        
+        <TextView
+            android:id="@+id/titleSource"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/notes"
+            android:layout_marginTop="30dp"
+            android:text="Source:"
+            android:textColor="@color/white" />
+        
+        <TextView
+            android:id="@+id/source"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/titleSource"
+            android:text="Source"
+            android:textColor="@color/white" />
+        
+
+    </RelativeLayout>
+
+</ScrollView>
