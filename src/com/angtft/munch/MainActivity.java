@@ -78,6 +78,8 @@ public class MainActivity extends Activity {
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
         // View Inventory
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1)));
+        // View Shopping List
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[9], navMenuIcons.getResourceId(9, -1)));
  
         // Recycle the typed array
         navMenuIcons.recycle();
@@ -198,6 +200,9 @@ public class MainActivity extends Activity {
         	break;
         case 8:
         	fragment = new Fragment_View_Inventory();
+        	break;
+        case 9:
+        	fragment = new Fragment_View_Shopping_List();
         	break;
  
         default:

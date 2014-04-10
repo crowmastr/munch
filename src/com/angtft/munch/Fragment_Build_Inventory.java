@@ -16,7 +16,8 @@
 package com.angtft.munch;
 
 /** Import Listing */
-import java.util.ArrayList; 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -37,9 +39,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.angtft.munch.library.DataArrays;
+import com.angtft.munch.library.DatabaseHandler;
 import com.angtft.munch.library.Ingredient;
 import com.angtft.munch.library.UserFunctions;
 	 
@@ -55,11 +58,13 @@ import com.angtft.munch.library.UserFunctions;
 		private UserFunctions 		 userFunctions;
 		private ArrayAdapter<String> filteredIngredientAdapter;
 	    private Button 				 btnFilter;    /** Used to submit the filter in the edit text */ 
-	    private List<String> 		 filteredIngredientList = new ArrayList<String>(); /** List of ingredients in the spinner */
+	    private List<String> 	 filteredIngredientList = new ArrayList<String>(); /** List of ingredients in the spinner */
 	    private Button 				 btnAddIngredient; /** Used to select the spinner's item and add to the Active list */	
+	    private Button				 btnAddShopping; /** Used to add ingredients to the shopping list */
 	    private ListView			 lvIngredients; /** Used to display all ingredients passing filter */
 	    private int					 selectedIngredientID; /** keeps track of position in the list that has been seleccted */
 	    private boolean 			 filter = false; /** Flag to determine whether to filter ingredientList before adding to spinner */
+		private String               token;
 	    
 	    /** Called when the view is created, Initializes key Variables, and loads the view with any necessary data */
 	    @Override
@@ -68,10 +73,11 @@ import com.angtft.munch.library.UserFunctions;
 	                container, false);
 	        
 	        
-	        /** Used for testing of the token commented out
+	        /** Used for DB connections to access the users shoppingList */
 	        DatabaseHandler db = new DatabaseHandler(container.getContext());
 	        HashMap<String,String> user = new HashMap<String,String>();
 	        user = db.getUserDetails();
+
 
 	        token = user.get(KEY_TOKEN);
 	        Context context = container.getContext();
@@ -80,7 +86,7 @@ import com.angtft.munch.library.UserFunctions;
 
 		        Toast toast = Toast.makeText(context, token, duration);
 		        toast.show();
-		     */
+		     
 	        
 	     
 	        /** Check login status in database */
@@ -135,8 +141,29 @@ import com.angtft.munch.library.UserFunctions;
 	        	    	/** Check sentinel value, and if valid remove item */
 	        	    	if(selectedIngredientID != -1)
 	        	    	{
-		            		AddIngredient(selectedIngredientID);
-	        	    		filteredIngredientAdapter.notifyDataSetChanged();
+		            		AddToInventory(selectedIngredientID);
+	        	    		//filteredIngredientAdapter.notifyDataSetChanged();
+	        	    	}
+
+	            	}
+	            	
+	            }
+	            );
+	            
+	            btnAddShopping = (Button)	view.findViewById(R.id.addShoppingList);
+	            btnAddShopping.setOnClickListener(new View.OnClickListener()
+	            {
+	            
+	            	@Override
+	            	public void onClick(View v)
+	            	{
+	        	    	Log.i("AddShopping", "Attempting to add ingredient to shopping List");
+
+	        	    	/** Check sentinel value, and if valid remove item */
+	        	    	if(selectedIngredientID != -1)
+	        	    	{
+		            		AddToShoppingList(selectedIngredientID);
+	        	    		//filteredIngredientAdapter.notifyDataSetChanged();
 	        	    	}
 
 	            	}
@@ -150,12 +177,17 @@ import com.angtft.munch.library.UserFunctions;
 		        /** attaching data adapter to spinner, should populate */
 		        lvIngredients.setAdapter(filteredIngredientAdapter);
 	            
-	            
+	            // Note
 	            /** 
 	             * On create, Re-Populate inventoryListView if there are any items in the List
 	             * If IngredientList is empty, Query ingredients from server. 
-	             */
+	             * 
+	             * Now loaded in Home Fragment
+	             
 	            LoadIngredientsLists();
+	            new LoadShoppingList().execute();
+	            */
+		        FilterIngredients();
 	        }else{
 	        	
 	            /**
@@ -184,16 +216,16 @@ import com.angtft.munch.library.UserFunctions;
 	    /** Function used to Add provided ingredient to the inventoryList
 	     *  Called by: btnAddIngredient.onClick 
 	     */
-	    public void AddIngredient(int i)
+	    public void AddToInventory(int i)
 	    {
 	    	
 	    	/** Verify that ingredient is not already in the List*/
-	    	for(String activeIngredient : DataArrays.inventoryList)
+	    	for(int j = 0; j < DataArrays.inventoryList.size(); ++j)
 	    	{
-	    		if(activeIngredient.equals(filteredIngredientList.get(i)))
+	    		if(DataArrays.inventoryList.get(j).toString().equals(filteredIngredientList.get(i)))
 	    			return;
 	    	}
-	    	Log.i("PopulateActiveIngredientView", "Entering PopulateActiveIngredientView");
+	    	Log.i("AddToInventory", "Attempting to add Ingredient");
 
 
 	    	/** Add Ingredient to List */
@@ -205,10 +237,44 @@ import com.angtft.munch.library.UserFunctions;
 	    	else
 	    		Log.w("AddIngredient", "It is very likely that the ingredient was added to the inventoryList");
 	    }
-	    
-	    /** Fucntion used to Remove selected ingredient from inventoryList
-	     *  Called by: btnRemoveIngredint.onClick
-	     */
+
+	    public void AddToShoppingList(final int i)
+	    {
+
+	    	class AddShopping extends AsyncTask<Void, Void, String> 
+		    {
+
+	    		String res = "";
+		       
+		        @Override   
+		        protected String doInBackground(Void... params)
+		        {
+			    	for(int j = 0; j < DataArrays.shoppingList.size(); ++j)
+			    	{
+			    		if(DataArrays.shoppingList.get(j).toString().equals(filteredIngredientList.get(i)));
+			    		{
+			    			Log.w("AddToShoppingList", "Function believes ingredient is already in shoppingList");
+			    			/**
+			    			Context context = container.getContext();
+					        Toast toast = Toast.makeText(context, token, duration);
+					        toast.show();
+					        */
+			    			return res;
+			    		}
+
+			    	}
+
+			    	UserFunctions myUser = new UserFunctions();
+		            myUser.addIngredientShopping(Ingredient.ingredients.get(filteredIngredientList.get(i)).GetId(), token);
+		            DataArrays.shoppingList.add(filteredIngredientList.get(i));
+
+		            return res;
+		        }   
+		    }
+	    	AddShopping as = new AddShopping();
+	    	as.execute();
+	    	Log.i("AddToShoppingList", "Added " + filteredIngredientList.get(i) + " to the shoppingList");
+	    }
 	    
 	    /** Function used to find filter value from EditText on view and only add 
 	     *  ingredients to the spinner that meet the filter's requirements.
@@ -228,10 +294,11 @@ import com.angtft.munch.library.UserFunctions;
 	    		Log.i("FilterIngredients", "There is a filter, Apply.");
 		    	EditText filterEditText = (EditText) getActivity().findViewById(R.id.filterEditText);
 		    	String filter = filterEditText.getText().toString();
+
 		    	for(String ingredientName : Ingredient.ingredients.keySet())
 		    	{
-		    		if (ingredientName.toLowerCase().contains(filter.toLowerCase()))
-		    			filteredIngredientList.add(ingredientName);    		
+		    		if (ingredientName.toString().toLowerCase().contains(filter.toLowerCase()))
+		    			filteredIngredientList.add(ingredientName);   		
 		    	}
 	    	}
 	    	/** Otherwise, add all ingredients in the database */
@@ -251,6 +318,8 @@ import com.angtft.munch.library.UserFunctions;
 	    /** This class defines an asynchronous task that populates the ingredients
 	     *  in the static Ingredient list held by Ingredients.java
 	     * 	Called by: LoadIngredientsLists()
+	     * 
+	     *  No longer in use, loaded in the Home Fragment
 	     * 
 	     */
 	    public class LoadIngredients extends AsyncTask<Void, Void, String> 
@@ -343,6 +412,8 @@ import com.angtft.munch.library.UserFunctions;
 	    /**
 	     * Initialization Function for the ingredients and inventory Lists.
 	     * Called by onCreate()
+	     * 
+	     * UPDATE: Outdated, this has been moved to the home menu to load as soon as program begins.
 	     */
 	    private void LoadIngredientsLists()
 	    {
@@ -356,5 +427,78 @@ import com.angtft.munch.library.UserFunctions;
 	    	/** Else call PopulateSpinner to reinitialize */
 	    	else
 	    		FilterIngredients();	    	
+	    }
+	    public class LoadShoppingList extends AsyncTask<Void, Void, String> 
+	    {
+	       
+	        @Override   
+	        protected String doInBackground(Void... params) {
+	        	
+	        	/** Call function defined in project library to retrieve ingredients from server */
+	            UserFunctions userFunction = new UserFunctions();
+	            android.util.Log.w("Before listIngredients","We are about to enter listIngredients");
+	            JSONObject json = userFunction.listIngredientShopping(token);
+	            String res = "";
+	            
+	            // check for json response
+	            /** Try to receive JSON pair, and load ingredient name into Ingredients.allIngredients */
+	            try {
+	                if (json.getString(KEY_SUCCESS) != null){
+	                	android.util.Log.w("Succesful Get String", "We were able to successfully get jsonString");
+	                    res = json.getString(KEY_SUCCESS); 
+	                    if(Integer.parseInt(res) == 1){
+
+
+	                    	Iterator<?> keys = json.keys();
+	                    	while( keys.hasNext() ){
+	                            String key = (String)keys.next();
+	                            int i = 1;
+	                        	JSONObject json_ingredient = null;
+
+
+	                            try
+	                            {
+	                            	json_ingredient = json.getJSONObject(key);
+	                            	Log.i("GetKey", "Success" + i + "Retreiving: " + json_ingredient.getString("name") + ": " + json_ingredient.getString("id"));
+	                            	++i;
+	                            }
+	                            catch(JSONException e)
+	                            {
+	                            	if (key.equals("tag"))	
+	                            		Log.w("JsonGet-Exception", "key = tag");
+	                            	else
+	                            		e.printStackTrace();
+	                            }
+
+	                            //System.out.println("This is the key string: " + key);
+	                            
+	                            if( json_ingredient != null)
+	                            { 
+	                            	/** Load the json name key into list */
+	                            	try
+	                            	{
+	                            		DataArrays.shoppingList.add(json_ingredient.getString("name"));
+	                            	}
+	                            	catch(JSONException e)
+	                            	{
+	                            		/** Print warning to console. Program may functionally continue, but will be missing
+	                            		 *  whatever ingredient erred. This intentionally catches the pair (tag , success)
+	                            		 */
+	                            		Log.w("LoadShoppingList","Could not get string");
+	                            	}
+	                            }           
+	                        }	
+	                    }
+	                }
+	            } 
+	            /** Print out any JSON Exception */
+	            catch (JSONException e) {
+	            	android.util.Log.w("JSON Exception", "Something went wrong in the try");
+	                e.printStackTrace();
+	            }
+	            
+
+	            return res;
+	        }   
 	    }
 	}

@@ -53,7 +53,7 @@ public class JSONParser {
         	Log.e("JSONParser","getJSONFromUrl - IOException");
             e.printStackTrace();
         }
- 
+ //
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(
                     is, "iso-8859-1"), 8);
@@ -65,7 +65,6 @@ public class JSONParser {
             is.close();
             json = sb.toString();
             
-            /* Jeremy Question: Why is this printing as an error?? */
             Log.i("JSON", json);
         } catch (Exception e) {
             Log.e("Buffer Error", "Error converting result " + e.toString());
