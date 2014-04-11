@@ -31,6 +31,7 @@ public class Fragment_Home extends Fragment_AbstractTop {
 	UserFunctions userFunctions;
 	static boolean userHintFlag = true;
 	private TextView welcomeText; /** Welcome Text Object */	
+	private String               token;
    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class Fragment_Home extends Fragment_AbstractTop {
         HashMap<String,String> user = new HashMap<String,String>();
         user = db.getUserDetails();
         userName = user.get(KEY_NAME);
+        token = user.get(KEY_TOKEN);
         welcomeText = (TextView) view.findViewById(R.id.welcome);
         welcomeText.setText("Welcome to Munch\n" + userName + "!");
         

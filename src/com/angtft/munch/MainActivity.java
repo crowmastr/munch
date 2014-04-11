@@ -180,10 +180,11 @@ public class MainActivity extends Activity {
         	fragment = new Fragment_View_Inventory();
         	break;
         case 3:
-            fragment = new Fragment_View_Shopping_List();
+            fragment = new Fragment_BrowseRecipes();
             break;
         case 4:
-            fragment = new Fragment_ShoppingList();
+            fragment = new Fragment_View_Shopping_List();
+            break;
         case 5:
             fragment = new Fragment_NearbyStores();
             break;

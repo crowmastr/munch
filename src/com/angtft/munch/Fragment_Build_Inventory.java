@@ -55,7 +55,6 @@ import com.angtft.munch.slidingmenu.model.NavDrawerItem;
 
 		/** Class Field Declarations */
 	    /** Unused at this time 
-	     * private String 				 token;
 	     * private String                ingredients;
 	     */
 		private UserFunctions 		 userFunctions;
@@ -67,10 +66,6 @@ import com.angtft.munch.slidingmenu.model.NavDrawerItem;
 	    private ListView			 lvIngredients; /** Used to display all ingredients passing filter */
 	    private int					 selectedIngredientID; /** keeps track of position in the list that has been seleccted */
 	    private boolean 			 filter = false; /** Flag to determine whether to filter ingredientList before adding to spinner */
-
-
-	    	
-
 		private String               token;
 
 	    
@@ -89,11 +84,11 @@ import com.angtft.munch.slidingmenu.model.NavDrawerItem;
 
 	        token = user.get(KEY_TOKEN);
 	        Context context = container.getContext();
-	        int duration = Toast.LENGTH_LONG;
+	        //int duration = Toast.LENGTH_LONG;
 	        
 
-		        Toast toast = Toast.makeText(context, token, duration);
-		        toast.show();
+		        //Toast toast = Toast.makeText(context, token, duration);
+		        //toast.show();
 		     
 	        
 	     
