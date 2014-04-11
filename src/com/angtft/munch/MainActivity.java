@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
  
     public ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
+    public int recipeID = 0;
     
     
     @Override

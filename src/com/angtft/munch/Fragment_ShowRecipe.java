@@ -56,6 +56,8 @@ public class Fragment_ShowRecipe extends Fragment_AbstractTop {
  	private TextView 			 textNotes;
  	private TextView 			 textSource;
  	private int 				 recipeID;
+ 	private String 				 stringIngredients;
+ 	
     /** Called when the view is created, Initializes key Variables, and loads the view with any necessary data */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -94,8 +96,13 @@ public class Fragment_ShowRecipe extends Fragment_AbstractTop {
 
             /** get active recipeID and query recipe.php for all ingredients and their amounts
              *  parse that data into textInredients */
+        	recipeID = ((MainActivity)getActivity()).recipeID;
         	GetIngredients AsyncGetIngredients = new GetIngredients();
         	AsyncGetIngredients.execute();
+        	
+        	/** find recipe in recipe objects and get values */
+        	
+        	
         }else{
         	
             /**
@@ -116,7 +123,7 @@ public class Fragment_ShowRecipe extends Fragment_AbstractTop {
       
     /** This class defines an asynchronous task that populates the ingredients
      *  in the recipe into a local String variable
-     * 	Called by: LoadIngredientsLists()
+     * 	Called by: onCreateView()
      * 
      */
     public class GetIngredients extends AsyncTask<Void, Void, String> 
@@ -127,8 +134,8 @@ public class Fragment_ShowRecipe extends Fragment_AbstractTop {
         	
         	/** Call function defined in project library to retrieve ingredients from server */
             UserFunctions userFunction = new UserFunctions();
-            android.util.Log.w("Before LoadRecipes","We are about to load recipes");
-            JSONObject json = userFunction.listRecipes();
+            android.util.Log.w("Before IngredientsRecipe","We are about to load the ingredients for a recipe");
+            JSONObject json = userFunction.ingredientsRecipe(recipeID);
             String res = "";
             
             // check for json response
@@ -144,13 +151,13 @@ public class Fragment_ShowRecipe extends Fragment_AbstractTop {
                     	while( keys.hasNext() ){
                             String key = (String)keys.next();
                             int i = 1;
-                        	JSONObject json_recipe = null;
+                        	JSONObject json_recipeIngredients = null;
 
 
                             try
                             {
-                            	json_recipe = json.getJSONObject(key);
-                            	Log.i("GetKey", "Success" + i + "Retreiving: " + json_recipe.getString("name") + ": " + json_recipe.getString("id"));
+                            	json_recipeIngredients = json.getJSONObject(key);
+                            	Log.i("GetKey", "Success" + i + "Retreiving: " + json_recipeIngredients.getString("name") + ": " + json_recipeIngredients.getString("id"));
                             	++i;
                             }
                             catch(JSONException e)
@@ -163,32 +170,12 @@ public class Fragment_ShowRecipe extends Fragment_AbstractTop {
 
                             //System.out.println("This is the key string: " + key);
                             
-                            if( json_recipe != null)
+                            if( json_recipeIngredients != null)
                             { 
                             	/** Load the json name key into list */
                             	try
                             	{
-                            		String name = json_recipe.getString("name");
-                            		int id = Integer.parseInt(json_recipe.getString("id"));
-                            		int yield = Integer.parseInt(json_recipe.getString("yield"));
-                            		String instructions = json_recipe.getString("instructions");
-                            		float cpr = (float) json_recipe.getDouble("cost_per_recipe");
-                            		float cps = (float) json_recipe.getDouble("cost_per_serving");
-                            		String source = json_recipe.getString("source");
-                            		String notes = json_recipe.getString("notes");
-                            		
-                            		
-                            		if (name != null)
-                            		{
-                            			Recipe r = new Recipe(Integer.parseInt(json_recipe.getString("id")), json_recipe.getString("name"));
-                            			r.yield = yield;
-                            			r.instructions = instructions;
-                            			r.costPerRecipe = cpr;
-                            			r.costPerServing = cps;
-                            			r.source = source;
-                            			r.notes = notes;
-                            			Log.i("LoadArray", "Loaded: " + json_recipe.getString("name") + ": " + json_recipe.getString("id"));
-                            		}
+                            		stringIngredients += json_recipeIngredients.getString("amt") + " : " + json_recipeIngredients.getString("name") +"\n";
                             	}
                             	catch(JSONException e)
                             	{
@@ -220,7 +207,7 @@ public class Fragment_ShowRecipe extends Fragment_AbstractTop {
         protected void onPostExecute (String logged)
         {
             super.onPostExecute(logged);
-            
+            textIngredients.setText(stringIngredients);
             
         }
     }
