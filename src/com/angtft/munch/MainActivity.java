@@ -79,7 +79,6 @@ public class MainActivity extends Activity {
         // Logout
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
         
- 
         // Recycle the typed array
         navMenuIcons.recycle();
  
@@ -181,11 +180,10 @@ public class MainActivity extends Activity {
         	fragment = new Fragment_View_Inventory();
         	break;
         case 3:
-            fragment = new Fragment_BrowseRecipes();
+            fragment = new Fragment_View_Shopping_List();
             break;
         case 4:
             fragment = new Fragment_ShoppingList();
-            break;
         case 5:
             fragment = new Fragment_NearbyStores();
             break;
