@@ -24,6 +24,7 @@ import com.angtft.munch.library.DataArrays;
 import com.angtft.munch.library.DatabaseHandler;
 import com.angtft.munch.library.Ingredient;
 import com.angtft.munch.library.UserFunctions;
+import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
  
 public class Fragment_Home extends Fragment_AbstractTop {
 
@@ -32,6 +33,7 @@ public class Fragment_Home extends Fragment_AbstractTop {
 	static boolean userHintFlag = true;
 	private TextView welcomeText; /** Welcome Text Object */	
 	private String               token;
+	private int shoppingCount = 0;
    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -212,6 +214,7 @@ public class Fragment_Home extends Fragment_AbstractTop {
                     	    				Integer myInt = json_ingredient.getInt("id");
                     	    				DataArrays.shoppingListID.add(myInt);
                     	    				Log.i("LoadShopping", json_ingredient.getInt("id") + " Added to idlist"); 
+                    	    				shoppingCount += 1;
                     	    				
                     	    			}
                     	    		}
@@ -237,7 +240,18 @@ public class Fragment_Home extends Fragment_AbstractTop {
 
 
             return res;
-        }        
+        }   
+        @Override
+        protected void onPostExecute (String logged)
+        {
+            super.onPostExecute(logged);
+            ((MainActivity)getActivity()).navDrawerItems.get(2).setCount(Integer.toString(DataArrays.inventoryList.size()));
+            ((MainActivity)getActivity()).navDrawerItems.get(4).setCount(Integer.toString(DataArrays.shoppingList.size()));
+    	 
+    	    NavDrawerListAdapter adapter = new NavDrawerListAdapter(getActivity(),
+    	    		((MainActivity)getActivity()).navDrawerItems);
+    	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
+        }
     }
     public class LoadShoppingList extends AsyncTask<Void, Void, String> 
     {
@@ -318,6 +332,14 @@ public class Fragment_Home extends Fragment_AbstractTop {
             
 
             return res;
-        }   
+        }
+        @Override
+        protected void onPostExecute (String logged)
+        {
+            super.onPostExecute(logged);
+            
+           
+
+        }
     }
 }

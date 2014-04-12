@@ -190,6 +190,12 @@ public class MainActivity extends Activity {
         	UserFunctions userFunctions = new UserFunctions();;
             userFunctions.logoutUser(this);
             fragment = new Fragment_Home();
+            
+            navDrawerItems.get(2).setCount("0");
+            navDrawerItems.get(4).setCount("0");
+            NavDrawerListAdapter adapter = new NavDrawerListAdapter(this,
+    	    		navDrawerItems);
+    	    mDrawerList.setAdapter(adapter);
             break;
         default:
             break;
