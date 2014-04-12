@@ -1,5 +1,6 @@
 package com.angtft.munch;
 
+import com.angtft.munch.library.DataArrays;
 import com.angtft.munch.library.UserFunctions;
 import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 import com.angtft.munch.slidingmenu.model.NavDrawerItem;
@@ -189,13 +190,17 @@ public class MainActivity extends Activity {
         case 6:
         	UserFunctions userFunctions = new UserFunctions();;
             userFunctions.logoutUser(this);
-            fragment = new Fragment_Home();
-            
+         
+            //reset nav drawer counters
             navDrawerItems.get(2).setCount("0");
             navDrawerItems.get(4).setCount("0");
             NavDrawerListAdapter adapter = new NavDrawerListAdapter(this,
     	    		navDrawerItems);
     	    mDrawerList.setAdapter(adapter);
+    	    DataArrays.inventoryList.clear();
+    	    DataArrays.shoppingList.clear();
+    	    fragment = new Fragment_Home();
+    	    position = 0;
             break;
         default:
             break;
@@ -240,6 +245,18 @@ public class MainActivity extends Activity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggles
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+         
+        navDrawerItems.get(2).setCount(Integer.toString(DataArrays.inventoryList.size()));
+        navDrawerItems.get(4).setCount(Integer.toString(DataArrays.shoppingList.size()));
+	 
+	    NavDrawerListAdapter adapter = new NavDrawerListAdapter(this, navDrawerItems);
+	    mDrawerList.setAdapter(adapter);
+        //Toast.makeText(this, "ON RESUME!!!!", Toast.LENGTH_LONG).show();
     }
     
 }

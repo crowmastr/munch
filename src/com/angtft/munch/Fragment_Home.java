@@ -82,7 +82,13 @@ public class Fragment_Home extends Fragment_AbstractTop {
         		Log.i("Home Create View", "Ingredients need to be loaded");
         		new LoadIngredients().execute();
         	}
-            //new LoadShoppingList().execute();
+        	//update nav bar counters
+        	((MainActivity)getActivity()).navDrawerItems.get(2).setCount(Integer.toString(DataArrays.inventoryList.size()));
+            ((MainActivity)getActivity()).navDrawerItems.get(4).setCount(Integer.toString(DataArrays.shoppingList.size()));
+    	 
+    	    NavDrawerListAdapter adapter = new NavDrawerListAdapter(getActivity(),
+    	    		((MainActivity)getActivity()).navDrawerItems);
+    	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
         }
         
         
@@ -245,6 +251,8 @@ public class Fragment_Home extends Fragment_AbstractTop {
         protected void onPostExecute (String logged)
         {
             super.onPostExecute(logged);
+            
+            //update nav bar counters
             ((MainActivity)getActivity()).navDrawerItems.get(2).setCount(Integer.toString(DataArrays.inventoryList.size()));
             ((MainActivity)getActivity()).navDrawerItems.get(4).setCount(Integer.toString(DataArrays.shoppingList.size()));
     	 
@@ -341,5 +349,19 @@ public class Fragment_Home extends Fragment_AbstractTop {
            
 
         }
+    }
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        new LoadIngredients().execute();
+      //update nav bar counters
+        ((MainActivity)getActivity()).navDrawerItems.get(2).setCount(Integer.toString(DataArrays.inventoryList.size()));
+        ((MainActivity)getActivity()).navDrawerItems.get(4).setCount(Integer.toString(DataArrays.shoppingList.size()));
+	 
+	    NavDrawerListAdapter adapter = new NavDrawerListAdapter(getActivity(),
+	    		((MainActivity)getActivity()).navDrawerItems);
+	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
+        //Toast.makeText(this, "ON RESUME!!!!", Toast.LENGTH_LONG).show();
     }
 }
