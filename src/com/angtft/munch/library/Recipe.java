@@ -29,4 +29,9 @@ public class Recipe
 	{
 		return recipesById.get(id);
 	}
+	
+	public static int findIDByName(String name)
+	{
+		return recipes.get(name).id;
+	}
 }

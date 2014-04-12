@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.angtft.munch.Fragment_BrowseRecipes.LoadRecipes;
 import com.angtft.munch.library.DataArrays;
@@ -56,7 +57,7 @@ public class Fragment_ShowRecipe extends Fragment_AbstractTop {
  	private TextView 			 textNotes;
  	private TextView 			 textSource;
  	private int 				 recipeID;
- 	private String 				 stringIngredients;
+ 	private String 				 stringIngredients = "";
  	
     /** Called when the view is created, Initializes key Variables, and loads the view with any necessary data */
     @Override
@@ -93,10 +94,24 @@ public class Fragment_ShowRecipe extends Fragment_AbstractTop {
         	textInstructions = (TextView) view.findViewById(R.id.instructions);
         	textNotes = (TextView) view.findViewById(R.id.notes);
         	textSource = (TextView) view.findViewById(R.id.source);
-
+        	
             /** get active recipeID and query recipe.php for all ingredients and their amounts
              *  parse that data into textInredients */
         	recipeID = ((MainActivity)getActivity()).recipeID;
+        	Context context = container.getContext();
+	        int duration = Toast.LENGTH_LONG;
+	        Toast toast = Toast.makeText(context, "RecipeID: " + recipeID, duration);
+		    toast.show();
+        	
+		    Recipe currRecipe = Recipe.findById(recipeID);
+		    textRecipeName.setText(currRecipe.name);
+        	textYield.setText(Integer.toString(currRecipe.yield));
+        	textCostPerR.setText(Float.toString(currRecipe.costPerRecipe));
+        	textCostPerS.setText(Float.toString(currRecipe.costPerServing));
+        	textInstructions.setText(currRecipe.instructions);
+        	textNotes.setText(currRecipe.notes);
+        	textSource.setText(currRecipe.source);
+		    
         	GetIngredients AsyncGetIngredients = new GetIngredients();
         	AsyncGetIngredients.execute();
         	
@@ -157,7 +172,8 @@ public class Fragment_ShowRecipe extends Fragment_AbstractTop {
                             try
                             {
                             	json_recipeIngredients = json.getJSONObject(key);
-                            	Log.i("GetKey", "Success" + i + "Retreiving: " + json_recipeIngredients.getString("name") + ": " + json_recipeIngredients.getString("id"));
+                            	Log.i("GetKey", "Success" + i + "Retreiving: " + json_recipeIngredients.getString("name") + ": " + json_recipeIngredients.getString("id") + 
+                            	 ": " + json_recipeIngredients.getString("info"));
                             	++i;
                             }
                             catch(JSONException e)
@@ -175,7 +191,14 @@ public class Fragment_ShowRecipe extends Fragment_AbstractTop {
                             	/** Load the json name key into list */
                             	try
                             	{
-                            		stringIngredients += json_recipeIngredients.getString("amt") + " : " + json_recipeIngredients.getString("name") +"\n";
+                            		String info = json_recipeIngredients.getString("info");
+                            		
+                            		if (info.equals(""))
+                            			stringIngredients += json_recipeIngredients.getString("amt") + " : " + json_recipeIngredients.getString("name") + "\n";
+                            		else
+                            			stringIngredients += json_recipeIngredients.getString("amt") + " : " + json_recipeIngredients.getString("name") + " : " + 
+                                            	info + "\n";
+                            		
                             	}
                             	catch(JSONException e)
                             	{

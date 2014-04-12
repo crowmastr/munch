@@ -50,8 +50,7 @@ import com.angtft.munch.library.UserFunctions;
 	    private Button 				 btnFilter;    /** Used to submit the filter in the edit text */
 	 	private ListView 			 recipeListView; /** Displays inventoryList */	
 	    private boolean 			 filter = false; /** Flag to determine whether to filter ingredientList before adding to spinner */
-	    private int 				 selectedRecipeID = -1; /** Holds the position of the selected inventoryList item, initialized to sentinel value */
-	    
+	    private String				 selectedRecipeName = ""; /** Holds the name of the selected inventoryList item, initialized to "" */
 	    /** Called when the view is created, Initializes key Variables, and loads the view with any necessary data */
 	    @Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -102,8 +101,17 @@ import com.angtft.munch.library.UserFunctions;
 							int position, long id) {
 
 						/** Get the string at the selected Item position and save it to selectedIngredient */
-						selectedRecipeID = position;
-						Log.i("RecipeListener", Integer.toString(selectedRecipeID));
+						selectedRecipeName = (String) (recipeListView.getItemAtPosition(position));
+						Log.i("RecipeListener", selectedRecipeName);
+						// set activity variable to selected recipe
+						((MainActivity)getActivity()).recipeID = Recipe.findIDByName(selectedRecipeName);
+						//((MainActivity)getActivity()).recipeID = position;
+						Fragment fragment = new Fragment_ShowRecipe();
+		                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+		                ft.replace(R.id.frame_container, fragment);
+		                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		                ft.addToBackStack(null);
+		                ft.commit();
 					}
 	            	
 	            });
@@ -115,10 +123,6 @@ import com.angtft.munch.library.UserFunctions;
 		    	
 		    	recipeListView.setAdapter(recipeAdapter);
 
-		    	
-	        		
-	            
-	            
 	            /** 
 	             * On create, Re-Populate inventoryListView if there are any items in the List
 	             * If IngredientList is empty, Query ingredients from server. 
@@ -220,6 +224,7 @@ import com.angtft.munch.library.UserFunctions;
 	            JSONObject json = userFunction.listRecipes();
 	            String res = "";
 	            
+	                        
 	            // check for json response
 	            /** Try to receive JSON pair, and load ingredient name into Ingredients.allIngredients */
 	            try {
