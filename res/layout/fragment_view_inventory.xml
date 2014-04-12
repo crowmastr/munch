@@ -9,10 +9,10 @@
         <ListView
             android:id="@+id/inventoryListView"
             android:layout_width="match_parent"
-            android:layout_height="137dp"
+            android:layout_height="match_parent"
             android:layout_above="@+id/removeActiveIngredient"
             android:choiceMode="singleChoice"
-            android:listSelector="@color/white" >
+            android:listSelector="@color/garnet" >
 
 	    	</ListView>
 

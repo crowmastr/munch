@@ -61,7 +61,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/btnFilterIngredients"
         android:choiceMode="singleChoice"
-        android:listSelector="@color/white" >
+        android:listSelector="@color/garnet" >
 
     </ListView>
 

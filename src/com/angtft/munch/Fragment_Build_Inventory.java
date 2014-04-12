@@ -83,7 +83,7 @@ import com.angtft.munch.slidingmenu.model.NavDrawerItem;
 
 
 	        token = user.get(KEY_TOKEN);
-	        Context context = container.getContext();
+	        //Context context = container.getContext();
 	        //int duration = Toast.LENGTH_LONG;
 	        
 
@@ -176,7 +176,7 @@ import com.angtft.munch.slidingmenu.model.NavDrawerItem;
 	            );
 	            
 		        filteredIngredientAdapter = new ArrayAdapter<String>(getActivity(),
-		                android.R.layout.simple_list_item_1, filteredIngredientList);
+		                R.layout.custom_listview, filteredIngredientList);
 		     
 		        /** attaching data adapter to spinner, should populate */
 		        lvIngredients.setAdapter(filteredIngredientAdapter);

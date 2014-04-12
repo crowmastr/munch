@@ -46,7 +46,7 @@
         android:layout_below="@+id/filterEditText"
         android:layout_marginTop="13dp"
         android:choiceMode="singleChoice"
-        android:listSelector="@color/white" >
+        android:listSelector="@color/garnet" >
 
     </ListView>
 

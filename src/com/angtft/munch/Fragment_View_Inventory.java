@@ -90,7 +90,7 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 
 		    	/** Set adapter for inventoryListView */
 		    	inventoryAdapter = new ArrayAdapter<String>(getActivity(), 
-		    			android.R.layout.simple_list_item_1,
+		    			R.layout.custom_listview,
 		    			DataArrays.inventoryList);
 		    	
 		    	inventoryListView = (ListView) view.findViewById(R.id.inventoryListView);

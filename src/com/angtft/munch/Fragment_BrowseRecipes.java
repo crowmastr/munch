@@ -117,9 +117,14 @@ import com.angtft.munch.library.UserFunctions;
 	            });
 		    	
 		    	/** Set adapter for inventoryListView */
-		    	recipeAdapter = new ArrayAdapter<String>(getActivity(), 
+		    	/** recipeAdapter = new ArrayAdapter<String>(getActivity(), 
 		    			android.R.layout.simple_list_item_1,
+		    			new ArrayList<String>(Recipe.recipes.keySet())); */
+		    	
+		    	recipeAdapter = new ArrayAdapter<String>(getActivity(), 
+		    			R.layout.custom_listview,
 		    			new ArrayList<String>(Recipe.recipes.keySet()));
+	           
 		    	
 		    	recipeListView.setAdapter(recipeAdapter);
 
@@ -334,7 +339,7 @@ import com.angtft.munch.library.UserFunctions;
 	    	if (!Recipe.recipes.isEmpty())
 	    	{
 		    	recipeAdapter = new ArrayAdapter<String>(getActivity(), 
-		    			android.R.layout.simple_list_item_1,
+		    			R.layout.custom_listview,
 		    			new ArrayList<String>(Recipe.recipes.keySet()));
 		    	
 		    	recipeListView.setAdapter(recipeAdapter);
