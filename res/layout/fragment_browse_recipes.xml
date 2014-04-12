@@ -10,8 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/selectRecipes" 
-        android:textColor="@color/white"
-        android:layout_below="@+id/Welcome"/>
+        android:textColor="@color/white"/>
 
     <Button
         android:id="@+id/btnFilterRecipes"
@@ -51,16 +50,7 @@
 
     </ListView>
 
-    <TextView
-        android:id="@+id/Welcome"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
-        android:text="@string/welcome"
-        android:textColor="@color/white"
-        android:textSize="40sp" />
+  
    
 
 </RelativeLayout>

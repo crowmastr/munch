@@ -42,6 +42,7 @@ import com.angtft.munch.library.DataArrays;
 import com.angtft.munch.library.DatabaseHandler;
 import com.angtft.munch.library.Ingredient;
 import com.angtft.munch.library.UserFunctions;
+import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 	 
 
 
@@ -74,12 +75,12 @@ import com.angtft.munch.library.UserFunctions;
 
         	                         
 	        token = user.get(KEY_TOKEN);
-	        Context context = container.getContext();
-	        int duration = Toast.LENGTH_LONG;
+	        //Context context = container.getContext();
+	        //int duration = Toast.LENGTH_LONG;
 	        
 
-	        Toast toast = Toast.makeText(context, token, duration);
-	        toast.show();
+	        //Toast toast = Toast.makeText(context, token, duration);
+	        //toast.show();
 
 	     
 	        /** Check login status in database */
@@ -131,8 +132,19 @@ import com.angtft.munch.library.UserFunctions;
 							Log.d("RemoveIngredient", "Calling RemoveIngredient");
 							RemoveIngredient();
 						}
+						
+						try {
+				    		
+				    		String count = ((MainActivity)getActivity()).navDrawerItems.get(4).getCount();
+				    		((MainActivity)getActivity()).navDrawerItems.get(4).setCount(Integer.toString(Integer.parseInt(count) - 1));
+				    	    Log.i("AddIngredient", "count: " + Integer.toString(Integer.parseInt(count) - 1));
+				    	 
+				    	    NavDrawerListAdapter adapter = new NavDrawerListAdapter(getActivity(),
+				    	    		((MainActivity)getActivity()).navDrawerItems);
+				    	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
 							
-							
+						}
+						catch(NumberFormatException nfe) {}	
 					}
 				});
 	            

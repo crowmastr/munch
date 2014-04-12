@@ -46,7 +46,6 @@
         <item >View Inventory</item>
         <item >Browse Recipes</item>
         <item >Shopping List</item>
-        <item >Nearby Stores</item>
         <item >About Munch</item>
         <item >Logout</item>
         
@@ -60,7 +59,6 @@
         <item>@drawable/ic_pages</item>
         <item>@drawable/ic_photos</item>
         <item>@drawable/ic_communities</item>
-        <item>@drawable/ic_people</item>
         <item>@drawable/ic_whats_hot</item>
         <item>@drawable/ic_logout</item>
         

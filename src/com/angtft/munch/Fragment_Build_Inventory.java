@@ -241,7 +241,7 @@ import com.angtft.munch.slidingmenu.model.NavDrawerItem;
 	    	else
 	    		Log.w("AddIngredient", "It is very likely that the ingredient was added to the inventoryList");
 	    	
-	    	/** increment counter on side menu */
+	    	/** increment counter on side menu for inventory*/
 	    	
 	    	try {
 	    		
@@ -317,6 +317,21 @@ import com.angtft.munch.slidingmenu.model.NavDrawerItem;
 	    	AddShopping as = new AddShopping();
 	    	as.execute();
 	    	Log.i("AddToShoppingList", "Added " + filteredIngredientList.get(i) + " to the shoppingList");
+	    	
+	    	/** increment counter on side menu for shopping list*/
+	    	
+	    	try {
+	    		
+	    		String count = ((MainActivity)getActivity()).navDrawerItems.get(4).getCount();
+	    		((MainActivity)getActivity()).navDrawerItems.get(4).setCount(Integer.toString(Integer.parseInt(count) + 1));
+	    	    Log.i("AddIngredient", "count: " + Integer.toString(Integer.parseInt(count) + 1));
+	    	 
+	    	    NavDrawerListAdapter adapter = new NavDrawerListAdapter(getActivity(),
+	    	    		((MainActivity)getActivity()).navDrawerItems);
+	    	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
+	    	    
+	    	    
+	    	} catch(NumberFormatException nfe) {}	
 	    }
 	    
 	    /** Function used to find filter value from EditText on view and only add 

@@ -71,13 +71,11 @@ public class MainActivity extends Activity {
         // Browse Recipes
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(2, -1)));
         // Shopping List
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(3, -1)));
-        // Nearby Stores
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(4, -1)));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(3, -1), true, "0"));
         // About Munch
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(5, -1)));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
         // Logout
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
         
         // Recycle the typed array
         navMenuIcons.recycle();
@@ -186,12 +184,9 @@ public class MainActivity extends Activity {
             fragment = new Fragment_View_Shopping_List();
             break;
         case 5:
-            fragment = new Fragment_NearbyStores();
+        	fragment = new Fragment_About();
             break;
         case 6:
-            fragment = new Fragment_About();
-            break;
-        case 7:
         	UserFunctions userFunctions = new UserFunctions();;
             userFunctions.logoutUser(this);
             fragment = new Fragment_Home();

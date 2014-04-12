@@ -98,10 +98,10 @@ public class Fragment_ShowRecipe extends Fragment_AbstractTop {
             /** get active recipeID and query recipe.php for all ingredients and their amounts
              *  parse that data into textInredients */
         	recipeID = ((MainActivity)getActivity()).recipeID;
-        	Context context = container.getContext();
+        	/** Context context = container.getContext();
 	        int duration = Toast.LENGTH_LONG;
 	        Toast toast = Toast.makeText(context, "RecipeID: " + recipeID, duration);
-		    toast.show();
+		    toast.show(); */
         	
 		    Recipe currRecipe = Recipe.findById(recipeID);
 		    textRecipeName.setText(currRecipe.name);

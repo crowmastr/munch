@@ -5,21 +5,12 @@
     android:background="@layout/background"
     android:orientation="vertical" >
 
-    <TextView 
-        android:id="@+id/inventoryHeader"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="@string/inventory" 
-        android:textColor="@color/white"
-        android:textSize="20sp"/>
-
+    
         <ListView
             android:id="@+id/inventoryListView"
             android:layout_width="match_parent"
             android:layout_height="137dp"
             android:layout_above="@+id/removeActiveIngredient"
-            android:layout_below="@+id/inventoryHeader"
             android:choiceMode="singleChoice"
             android:listSelector="@color/white" >
 

@@ -9,7 +9,7 @@
         android:id="@+id/welcome"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="about placeholder" 
+        android:text="Munch was designed by:\n\nEric Boggs\nAdam Notreal\nJeremy Noel\nMiles Crowe\n\n©Munchapp.org" 
         android:textColor="@color/white"/>
 
     
