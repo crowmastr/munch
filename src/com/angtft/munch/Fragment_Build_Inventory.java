@@ -264,30 +264,25 @@ import com.angtft.munch.slidingmenu.model.NavDrawerItem;
 		    {
 
 	    		String res = "";
+	    		boolean success = false;
 		       
 
 				@Override   
 		        protected String doInBackground(Void... params)
 		        {
 					Log.i("Why isnt' it adding", Integer.toString(DataArrays.shoppingList.size()));
-					/**
-			    	for(int k = 0; k < DataArrays.shoppingList.size(); ++k)
-			    	{
-			    		Log.w("Why isn't it adding" , DataArrays.shoppingList.get(k));
-			    		Log.w("Why isn't it adding" , filteredIngredientList.get(i));
-			    		if(filteredIngredientList.get(i) == (DataArrays.shoppingList.get(k)));
-			    		{
-			    			Log.w("AddToShoppingList", "Function believes ingredient is already in shoppingList");
-			    			/**
-			    			Context context = container.getContext();
-					        Toast toast = Toast.makeText(context, token, duration);
-					        toast.show();
-					        
-			    			return res;
-			    		}
-
-			    	}
-	    			*/
+					
+					for(int j = 0; j < DataArrays.shoppingList.size(); ++j)
+					{
+						Log.i("AddToShoppingList", "DataArrays.shoppingList.get(j): " + DataArrays.shoppingList.get(j));
+						if(DataArrays.shoppingList.get(j) == filteredIngredientList.get(i))
+						{
+							Log.w("AddToShoppingList", "Selected ingredient = ShoppingListIngredient(" + j + ").");
+							return res;
+						}
+					}
+						
+	    			
 
 			    	UserFunctions myUser = new UserFunctions();
 		            JSONObject json = myUser.addIngredientShopping(Ingredient.ingredients.get(filteredIngredientList.get(i)).GetId(), token);
@@ -309,8 +304,30 @@ import com.angtft.munch.slidingmenu.model.NavDrawerItem;
 		            DataArrays.shoppingListID.add(myInt);
 		            DataArrays.shoppingList.add(filteredIngredientList.get(i));
 		            }
+		            success = true;
 		            return res;
-		        }   
+		        } 
+				@Override
+				protected void onPostExecute(String log)
+				{
+			    	/** increment counter on side menu for shopping list*/
+			    	
+					if(success)
+					{
+				    	try {
+				    		
+				    		String count = ((MainActivity)getActivity()).navDrawerItems.get(4).getCount();
+				    		((MainActivity)getActivity()).navDrawerItems.get(4).setCount(Integer.toString(Integer.parseInt(count) + 1));
+				    	    Log.i("AddIngredient", "count: " + Integer.toString(Integer.parseInt(count) + 1));
+				    	 
+				    	    NavDrawerListAdapter adapter = new NavDrawerListAdapter(getActivity(),
+				    	    		((MainActivity)getActivity()).navDrawerItems);
+				    	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
+				    	    
+				    	    
+				    	} catch(NumberFormatException nfe) {}	
+					}
+				}
 		        
 		        
 		    }
@@ -318,20 +335,7 @@ import com.angtft.munch.slidingmenu.model.NavDrawerItem;
 	    	as.execute();
 	    	Log.i("AddToShoppingList", "Added " + filteredIngredientList.get(i) + " to the shoppingList");
 	    	
-	    	/** increment counter on side menu for shopping list*/
-	    	
-	    	try {
-	    		
-	    		String count = ((MainActivity)getActivity()).navDrawerItems.get(4).getCount();
-	    		((MainActivity)getActivity()).navDrawerItems.get(4).setCount(Integer.toString(Integer.parseInt(count) + 1));
-	    	    Log.i("AddIngredient", "count: " + Integer.toString(Integer.parseInt(count) + 1));
-	    	 
-	    	    NavDrawerListAdapter adapter = new NavDrawerListAdapter(getActivity(),
-	    	    		((MainActivity)getActivity()).navDrawerItems);
-	    	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
-	    	    
-	    	    
-	    	} catch(NumberFormatException nfe) {}	
+
 	    }
 	    
 	    /** Function used to find filter value from EditText on view and only add 

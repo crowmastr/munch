@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
  
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
  
+
 import android.content.Context;
+import android.util.Log;
  
 public class UserFunctions {
      
@@ -185,6 +188,7 @@ public class UserFunctions {
         params.add(new BasicNameValuePair("auth", token));
         params.add(new BasicNameValuePair("list", ilist_shopping));
         params.add(new BasicNameValuePair("id", Integer.toString(ingredient)));
+        Log.i("delIngredientShopping", Integer.toString(ingredient));
         
         JSONObject json = jsonParser.getJSONFromUrl(ilistURL, params);
         // return json

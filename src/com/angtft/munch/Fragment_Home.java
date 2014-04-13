@@ -213,14 +213,29 @@ public class Fragment_Home extends Fragment_AbstractTop {
                             	{
                     	    		for(String ingredientName : Ingredient.ingredients.keySet())
                     	    		{
+                    	    			boolean status = true;
                     	    			if(Ingredient.ingredients.get(ingredientName).GetId() == json_ingredient.getInt("ingredient"))
                     	    			{
-                    	    				Log.i("LoadShopping", Ingredient.ingredients.get(ingredientName).GetId() + " matches " + json_ingredient.getString("ingredient"));
-                    	    				DataArrays.shoppingList.add(ingredientName);
-                    	    				Integer myInt = json_ingredient.getInt("id");
-                    	    				DataArrays.shoppingListID.add(myInt);
-                    	    				Log.i("LoadShopping", json_ingredient.getInt("id") + " Added to idlist"); 
-                    	    				shoppingCount += 1;
+                    	    				for(int j = 0; j < DataArrays.shoppingList.size(); ++j)
+                    						{
+                    							Log.i("AddToShoppingList", "DataArrays.shoppingList.get(j): " + DataArrays.shoppingList.get(j));
+                    							if(DataArrays.shoppingList.get(j) == ingredientName)
+                    							{
+                    								Log.w("AddToShoppingList", "Selected ingredient = ShoppingListIngredient(" + j + ").");
+                    								status = false;
+                    								break;
+                    							}
+                    						}
+                    							
+                    	    				if (status)
+                    	    				{
+	                    	    				Log.i("LoadShopping", Ingredient.ingredients.get(ingredientName).GetId() + " matches " + json_ingredient.getString("ingredient"));
+	                    	    				DataArrays.shoppingList.add(ingredientName);
+	                    	    				Integer myInt = json_ingredient.getInt("id");
+	                    	    				DataArrays.shoppingListID.add(myInt);
+	                    	    				Log.i("LoadShopping", json_ingredient.getInt("id") + " Added to idlist"); 
+	                    	    				shoppingCount += 1;
+                    	    				}
                     	    				
                     	    			}
                     	    		}
@@ -261,95 +276,8 @@ public class Fragment_Home extends Fragment_AbstractTop {
     	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
         }
     }
-    public class LoadShoppingList extends AsyncTask<Void, Void, String> 
-    {
-       
-        @Override   
-        protected String doInBackground(Void... params) {
-        	
-        	Log.i("LoadShoppingList", "Entering LoadShoppingList");
-        	/** Call function defined in project library to retrieve ingredients from server */
-            UserFunctions userFunction = new UserFunctions();
-            android.util.Log.w("Before listIngredients","We are about to enter listIngredients");
-            JSONObject json = userFunction.listIngredientShopping(token);
-            String res = "";
-            
-            // check for json response
-            /** Try to receive JSON pair, and load ingredient name into Ingredients.allIngredients */
-            try {
-                if (json.getString(KEY_SUCCESS) != null){
-                	android.util.Log.w("Succesful Get String", "We were able to successfully get jsonString");
-                    res = json.getString(KEY_SUCCESS); 
-                    if(Integer.parseInt(res) == 1){
 
-
-                    	Iterator<?> keys = json.keys();
-                    	while( keys.hasNext() ){
-                            String key = (String)keys.next();
-                            int i = 1;
-                        	JSONObject json_ingredient = null;
-
-
-                            try
-                            {
-                            	json_ingredient = json.getJSONObject(key);
-                            	Log.i("GetKey", "Success" + i + "Retreiving: " + json_ingredient.getString("ingredient"));
-                            	++i;
-                            }
-                            catch(JSONException e)
-                            {
-                            	if (key.equals("tag"))	
-                            		Log.w("JsonGet-Exception", "key = tag");
-                            	else
-                            		e.printStackTrace();
-                            }
-
-                            //System.out.println("This is the key string: " + key);
-                            
-                            if( json_ingredient != null)
-                            { 
-                            	/** Load the json name key into list */
-                            	try
-                            	{
-                    	    		for(String ingredientName : Ingredient.ingredients.keySet())
-                    	    		{
-                    	    			if(Ingredient.ingredients.get(ingredientName).GetId() == json_ingredient.getInt("ingredient"))
-                    	    			{
-                    	    				Log.i("LoadShopping", Ingredient.ingredients.get(ingredientName).GetId() + " matches " + json_ingredient.getString("ingredient"));
-                    	    				DataArrays.shoppingList.add(ingredientName);
-                    	    			}
-                    	    		}
-                            	}
-                            	catch(JSONException e)
-                            	{
-                            		/** Print warning to console. Program may functionally continue, but will be missing
-                            		 *  whatever ingredient erred. This intentionally catches the pair (tag , success)
-                            		 */
-                            		Log.w("LoadShoppingList","Could not get string");
-                            	}
-                            }           
-                        }	
-                    }
-                }
-            } 
-            /** Print out any JSON Exception */
-            catch (JSONException e) {
-            	android.util.Log.w("JSON Exception", "Something went wrong in the try");
-                e.printStackTrace();
-            }
-            
-
-            return res;
-        }
-        @Override
-        protected void onPostExecute (String logged)
-        {
-            super.onPostExecute(logged);
-            
-           
-
-        }
-    }
+    
     @Override
     public void onResume()
     {
@@ -364,4 +292,5 @@ public class Fragment_Home extends Fragment_AbstractTop {
 	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
         //Toast.makeText(this, "ON RESUME!!!!", Toast.LENGTH_LONG).show();
     }
+    
 }
