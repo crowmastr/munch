@@ -112,14 +112,18 @@ public class Fragment_Register extends Fragment_AbstractTop {
         protected void onPostExecute (String logged){
             super.onPostExecute(logged);
             //your stuff
-            //you can pass params, launch a new Intent, a Toast...  
-          
-            if (Integer.parseInt(logged) != 1) {
+            //you can pass params, launch a new Intent, a Toast...
+            int check = 0;
+            try {
+            	check = Integer.parseInt(logged);
+            }
+            catch(NumberFormatException e){}
+            if (check != 1) {
             	registerErrorMsg.setText("Error occured in registration");
             }
             else {
             	registerErrorMsg.setText("");
             }
-        }
+          }
     }
 }
