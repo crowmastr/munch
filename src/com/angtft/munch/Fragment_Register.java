@@ -8,6 +8,7 @@ import com.angtft.munch.library.UserFunctions;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
  
 public class Fragment_Register extends Fragment_AbstractTop {
     Button btnRegister;
@@ -26,6 +28,7 @@ public class Fragment_Register extends Fragment_AbstractTop {
     EditText inputEmail;
     EditText inputPassword;
     TextView registerErrorMsg;
+    
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,8 +46,30 @@ public class Fragment_Register extends Fragment_AbstractTop {
       // Register Button Click event
       btnRegister.setOnClickListener(new View.OnClickListener() {         
           public void onClick(View view) {
-          	UserRegisterTask AsyncLogin = new UserRegisterTask();
-            AsyncLogin.execute();
+        	Context context = getActivity();
+        	if (inputFullName.getText().toString().isEmpty())
+        	{
+        		int duration = Toast.LENGTH_LONG;
+                Toast toast = Toast.makeText(context, "You must enter a name", duration);
+                toast.show();
+        	}
+        	else if (inputEmail.getText().toString().isEmpty())
+        	{
+        		int duration = Toast.LENGTH_LONG;
+                Toast toast = Toast.makeText(context, "You must enter an email", duration);
+                toast.show();
+        	}
+        	else if (inputPassword.getText().toString().isEmpty())
+        	{
+        		int duration = Toast.LENGTH_LONG;
+                Toast toast = Toast.makeText(context, "You must enter a password", duration);
+                toast.show();
+        	}
+        	else
+        	{
+        		UserRegisterTask AsyncLogin = new UserRegisterTask();
+        		AsyncLogin.execute();
+        	}
           }
       });
  
@@ -72,7 +97,8 @@ public class Fragment_Register extends Fragment_AbstractTop {
             UserFunctions userFunction = new UserFunctions();
             JSONObject json = userFunction.registerUser(name, email, password);
             String res = "";
-
+           
+            
             // check for login response
             try {
                 if (json.getString(KEY_SUCCESS) != null) {

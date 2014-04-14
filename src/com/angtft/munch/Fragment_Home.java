@@ -33,7 +33,6 @@ public class Fragment_Home extends Fragment_AbstractTop {
 	static boolean userHintFlag = true;
 	private TextView welcomeText; /** Welcome Text Object */	
 	private String               token;
-	private int shoppingCount = 0;
    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -234,7 +233,6 @@ public class Fragment_Home extends Fragment_AbstractTop {
 	                    	    				Integer myInt = json_ingredient.getInt("id");
 	                    	    				DataArrays.shoppingListID.add(myInt);
 	                    	    				Log.i("LoadShopping", json_ingredient.getInt("id") + " Added to idlist"); 
-	                    	    				shoppingCount += 1;
                     	    				}
                     	    				
                     	    			}
