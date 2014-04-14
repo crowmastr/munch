@@ -75,7 +75,7 @@ public class Fragment_Register extends Fragment_AbstractTop {
         		else
         		{
         			int duration = Toast.LENGTH_LONG;
-                    Toast toast = Toast.makeText(context, "You must enter a valid email", duration);
+                    Toast toast = Toast.makeText(context, "You must enter an email", duration);
                     toast.show();
         		}
         	}
