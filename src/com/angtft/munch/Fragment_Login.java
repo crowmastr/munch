@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -12,6 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.angtft.munch.Fragment_Register.UserRegisterTask;
 import com.angtft.munch.library.DatabaseHandler;
 import com.angtft.munch.library.UserFunctions;
 
@@ -52,10 +56,39 @@ public class Fragment_Login extends Fragment_AbstractTop {
         btnLogin.setOnClickListener(new View.OnClickListener() {
  
             public void onClick(View view) {
-            	/** create async task to get data from remote server.  android requires any data retrieved over
-            	a network connection be async to prevent the app from freezing in the case of network or data issues */
-                UserLoginTask AsyncLogin = new UserLoginTask();
-                AsyncLogin.execute();
+            	Context context = getActivity();
+            	if (!inputEmail.getText().toString().isEmpty())
+            	{
+            		if (android.util.Patterns.EMAIL_ADDRESS.matcher(inputEmail.getText().toString()).matches())
+                	{
+            			if (!inputPassword.getText().toString().isEmpty())
+                    	{
+            				/** create async task to get data from remote server.  android requires any data retrieved over
+                        	a network connection be async to prevent the app from freezing in the case of network or data issues */
+                            UserLoginTask AsyncLogin = new UserLoginTask();
+                            AsyncLogin.execute();
+                    	}
+            			else
+            			{
+            				int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(context, "You must enter a password", duration);
+                            toast.show();
+            			}
+                	}
+            		else 
+            		{
+            			int duration = Toast.LENGTH_LONG;
+                        Toast toast = Toast.makeText(context, "You must enter a valid email", duration);
+                        toast.show();
+            		}
+            		
+            	}
+            	else 
+            	{
+            		int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, "You must enter an email", duration);
+                    toast.show();
+            	}
             }
         });
  
@@ -133,6 +166,14 @@ public class Fragment_Login extends Fragment_AbstractTop {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                try {
+                	//login failed get error message
+                	res = json.getString(KEY_ERROR_MSG); 
+                }
+                catch (JSONException e2)
+                {
+                	res = "Unknown Error";
+                }
             }
             return res; /** string containing success string value */
         }
@@ -140,14 +181,23 @@ public class Fragment_Login extends Fragment_AbstractTop {
         @Override
         protected void onPostExecute (String logged){
             super.onPostExecute(logged);
+            try
+            {
+            	/** check if login failed */
+                if (!logged.equals("1")) {
+                	loginErrorMsg.setText("Incorrect username/password");
+                }
+                else {
+                	loginErrorMsg.setText("");
+                }
+            }
+            catch (Exception e) {
+            	Context context = getActivity();
+            	int duration = Toast.LENGTH_LONG;
+            	Toast toast = Toast.makeText(context, logged, duration);
+            	toast.show();
+            }
             
-            /** check if login failed */
-            if (!logged.equals("1")) {
-            	loginErrorMsg.setText("Incorrect username/password");
-            }
-            else {
-            	loginErrorMsg.setText("");
-            }
         }
     }
 }

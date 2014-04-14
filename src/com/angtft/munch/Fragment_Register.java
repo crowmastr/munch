@@ -47,28 +47,43 @@ public class Fragment_Register extends Fragment_AbstractTop {
       btnRegister.setOnClickListener(new View.OnClickListener() {         
           public void onClick(View view) {
         	Context context = getActivity();
-        	if (inputFullName.getText().toString().isEmpty())
+        	if (!inputFullName.getText().toString().isEmpty())
+        	{
+        		if (!inputEmail.getText().toString().isEmpty())
+            	{
+        			if (android.util.Patterns.EMAIL_ADDRESS.matcher(inputEmail.getText().toString()).matches())
+                	{
+        				if (!inputPassword.getText().toString().isEmpty())
+        	        	{
+        					UserRegisterTask AsyncLogin = new UserRegisterTask();
+        	        		AsyncLogin.execute();
+        	        	}
+        				else
+        				{
+        					int duration = Toast.LENGTH_LONG;
+        	                Toast toast = Toast.makeText(context, "You must enter a password", duration);
+        	                toast.show();
+        				}
+                	}
+        			else
+        			{
+        				int duration = Toast.LENGTH_LONG;
+                        Toast toast = Toast.makeText(context, "You must enter a valid email", duration);
+                        toast.show();
+        			}
+            	}
+        		else
+        		{
+        			int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, "You must enter a valid email", duration);
+                    toast.show();
+        		}
+        	}
+        	else
         	{
         		int duration = Toast.LENGTH_LONG;
                 Toast toast = Toast.makeText(context, "You must enter a name", duration);
                 toast.show();
-        	}
-        	else if (inputEmail.getText().toString().isEmpty())
-        	{
-        		int duration = Toast.LENGTH_LONG;
-                Toast toast = Toast.makeText(context, "You must enter an email", duration);
-                toast.show();
-        	}
-        	else if (inputPassword.getText().toString().isEmpty())
-        	{
-        		int duration = Toast.LENGTH_LONG;
-                Toast toast = Toast.makeText(context, "You must enter a password", duration);
-                toast.show();
-        	}
-        	else
-        	{
-        		UserRegisterTask AsyncLogin = new UserRegisterTask();
-        		AsyncLogin.execute();
         	}
           }
       });
@@ -130,6 +145,15 @@ public class Fragment_Register extends Fragment_AbstractTop {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+             
+                try {
+                	//login failed get error message
+                	res = json.getString(KEY_ERROR_MSG); 
+                }
+                catch (JSONException e2)
+                {
+                	res = "Unknown Error";
+                }
             }
             return res;
         }
@@ -140,12 +164,21 @@ public class Fragment_Register extends Fragment_AbstractTop {
             //your stuff
             //you can pass params, launch a new Intent, a Toast...  
           
-            if (Integer.parseInt(logged) != 1) {
-            	registerErrorMsg.setText("Error occured in registration");
+            try{
+            	 if (Integer.parseInt(logged) != 1) {
+                 	registerErrorMsg.setText("Error occured in registration");
+                 }
+                 else {
+                 	registerErrorMsg.setText("");
+                 }
             }
-            else {
-            	registerErrorMsg.setText("");
+            catch (Exception e) {
+            	Context context = getActivity();
+            	int duration = Toast.LENGTH_LONG;
+                Toast toast = Toast.makeText(context, logged, duration);
+                toast.show();
             }
+           
         }
     }
 }

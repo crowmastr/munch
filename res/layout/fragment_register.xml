@@ -29,7 +29,8 @@
             android:id="@+id/registerName"
             android:layout_width="fill_parent"
             android:textColor="#FFFFFF"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:singleLine="true" />
          
         <!--  Email Label -->
         <TextView
@@ -42,7 +43,9 @@
             android:id="@+id/registerEmail"
             android:layout_width="fill_parent"
             android:textColor="#FFFFFF"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:inputType="textEmailAddress" />
          
         <!--  Password Label -->
         <TextView
@@ -57,7 +60,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="#FFFFFF"
-            android:password="true" />
+            android:inputType="textPassword"
+            android:singleLine="true" />
          
         <!--  Error message -->
         <TextView android:id="@+id/register_error"
