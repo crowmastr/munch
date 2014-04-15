@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@layout/background"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/selectRecipeLabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/selectRecipes" 
+        android:textColor="@color/white"/>
+
+    <ListView
+        android:id="@+id/recipeListView"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/selectRecipeLabel"
+        android:layout_marginTop="13dp"
+        android:choiceMode="singleChoice"
+        android:listSelector="@color/garnet" >
+
+    </ListView>
+
+  
+   <Button
+        android:id="@+id/btnAddMoreIngredients"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add More Ingredients" 
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
+
+</RelativeLayout>

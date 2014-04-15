@@ -31,6 +31,7 @@
     <string name="filter">filter</string>
     <string name="activeIngredientText">My Ingredients</string>
     <string name="addButton">Add Ingredient</string>
+    <string name="searchRecipes">Search for Recipes</string>
     <string name="removeButton">Remove Ingredient</string>
     <string name="browseIngredients">Browse Ingredients</string>
     <string name="inventory">My Inventory</string>

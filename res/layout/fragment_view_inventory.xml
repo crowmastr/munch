@@ -20,8 +20,17 @@
        	    android:id="@+id/removeActiveIngredient"
        	    android:layout_width="match_parent"
        	    android:layout_height="wrap_content"
-       	    android:layout_alignParentBottom="true"
+       	    android:layout_above="@+id/searchRecipes"
        	    android:layout_alignParentLeft="true"
        	    android:text="@string/removeButton" />
 
+       	<Button
+       	    android:id="@+id/searchRecipes"
+       	    android:layout_width="match_parent"
+       	    android:layout_height="wrap_content"
+       	    android:layout_alignParentBottom="true"
+       	    android:layout_alignParentLeft="true"
+       	    android:text="@string/searchRecipes" />
+       	
+       	
 </RelativeLayout>

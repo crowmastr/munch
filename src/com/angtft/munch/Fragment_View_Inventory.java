@@ -39,6 +39,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.angtft.munch.Fragment_Home.LoadIngredients;
 import com.angtft.munch.library.DataArrays;
 import com.angtft.munch.library.Ingredient;
 import com.angtft.munch.library.UserFunctions;
@@ -56,6 +57,7 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 		private UserFunctions 		 userFunctions;
 		private ArrayAdapter<String> inventoryAdapter;
 	    private Button 				 btnRemIngredient; /** Used to remove the selected ingredient from Active List */
+	    private Button 				 btnsearchRecipes; /** Used to search for recipes from the inventory list */
 	 	private ListView 			 inventoryListView; /** Displays inventoryList */	
 	    private int 				 selectedIngredientID = -1; /** Holds the position of the selected inventoryList item, initialized to sentinel value */
 	    
@@ -131,6 +133,29 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 							RemoveIngredient();
 						}
 							
+							
+					}
+				});
+	            
+	            /** Initalize Button to remove the selected inventoryList from the inventoryList */
+	            btnsearchRecipes = (Button) view.findViewById(R.id.searchRecipes);
+	            btnsearchRecipes.setOnClickListener(new View.OnClickListener()
+	            {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						//check and make sure ingredients count > 1
+						if (DataArrays.inventoryList.size() > 0)
+						{
+							Fragment fragment = new Fragment_SearchRecipe();
+			                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+			                ft.replace(R.id.frame_container, fragment);
+			                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			                ft.addToBackStack(null);
+			                ft.commit();
+						}
+						
 							
 					}
 				});

@@ -144,12 +144,12 @@ public class UserFunctions {
      * function make get ingredients for specific recipe Request
      * @param ingredients[]
      * */
-    public JSONObject searchRecipe(String[] ingredients){
+    public JSONObject searchRecipe(String ingredients){
         // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("tag", recipe_tag));
         params.add(new BasicNameValuePair("op", recipe_op_search));
-        params.add(new BasicNameValuePair("ingredients", ingredients.toString()));
+        params.add(new BasicNameValuePair("ingredients", ingredients));
         
         JSONObject json = jsonParser.getJSONFromUrl(recipeURL, params);
         // return json
