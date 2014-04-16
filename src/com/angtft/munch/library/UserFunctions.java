@@ -153,7 +153,7 @@ public class UserFunctions {
         StringBuffer sb = new StringBuffer();
         for (String s : ingredients)
         {
-        	if (sb.length() == 0)
+        	if (sb.length() != 0)
         		sb.append(';');
         	sb.append(s);
         }
