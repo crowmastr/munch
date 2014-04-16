@@ -168,7 +168,7 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 	        	/** Call function defined in project library to retrieve ingredients from server */
 	            UserFunctions userFunction = new UserFunctions();
 	            android.util.Log.w("Before searchRecipes","We are about to enter searchRecipes");
-	            JSONObject json = userFunction.searchRecipe(DataArrays.inventoryList.toString());
+	            JSONObject json = userFunction.searchRecipe(DataArrays.inventoryList);
 	            String res = "";
 	            
 	            // check for json response

@@ -31,7 +31,7 @@ class recipe extends API
 		else if ($op == 'search')
 		{
 			$this->validateExists($data, 'ingredients');
-			$ingredients = explode(",", $data['ingredients']);
+			$ingredients = explode(";", $data['ingredients']);
 			
 			$possible_recipes = array();
 			$definite_recipes = array();
