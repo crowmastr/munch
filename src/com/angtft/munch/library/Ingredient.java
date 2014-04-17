@@ -1,6 +1,10 @@
 package com.angtft.munch.library;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import android.util.Log;
 
 public class Ingredient
 {
@@ -32,5 +36,16 @@ public class Ingredient
 	}
 	
 	public static HashMap<String, Ingredient> ingredients = new HashMap<String, Ingredient>();
+	
+	public static List<String> IngredientNameToId(List<String> names){
+		List<String> idList = new ArrayList<String>();
+		
+		for(int i = 0; i < names.size(); ++i){
+			Ingredient id = Ingredient.ingredients.get(names.get(i));
+			idList.add(Integer.toString(id.GetId()));		
+		}
+		Log.i("Ingredients-IngredientNametoId", idList.toString());
+		return idList;
+	}
 	
 }

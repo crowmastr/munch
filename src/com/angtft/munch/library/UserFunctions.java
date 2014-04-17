@@ -143,6 +143,8 @@ public class UserFunctions {
     /**
      * function make get ingredients for specific recipe Request
      * @param ingredients[]
+     * 
+     * expects a list of ingredient Ids
      * */
     public JSONObject searchRecipe(List<String> ingredients){
         // Building Parameters

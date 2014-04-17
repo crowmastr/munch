@@ -54,7 +54,7 @@
             android:layout_weight="1" />
         
         <Button
-            android:id="@+id/clearFilter"
+            android:id="@+id/btnAllRecipes"
             style="?android:attr/buttonStyleSmall"
 			android:layout_width="match_parent"
             android:layout_height="wrap_content"

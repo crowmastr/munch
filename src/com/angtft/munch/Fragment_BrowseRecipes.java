@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -26,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.angtft.munch.library.DataArrays;
+import com.angtft.munch.library.Ingredient;
 import com.angtft.munch.library.Recipe;
 import com.angtft.munch.library.UserFunctions;
 	 
@@ -56,11 +58,13 @@ import com.angtft.munch.library.UserFunctions;
 		private UserFunctions 		 userFunctions;
 		private ArrayAdapter<String> recipeAdapter;
 	    private Button 				 btnFilter;    /** Used to submit the filter in the edit text */
-	    protected List<String>		 inventoryRecipes;
+	    private List<String>		 inventoryRecipes;
 	    private Button				 btnInvRecipe;
+	    private Button				 btnAllRecipe;
 	 	private ListView 			 recipeListView; /** Displays inventoryList */	
 	    private boolean 			 filter = false; /** Flag to determine whether to filter ingredientList before adding to spinner */
 	    private String				 selectedRecipeName = ""; /** Holds the name of the selected inventoryList item, initialized to "" */
+	    private static Integer		 activeListId;
 	    /** Called when the view is created, Initializes key Variables, and loads the view with any necessary data */
 	    @Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -136,16 +140,16 @@ import com.angtft.munch.library.UserFunctions;
 		    	/** recipeAdapter = new ArrayAdapter<String>(getActivity(), 
 		    			android.R.layout.simple_list_item_1,
 		    			new ArrayList<String>(Recipe.recipes.keySet())); */
-		    	
 		    	recipeAdapter = new ArrayAdapter<String>(getActivity(), 
 		    			R.layout.custom_listview,
-		    			new ArrayList<String>(Recipe.recipes.keySet()));
-	           
+		    			new ArrayList<String>(DataArrays.activeRecipes));
 		    	
 		    	recipeListView.setAdapter(recipeAdapter);
 		    	
 		    	/** List for inventory Recipe Filter */
 		    	inventoryRecipes = new ArrayList<String>();
+		    	
+		    	
 		    	btnInvRecipe = (Button) view.findViewById(R.id.btnInv);
 		    	btnInvRecipe.setOnClickListener(new View.OnClickListener()
 		            {
@@ -158,6 +162,15 @@ import com.angtft.munch.library.UserFunctions;
 						}
 		    		
 		            });
+		    	
+		    	btnAllRecipe = (Button) view.findViewById(R.id.btnAllRecipes);
+		    	btnAllRecipe.setOnClickListener(new View.OnClickListener(){
+		    		
+		    		@Override
+		    		public void onClick(View v){
+		    			DisplayAll();
+		    		}
+		    	});
 						
 		    	
 		    	
@@ -166,7 +179,11 @@ import com.angtft.munch.library.UserFunctions;
 	             * On create, Re-Populate inventoryListView if there are any items in the List
 	             * If IngredientList is empty, Query ingredients from server. 
 	             */
-	            LoadRecipeLists();
+	            if(activeListId == null || activeListId == 0)
+	            		LoadRecipeLists();
+	            else
+	            	new SearchRecipes().execute();
+	            
 	            }
 	            else{
 	        	
@@ -190,9 +207,7 @@ import com.angtft.munch.library.UserFunctions;
 	    	FilterRecipes();
 	    	try
 	    	{
-		    	Log.i("PopulateList", "Entering PopulateList");
-		    	
-		    	
+		    	Log.i("PopulateList", "Entering PopulateList");		    	
 		        recipeAdapter.notifyDataSetChanged();
 	    	}
 	    	catch(Exception e)
@@ -206,6 +221,16 @@ import com.angtft.munch.library.UserFunctions;
 	     *  ingredients to the spinner that meet the filter's requirements.
 	     *  Called by: PopulateSpinner()
 	     */
+	    
+	    public void DisplayAll(){
+	    	activeListId = 0;
+	    	recipeAdapter.clear();
+	    	DataArrays.activeRecipes.clear();
+	    	for(String recipeName : Recipe.recipes.keySet()){
+	    		recipeAdapter.add(recipeName);
+	    		DataArrays.activeRecipes.add(recipeName);
+	    	}
+	    }
 	    public void FilterRecipes()
 	    {
 	    	Log.i("FilterRecipes", "Entering Filter Recipes");
@@ -220,11 +245,21 @@ import com.angtft.munch.library.UserFunctions;
 	    		Log.i("FilterRecipes", "Filter was true");
 		    	EditText filterEditText = (EditText) getActivity().findViewById(R.id.filterRecipeText);
 		    	String filter = filterEditText.getText().toString();
-		    	for(String recipeName : Recipe.recipes.keySet())
-		    	{
-		    		if (recipeName.toLowerCase().contains(filter.toLowerCase()))
-		    			recipeAdapter.add(recipeName);    		
+		    	
+		    	switch(activeListId){
+		    	case 0: for(String recipeName : Recipe.recipes.keySet())
+		    			{
+			    			if (recipeName.toLowerCase().contains(filter.toLowerCase()))
+			    			recipeAdapter.add(recipeName);    		
+		    			}
+		    			break;
+		    	
+		    	case 1: for(String recipeName : inventoryRecipes){
+		    				if(recipeName.toLowerCase().contains(filter.toLowerCase()))
+		    					recipeAdapter.add(recipeName);
+		    			}
 		    	}
+
 	    	}
 	    	/** Otherwise, add all recipes in the database */
 	    	else
@@ -255,7 +290,7 @@ import com.angtft.munch.library.UserFunctions;
 	            android.util.Log.w("Before LoadRecipes","We are about to load recipes");
 	            JSONObject json = userFunction.listRecipes();
 	            String res = "";
-	            
+	            activeListId = 0;
 	                        
 	            // check for json response
 	            /** Try to receive JSON pair, and load ingredient name into Ingredients.allIngredients */
@@ -359,13 +394,12 @@ import com.angtft.munch.library.UserFunctions;
 	        @Override   
 	        protected String doInBackground(Void... params) 
 	        {
-	        	
+	        	inventoryRecipes.clear();
 	        	/** Call function defined in project library to retrieve ingredients from server */
 	            UserFunctions userFunction = new UserFunctions();
 	            android.util.Log.w("Before searchRecipes","We are about to enter searchRecipes");
-	            JSONObject json = userFunction.searchRecipe(DataArrays.inventoryList);
+	            JSONObject json = userFunction.searchRecipe(Ingredient.IngredientNameToId(DataArrays.inventoryList));
 	            try{
-	            	Log.i("SearchRecipes-inventoryListtest", Recipe.FormatListForRecipeSearch(DataArrays.inventoryList));
 	            }
 	            catch(NullPointerException e){
 	            	Log.i("SearchRecipes-inventoryListtest", "Appears as though the list is empty");
@@ -386,8 +420,6 @@ import com.angtft.munch.library.UserFunctions;
 	                    	while( keys.hasNext() ){
 	                    		//JSONObject key = (JSONObject)keys.next();
 	                            String key = (String)keys.next();
-	                            JSONObject json_recipe = null;
-
 
 	                            try
 	                            {
@@ -399,10 +431,12 @@ import com.angtft.munch.library.UserFunctions;
 	                            	Log.i("SearchRecipes-JSONArray Fun" , ja.toString());
 	                            	for(int j = 0; j < ja.length(); ++j){
 	                            		try{
-	                            			json_recipe = ja.getJSONObject(j);
+	                            			/** Retrieve the id from JSON */
+	                            			int recipeID =ja.getInt(j);
+	                            			Recipe recipe = Recipe.findById(recipeID);
 	                            			try{
-	                            				inventoryRecipes.add(json_recipe.getString("name"));
-	                            				Log.i("SearchRecipes-add", "Adding: " + json_recipe.getString("name"));
+	                            				inventoryRecipes.add(recipe.name);
+	                            				Log.i("SearchRecipes-add", "Adding: " + recipe.name);
 	                            			}
 	                            			catch(Exception e){
 	                            				e.printStackTrace();
@@ -433,7 +467,7 @@ import com.angtft.munch.library.UserFunctions;
 	                            //System.out.println("This is the key string: " + key);
 	                            
 	                           
-	                        }	
+	                        }
 	                    }
 	                }
 	            }
@@ -454,6 +488,15 @@ import com.angtft.munch.library.UserFunctions;
 	            {
 	            	Log.i("SearchRecipes-onPostExecute", "inventoryRecipes(" + i + "):" + inventoryRecipes.get(i));
 	            }
+	            recipeAdapter.clear();
+	            DataArrays.activeRecipes.clear();
+	            for(String recipeName : inventoryRecipes){
+	            	recipeAdapter.add(recipeName);
+	            	
+	            	DataArrays.activeRecipes.add(recipeName);
+	            }
+
+	            activeListId = 1;
 	        }
 	    }
 	    
