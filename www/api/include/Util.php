@@ -25,10 +25,10 @@ class Util
 	}
 
 
-	public static function createAuthToken($id, $uid)
+	public static function createAuthToken($api, $id, $uid)
 	{
 		$token = sha1($id.$uid.rand());
-		$this->db->execute("INSERT INTO user_auth_tokens (uid, token, created) VALUES('%s', '%s', %d)", $uid, $token, time());
+		$api->db->execute("INSERT INTO user_auth_tokens (uid, token, created) VALUES('%s', '%s', %d)", $uid, $token, time());
 		return $token;
 	}
 }

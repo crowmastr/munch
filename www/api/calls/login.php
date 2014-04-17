@@ -40,7 +40,7 @@ class login extends API
 			// user found
 
 			// insert auth token
-			$token = Util::createAuthToken($user["uid"], $user["unique_id"]);
+			$token = Util::createAuthToken($this, $user["uid"], $user["unique_id"]);
 
 			$response["uid"] = $user["unique_id"];
 			$response["token"] = $token;
