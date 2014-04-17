@@ -33,10 +33,7 @@
         android:layout_below="@+id/selectIngredientLabel"
         android:layout_toLeftOf="@+id/btnFilterIngredients"
         android:ems="10"
-        android:hint="@string/filterHint" >
-
-        <requestFocus />
-    </EditText>
+        android:hint="@string/filterHintIngredients" />
 
     <TextView
         android:id="@+id/tvMyIngredients"

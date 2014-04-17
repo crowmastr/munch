@@ -1,13 +1,16 @@
 package com.angtft.munch;
 
 /** Import Listing */
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.annotation.SuppressLint;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -21,7 +24,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import com.angtft.munch.library.DataArrays;
 import com.angtft.munch.library.Recipe;
@@ -32,14 +34,20 @@ import com.angtft.munch.library.UserFunctions;
 	 *	 This Module is used to read in Recipes from the database.
 	 *	 
 	 *	 
-	 *	 Created: 		  3/27/2014
-	 *	 Latest Revision: 3/27/2014
+	 *	 Created: 		  3/27/2014 - EB
+	 *	 Latest Revision: 4/16/2014 - JN
 	 *
 	 *	 Author: Eric Boggs
+	 *	 Additonal Contributors: Jeremy Noel
 	 *
 	 */
+	@SuppressLint("ValidFragment")
 	public class Fragment_BrowseRecipes extends Fragment_AbstractTop {
 
+		public Fragment_BrowseRecipes(int i){
+			super();
+			UpdateListViewSource(i);
+		}
 		/** Class Field Declarations */
 	    /** Unused at this time 
 	     * private String 				 token;
@@ -48,6 +56,8 @@ import com.angtft.munch.library.UserFunctions;
 		private UserFunctions 		 userFunctions;
 		private ArrayAdapter<String> recipeAdapter;
 	    private Button 				 btnFilter;    /** Used to submit the filter in the edit text */
+	    protected List<String>		 inventoryRecipes;
+	    private Button				 btnInvRecipe;
 	 	private ListView 			 recipeListView; /** Displays inventoryList */	
 	    private boolean 			 filter = false; /** Flag to determine whether to filter ingredientList before adding to spinner */
 	    private String				 selectedRecipeName = ""; /** Holds the name of the selected inventoryList item, initialized to "" */
@@ -56,6 +66,11 @@ import com.angtft.munch.library.UserFunctions;
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	        View view = inflater.inflate(R.layout.fragment_browse_recipes,
 	                container, false);
+	        
+	        
+	        
+	        
+	        //final ActionBar actionBar = getActionBar();
 	        
 	        
 	        /** Used for testing of the token commented out
@@ -72,25 +87,26 @@ import com.angtft.munch.library.UserFunctions;
 		        toast.show();
 		     */
 	        
-	     
+	     Log.i("BrowseRecipes-onCreateView",  "Recipes loading...");
 	        /** Check login status in database */
 	        userFunctions = new UserFunctions();
 	        if(userFunctions.isUserLoggedIn(container.getContext())){
 	        	/** If the user is already Logged in, Proceed to load the rest of the content */
-	            
-	            btnFilter = (Button) view.findViewById(R.id.btnFilterRecipes);
+	        	
+	        	btnFilter = (Button)view.findViewById(R.id.btnFilterRecipe);
 	            btnFilter.setOnClickListener(new View.OnClickListener()
 	            {
 					
 					@Override
 					public void onClick(View v) 
 					{
-						/** When filter button is selected, change filter flag to true and proceed to populate */
+						/** When filter button is selected, change filter flag to true and proceed to populate  */
 						filter = true;
 						PopulateList();
 						
 					}
 				});
+
 	            
 	            /** Initialize ListView for displaying the recipes */
 	            recipeListView = (ListView) view.findViewById(R.id.recipeListView);
@@ -127,13 +143,32 @@ import com.angtft.munch.library.UserFunctions;
 	           
 		    	
 		    	recipeListView.setAdapter(recipeAdapter);
+		    	
+		    	/** List for inventory Recipe Filter */
+		    	inventoryRecipes = new ArrayList<String>();
+		    	btnInvRecipe = (Button) view.findViewById(R.id.btnInv);
+		    	btnInvRecipe.setOnClickListener(new View.OnClickListener()
+		            {
+
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							new SearchRecipes().execute();
+							
+						}
+		    		
+		            });
+						
+		    	
+		    	
 
 	            /** 
 	             * On create, Re-Populate inventoryListView if there are any items in the List
 	             * If IngredientList is empty, Query ingredients from server. 
 	             */
 	            LoadRecipeLists();
-	        }else{
+	            }
+	            else{
 	        	
 	            /**
 	             * user is not logged in show login screen
@@ -149,14 +184,6 @@ import com.angtft.munch.library.UserFunctions;
 	        }
 	        return view;
 	    }
-	    
-
-	    /** Function used to display the ingredients in a spinner allowing the users to select the ones they need. 
-	     * CalledBy: LoadIngredients Class
-	     * 		   : LoadIngredientList()
-	     * 		   : btnFilter.onClick()
-	     */
-	    
 	    public void PopulateList() 
 	    {
 	    	/** CallFilterIngredients before loading Ingredients.*/
@@ -191,7 +218,7 @@ import com.angtft.munch.library.UserFunctions;
 	    	if(filter)
 	    	{
 	    		Log.i("FilterRecipes", "Filter was true");
-		    	EditText filterEditText = (EditText) getActivity().findViewById(R.id.filterEditText);
+		    	EditText filterEditText = (EditText) getActivity().findViewById(R.id.filterRecipeText);
 		    	String filter = filterEditText.getText().toString();
 		    	for(String recipeName : Recipe.recipes.keySet())
 		    	{
@@ -221,7 +248,7 @@ import com.angtft.munch.library.UserFunctions;
 	    {
 	       
 	        @Override   
-	        protected String doInBackground(Void... params) {
+	        protected String doInBackground(Void... params) {  
 	        	
 	        	/** Call function defined in project library to retrieve ingredients from server */
 	            UserFunctions userFunction = new UserFunctions();
@@ -287,6 +314,7 @@ import com.angtft.munch.library.UserFunctions;
 	                            			r.source = source;
 	                            			r.notes = notes;
 	                            			Log.i("LoadArray", "Loaded: " + json_recipe.getString("name") + ": " + json_recipe.getString("id"));
+	     
 	                            		}
 	                            	}
 	                            	catch(JSONException e)
@@ -294,7 +322,7 @@ import com.angtft.munch.library.UserFunctions;
 	                            		/** Print warning to console. Program may functionally continue, but will be missing
 	                            		 *  whatever ingredient erred. This intentionally catches the pair (tag , success)
 	                            		 */
-	                            		Log.w("LoadSpinner","Could not get string");
+	                            		Log.w("BrowseRecipes-LoadRecipes","Could not find recipe name, string must be null");
 	                            	}
 
 	                            }
@@ -323,6 +351,109 @@ import com.angtft.munch.library.UserFunctions;
 	            /** Upon completion of LoadIngredients , Populate the spinner with the found ingredients */
 	            PopulateList();
 
+	        }
+	    }
+	    public class SearchRecipes extends AsyncTask<Void, Void, String> 
+	    {
+	       
+	        @Override   
+	        protected String doInBackground(Void... params) 
+	        {
+	        	
+	        	/** Call function defined in project library to retrieve ingredients from server */
+	            UserFunctions userFunction = new UserFunctions();
+	            android.util.Log.w("Before searchRecipes","We are about to enter searchRecipes");
+	            JSONObject json = userFunction.searchRecipe(DataArrays.inventoryList);
+	            try{
+	            	Log.i("SearchRecipes-inventoryListtest", Recipe.FormatListForRecipeSearch(DataArrays.inventoryList));
+	            }
+	            catch(NullPointerException e){
+	            	Log.i("SearchRecipes-inventoryListtest", "Appears as though the list is empty");
+	            }
+	            String res = "";
+	            
+	            // check for json response
+	            /** Try to receive JSON pair, and load ingredient name into Ingredients.allIngredients */
+	            try 
+	            {
+	                if (json.getString(KEY_SUCCESS) != null){
+	                	android.util.Log.w("Succesful Get String", "We were able to successfully get jsonString");
+	                    res = json.getString(KEY_SUCCESS); 
+	                    if(Integer.parseInt(res) == 1){
+
+
+	                    	Iterator<?> keys = json.keys();
+	                    	while( keys.hasNext() ){
+	                    		//JSONObject key = (JSONObject)keys.next();
+	                            String key = (String)keys.next();
+	                            JSONObject json_recipe = null;
+
+
+	                            try
+	                            {
+	                            
+	                            	Log.i("SearchRecipes-JSON_Key", key);
+	                            	JSONArray ja = json.getJSONArray(key);
+	                            	Log.i("SearchRecipes-JSONArray Fun", "Objects in JSON: " +Integer.toString(json.length()));
+	                            	Log.i("SearchRecipes-JSONArray Fun", "Objects in JA: " +Integer.toString(ja.length()));
+	                            	Log.i("SearchRecipes-JSONArray Fun" , ja.toString());
+	                            	for(int j = 0; j < ja.length(); ++j){
+	                            		try{
+	                            			json_recipe = ja.getJSONObject(j);
+	                            			try{
+	                            				inventoryRecipes.add(json_recipe.getString("name"));
+	                            				Log.i("SearchRecipes-add", "Adding: " + json_recipe.getString("name"));
+	                            			}
+	                            			catch(Exception e){
+	                            				e.printStackTrace();
+	                            			}
+	                            		}
+	                            		catch(JSONException e){
+	                            			e.printStackTrace();
+	                            		}
+	                            		
+	                            		
+	                            	}
+	                            	//keys.
+
+	                            	//Log.i("SearchRecipe", "Success" + i + "Retreiving: " + json_recipe.getString("name") + ": " + json_recipe.getString("id"));
+	                            	//++i;
+	                            
+	                            	
+	                            }
+	                            catch(JSONException e)
+	                            {
+	                            	if (key.equals("tag"))	
+	                            		Log.w("JsonGet-Exception", "key = tag");
+	                            	else if(key.equals("success"))
+	                            		Log.w("JSONGet-Exception", "key = succes");
+	                            	else
+	                            		e.printStackTrace();
+	                            }
+	                            //System.out.println("This is the key string: " + key);
+	                            
+	                           
+	                        }	
+	                    }
+	                }
+	            }
+	            /** Print out any JSON Exception */
+	            catch (JSONException e) {
+	            	android.util.Log.w("JSON Exception", "Something went wrong in the try");
+	                e.printStackTrace();
+	            }
+				return res;
+	            
+
+	        }   
+	        @Override
+	        protected void onPostExecute (String logged)
+	        {
+	            super.onPostExecute(logged);
+	            for(int i = 0; i < inventoryRecipes.size(); ++i)
+	            {
+	            	Log.i("SearchRecipes-onPostExecute", "inventoryRecipes(" + i + "):" + inventoryRecipes.get(i));
+	            }
 	        }
 	    }
 	    
@@ -356,4 +487,17 @@ import com.angtft.munch.library.UserFunctions;
 	    	else
 	    		PopulateList();	    	
 	    }
+	    
+	    private void UpdateListViewSource(int sourceNumber)
+	    {
+	    	switch(sourceNumber)
+	    	{
+	    	default: Log.i("UpdateListViewSource", "invalid selection of source, choosing all");
+	    	}
+	    }
+
+	    
+	    
+	    
 	}
+

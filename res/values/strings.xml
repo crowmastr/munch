@@ -27,7 +27,8 @@
     <string name="selectIngredients">Select Ingredients</string>
     <string name="selectRecipes">Select Recipe</string>
     <string name="submitButton">submit</string>
-    <string name="filterHint">Type to filter ingredients</string>
+    <string name="filterHintIngredients">Type to filter ingredients</string>
+    <string name="filterHintRecipes">Filter Recipes by Name</string>
     <string name="filter">filter</string>
     <string name="activeIngredientText">My Ingredients</string>
     <string name="addButton">Add Ingredient</string>
@@ -39,6 +40,9 @@
     <string name="addShopping">Add to Shopping List</string>
     <string name="shopping">My Shopping List</string>
     <string name="useMenu">Swipe from the left edge of the screen to the right to see the menu.</string>
+    <string name="allRec">All</string>
+    <string name="inventoryRec">Almost</string>
+    <string name="exact">Exact</string>
     
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">

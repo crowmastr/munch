@@ -157,11 +157,11 @@ public class UserFunctions {
         		sb.append(';');
         	sb.append(s);
         }
+        Log.i("UserFunctions-searchRecipe", "String buffer: " + sb.toString());
         params.add(new BasicNameValuePair("ingredients", sb.toString()));
         
         JSONObject json = jsonParser.getJSONFromUrl(recipeURL, params);
-        // return json
-        // Log.e("JSON", json.toString());
+        Log.e("JSON", json.toString());
         return json;
     }
     

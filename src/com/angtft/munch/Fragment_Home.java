@@ -266,12 +266,21 @@ public class Fragment_Home extends Fragment_AbstractTop {
             super.onPostExecute(logged);
             
             //update nav bar counters
-            ((MainActivity)getActivity()).navDrawerItems.get(2).setCount(Integer.toString(DataArrays.inventoryList.size()));
-            ((MainActivity)getActivity()).navDrawerItems.get(4).setCount(Integer.toString(DataArrays.shoppingList.size()));
-    	 
-    	    NavDrawerListAdapter adapter = new NavDrawerListAdapter(getActivity(),
-    	    		((MainActivity)getActivity()).navDrawerItems);
-    	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
+            try{
+                ((MainActivity)getActivity()).navDrawerItems.get(2).setCount(Integer.toString(DataArrays.inventoryList.size()));
+                ((MainActivity)getActivity()).navDrawerItems.get(4).setCount(Integer.toString(DataArrays.shoppingList.size()));
+           	 
+        	    NavDrawerListAdapter adapter = new NavDrawerListAdapter(getActivity(),
+        	    		((MainActivity)getActivity()).navDrawerItems);
+        	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
+            	
+            }
+            catch(NullPointerException e)
+            {
+            	Log.w("Home-onPoseExecute", "Could not set Nav drawers, lists are empty");
+            }
+
+
         }
     }
 
@@ -282,12 +291,19 @@ public class Fragment_Home extends Fragment_AbstractTop {
         super.onResume();
         new LoadIngredients().execute();
       //update nav bar counters
-        ((MainActivity)getActivity()).navDrawerItems.get(2).setCount(Integer.toString(DataArrays.inventoryList.size()));
-        ((MainActivity)getActivity()).navDrawerItems.get(4).setCount(Integer.toString(DataArrays.shoppingList.size()));
-	 
-	    NavDrawerListAdapter adapter = new NavDrawerListAdapter(getActivity(),
-	    		((MainActivity)getActivity()).navDrawerItems);
-	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
+        try{
+            ((MainActivity)getActivity()).navDrawerItems.get(2).setCount(Integer.toString(DataArrays.inventoryList.size()));
+            ((MainActivity)getActivity()).navDrawerItems.get(4).setCount(Integer.toString(DataArrays.shoppingList.size()));
+       	 
+    	    NavDrawerListAdapter adapter = new NavDrawerListAdapter(getActivity(),
+    	    		((MainActivity)getActivity()).navDrawerItems);
+    	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
+        	
+        }
+        catch(NullPointerException e)
+        {
+        	Log.w("Home-onPoseExecute", "Could not set Nav drawers, lists are empty");
+        }
         //Toast.makeText(this, "ON RESUME!!!!", Toast.LENGTH_LONG).show();
     }
     

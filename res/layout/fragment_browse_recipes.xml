@@ -5,52 +5,63 @@
     android:background="@layout/background"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/selectRecipeLabel"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/selectRecipes" 
-        android:textColor="@color/white"/>
-
-    <Button
-        android:id="@+id/btnFilterRecipes"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/filter" 
-        android:onClick="PopulateSpinner"
-        android:layout_below="@+id/selectRecipeLabel"
-        android:layout_alignTop="@+id/filterEditText"
-        android:layout_alignBottom="@+id/filterEditText"
-        android:layout_alignParentRight="true" />
-
     <EditText
-        android:id="@+id/filterEditText"
+        android:id="@+id/filterRecipeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/selectRecipeLabel"
-        android:layout_toLeftOf="@+id/btnFilterRecipes"
-        android:ems="10"
-        android:hint="@string/filterHint" >
-
-        <requestFocus />
-    </EditText>
-
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/btnFilterRecipe"
+        android:hint="@string/filterHintRecipes"
+        android:textColor="@color/white" />
+    
+    <Button
+        android:id="@+id/btnFilterRecipe"
+        android:layout_width="wrap_content"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/filterRecipeText"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/filterRecipeText"
+        android:text="@string/filter"
+        android:textColor="@color/white" />
+    
     <ListView
         android:id="@+id/recipeListView"
         android:layout_width="match_parent"
         android:layout_height="137dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/filterEditText"
-        android:layout_marginTop="13dp"
+        android:layout_below="@+id/filterRecipeText"
         android:choiceMode="singleChoice"
+        android:layout_above="@+id/buttonLayout"
         android:listSelector="@color/garnet" >
-
     </ListView>
 
-  
-   
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" >
+
+        
+        <Button
+            android:id="@+id/btnInv"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="PopulateSpinner"
+            android:text="@string/inventoryRec"
+            android:layout_weight="1" />
+        
+        <Button
+            android:id="@+id/clearFilter"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/allRec"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
 
 </RelativeLayout>
