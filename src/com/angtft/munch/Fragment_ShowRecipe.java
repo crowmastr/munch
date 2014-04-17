@@ -24,7 +24,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.angtft.munch.Fragment_BrowseRecipes.LoadRecipes;
 import com.angtft.munch.library.DataArrays;
 import com.angtft.munch.library.Recipe;
 import com.angtft.munch.library.UserFunctions;

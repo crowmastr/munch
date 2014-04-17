@@ -63,7 +63,7 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 	    /** Called when the view is created, Initializes key Variables, and loads the view with any necessary data */
 	    @Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-	        View view = inflater.inflate(R.layout.fragment_view_inventory,
+	        View view = inflater.inflate(R.layout.fragment_view_shopping_list,
 	                container, false);
 	        
 	        
@@ -95,7 +95,7 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 		    			R.layout.custom_listview,
 		    			DataArrays.shoppingList);
 		    	
-		    	inventoryListView = (ListView) view.findViewById(R.id.inventoryListView);
+		    	inventoryListView = (ListView) view.findViewById(R.id.shoppingListView);
 	            inventoryListView.setOnItemClickListener(new OnItemClickListener(){
 
 						@Override
@@ -115,7 +115,7 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 
 	            
 	            /** Initalize Button to remove the selected inventoryList from the inventoryList */
-	            btnRemIngredient = (Button) view.findViewById(R.id.removeActiveIngredient);
+	            btnRemIngredient = (Button) view.findViewById(R.id.removeShoppingIngredient);
 	            btnRemIngredient.setOnClickListener(new View.OnClickListener()
 	            {
 					
@@ -147,6 +147,7 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 						catch(NumberFormatException nfe) {}	
 					}
 				});
+	            
 	            
 	            inventoryAdapter.notifyDataSetChanged();
 	            

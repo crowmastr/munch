@@ -148,7 +148,8 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 						//check and make sure ingredients count > 1
 						if (DataArrays.inventoryList.size() > 0)
 						{
-							Fragment fragment = new Fragment_SearchRecipe();
+							DataArrays.activeRecipeListId = 1;
+							Fragment fragment = new Fragment_BrowseRecipes();
 			                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
 			                ft.replace(R.id.frame_container, fragment);
 			                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

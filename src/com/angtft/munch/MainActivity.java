@@ -179,7 +179,7 @@ public class MainActivity extends Activity {
         	fragment = new Fragment_View_Inventory();
         	break;
         case 3:
-            fragment = new Fragment_BrowseRecipes(0);
+            fragment = new Fragment_BrowseRecipes();
             break;
         case 4:
             fragment = new Fragment_View_Shopping_List();

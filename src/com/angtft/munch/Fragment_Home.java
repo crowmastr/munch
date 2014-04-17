@@ -20,9 +20,11 @@ import android.widget.Toast;
  
 
 
+
 import com.angtft.munch.library.DataArrays;
 import com.angtft.munch.library.DatabaseHandler;
 import com.angtft.munch.library.Ingredient;
+import com.angtft.munch.library.Recipe;
 import com.angtft.munch.library.UserFunctions;
 import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
  
@@ -88,6 +90,9 @@ public class Fragment_Home extends Fragment_AbstractTop {
     	    NavDrawerListAdapter adapter = new NavDrawerListAdapter(getActivity(),
     	    		((MainActivity)getActivity()).navDrawerItems);
     	    ((MainActivity)getActivity()).mDrawerList.setAdapter(adapter);
+    	    
+    	    if(Recipe.recipes.isEmpty())
+    	    	new LoadRecipes().execute();
         }
         
         
@@ -307,4 +312,102 @@ public class Fragment_Home extends Fragment_AbstractTop {
         //Toast.makeText(this, "ON RESUME!!!!", Toast.LENGTH_LONG).show();
     }
     
+    public class LoadRecipes extends AsyncTask<Void, Void, String> 
+    {
+       
+        @Override   
+        protected String doInBackground(Void... params) {  
+        	
+        	/** Call function defined in project library to retrieve ingredients from server */
+            UserFunctions userFunction = new UserFunctions();
+            android.util.Log.w("Before LoadRecipes","We are about to load recipes");
+            JSONObject json = userFunction.listRecipes();
+            String res = "";
+                        
+            // check for json response
+            /** Try to receive JSON pair, and load ingredient name into Ingredients.allIngredients */
+            try {
+                if (json.getString(KEY_SUCCESS) != null){
+                	android.util.Log.w("Succesful Get String", "We were able to successfully get jsonString");
+                    res = json.getString(KEY_SUCCESS); 
+                    if(Integer.parseInt(res) == 1){
+
+
+                    	Iterator<?> keys = json.keys();
+                    	while( keys.hasNext() ){
+                            String key = (String)keys.next();
+                            int i = 1;
+                        	JSONObject json_recipe = null;
+
+
+                            try
+                            {
+                            	json_recipe = json.getJSONObject(key);
+                            	Log.i("GetKey", "Success" + i + "Retreiving: " + json_recipe.getString("name") + ": " + json_recipe.getString("id"));
+                            	++i;
+                            }
+                            catch(JSONException e)
+                            {
+                            	if (key.equals("tag"))	
+                            		Log.w("JsonGet-Exception", "key = tag");
+                            	else
+                            		e.printStackTrace();
+                            }
+
+                            //System.out.println("This is the key string: " + key);
+                            
+                            if( json_recipe != null)
+                            { 
+                            	/** Load the json name key into list */
+                            	try
+                            	{
+                            		String name = json_recipe.getString("name");
+                            		int id = Integer.parseInt(json_recipe.getString("id"));
+                            		int yield = Integer.parseInt(json_recipe.getString("yield"));
+                            		String instructions = json_recipe.getString("instructions");
+                            		float cpr = (float) json_recipe.getDouble("cost_per_recipe");
+                            		float cps = (float) json_recipe.getDouble("cost_per_serving");
+                            		String source = json_recipe.getString("source");
+                            		String notes = json_recipe.getString("notes");
+                            		
+                            		
+                            		if (name != null)
+                            		{
+                            			Recipe r = new Recipe(Integer.parseInt(json_recipe.getString("id")), json_recipe.getString("name"));
+                            			r.yield = yield;
+                            			r.instructions = instructions;
+                            			r.costPerRecipe = cpr;
+                            			r.costPerServing = cps;
+                            			r.source = source;
+                            			r.notes = notes;
+                            			Log.i("LoadArray", "Loaded: " + json_recipe.getString("name") + ": " + json_recipe.getString("id"));
+     
+                            		}
+                            	}
+                            	catch(JSONException e)
+                            	{
+                            		/** Print warning to console. Program may functionally continue, but will be missing
+                            		 *  whatever ingredient erred. This intentionally catches the pair (tag , success)
+                            		 */
+                            		Log.w("BrowseRecipes-LoadRecipes","Could not find recipe name, string must be null");
+                            	}
+
+                            }
+                            
+                        }
+
+                    	
+                    }
+                }
+            } 
+            /** Print out any JSON Exception */
+            catch (JSONException e) {
+            	android.util.Log.w("JSON Exception", "Something went wrong in the try");
+                e.printStackTrace();
+            }
+            
+
+            return res;
+        }  
+    }
 }

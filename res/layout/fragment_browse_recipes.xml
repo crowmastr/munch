@@ -4,17 +4,17 @@
     android:layout_height="match_parent"
     android:background="@layout/background"
     android:orientation="vertical" >
-
-    <EditText
-        android:id="@+id/filterRecipeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/btnFilterRecipe"
-        android:hint="@string/filterHintRecipes"
-        android:textColor="@color/white" />
     
+       <TextView
+       android:id="@+id/tvRecipeHeader"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignParentTop="true"
+       android:layout_centerHorizontal="true"
+       android:text="Recipes"
+       android:textAppearance="?android:attr/textAppearanceSmall"
+       android:textColor="@color/white" />
+        
     <Button
         android:id="@+id/btnFilterRecipe"
         android:layout_width="wrap_content"
@@ -63,5 +63,15 @@
 
     </LinearLayout>
 
+    <EditText
+        android:id="@+id/filterRecipeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvRecipeHeader"
+        android:layout_toLeftOf="@+id/btnFilterRecipe"
+        android:ems="10"
+        android:hint="@string/filterHintRecipes"
+        android:textColor="@color/white" />
 
 </RelativeLayout>
