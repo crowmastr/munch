@@ -33,7 +33,8 @@
         android:layout_below="@+id/selectIngredientLabel"
         android:layout_toLeftOf="@+id/btnFilterIngredients"
         android:ems="10"
-        android:hint="@string/filterHintIngredients" />
+        android:hint="@string/filterHintIngredients"
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/tvMyIngredients"
