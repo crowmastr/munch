@@ -44,7 +44,7 @@ public class Fragment_Login extends Fragment_AbstractTop {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	View loginView = inflater.inflate(R.layout.fragment_login,
     		container, false);
- 
+    	((MainActivity)getActivity()).setTitle("Login");
     	/** Importing all assets like buttons, text fields */
         inputEmail = (EditText) loginView.findViewById(R.id.loginEmail);
         inputPassword = (EditText) loginView.findViewById(R.id.loginPassword);
@@ -152,13 +152,7 @@ public class Fragment_Login extends Fragment_AbstractTop {
                         /** add data from json to local database for future reference */
                         db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT), token);                        
                          
-                        /** Load Home Screen fragment */
-                        Fragment fragment = new Fragment_Home();
-	                    android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-	                    ft.replace(R.id.frame_container, fragment);
-	                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-	                    ft.addToBackStack(null);
-	                    ft.commit();
+                        
                     }else{
                         /** Error in login
                     	do nothing here, action is done in onPostExecute */
@@ -189,6 +183,14 @@ public class Fragment_Login extends Fragment_AbstractTop {
                 }
                 else {
                 	loginErrorMsg.setText("");
+
+                	/** Load Home Screen fragment */
+                    Fragment fragment = new Fragment_Home();
+                    android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.frame_container, fragment);
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    ft.addToBackStack(null);
+                    ft.commit();
                 }
             }
             catch (Exception e) {

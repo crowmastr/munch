@@ -66,7 +66,7 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 	        View view = inflater.inflate(R.layout.fragment_view_shopping_list,
 	                container, false);
 	        
-	        
+	        ((MainActivity)getActivity()).setTitle("Shopping List");
 	        /**Used for accessing Shopping List */
 	        DatabaseHandler db = new DatabaseHandler(container.getContext());
 	        HashMap<String,String> user = new HashMap<String,String>();
@@ -161,7 +161,6 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 	            /**
 	             * user is not logged in show login screen
 	             */
-	            
 	            Fragment fragment = new Fragment_Login();
 
                 android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();

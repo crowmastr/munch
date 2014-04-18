@@ -34,7 +34,7 @@ public class Fragment_Register extends Fragment_AbstractTop {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
       View view = inflater.inflate(R.layout.fragment_register,
           container, false);
- 
+      ((MainActivity)getActivity()).setTitle("Register");
    // Importing all assets like buttons, text fields
       inputFullName = (EditText) view.findViewById(R.id.registerName);
       inputEmail = (EditText) view.findViewById(R.id.registerEmail);
@@ -42,7 +42,7 @@ public class Fragment_Register extends Fragment_AbstractTop {
       btnRegister = (Button) view.findViewById(R.id.btnRegister);
       btnLinkToLogin = (Button) view.findViewById(R.id.btnLinkToLoginScreen);
       registerErrorMsg = (TextView) view.findViewById(R.id.register_error);
-         
+      
       // Register Button Click event
       btnRegister.setOnClickListener(new View.OnClickListener() {         
           public void onClick(View view) {
@@ -131,13 +131,7 @@ public class Fragment_Register extends Fragment_AbstractTop {
                         userFunction.logoutUser(getActivity());
                         db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT), "token not implemented in register yet");                        
                          
-                        // Launch Home Screen
-                        Fragment fragment = new Fragment_Home();
-	                    android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-	                    ft.replace(R.id.frame_container, fragment);
-	                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-	                    ft.addToBackStack(null);
-	                    ft.commit();
+                        
                     }else{
                         // Error in login
                     	//do nothing here, action is done in onPostExecute
@@ -170,6 +164,13 @@ public class Fragment_Register extends Fragment_AbstractTop {
                  }
                  else {
                  	registerErrorMsg.setText("");
+                 // Launch Home Screen
+                    Fragment fragment = new Fragment_Home();
+                    android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.frame_container, fragment);
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    ft.addToBackStack(null);
+                    ft.commit();
                  }
             }
             catch (Exception e) {

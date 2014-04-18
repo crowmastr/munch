@@ -41,7 +41,7 @@ public class Fragment_Home extends Fragment_AbstractTop {
         View view = inflater.inflate(R.layout.fragment_home,
                 container, false);
         Context context = getActivity();
-        
+        ((MainActivity)getActivity()).setTitle("Home");
         /** Set welcome message */
         DatabaseHandler db = new DatabaseHandler(getActivity());
         HashMap<String,String> user = new HashMap<String,String>();

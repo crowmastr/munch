@@ -67,7 +67,7 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 	        View view = inflater.inflate(R.layout.fragment_view_inventory,
 	                container, false);
 	        
-	        
+	        ((MainActivity)getActivity()).setTitle("View Inventory");
 	        /** Used for testing of the token commented out
 	        DatabaseHandler db = new DatabaseHandler(container.getContext());
 	        HashMap<String,String> user = new HashMap<String,String>();
@@ -148,6 +148,7 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 						//check and make sure ingredients count > 1
 						if (DataArrays.inventoryList.size() > 0)
 						{
+	 
 							DataArrays.activeRecipeListId = 1;
 							Fragment fragment = new Fragment_BrowseRecipes();
 			                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -170,14 +171,13 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 	            /**
 	             * user is not logged in show login screen
 	             */
-	            
-	            Fragment fragment = new Fragment_Login();
-
+	        	Fragment fragment = new Fragment_Login();
                 android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.frame_container, fragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.addToBackStack(null);
                 ft.commit();
+                
 	        }
 	        return view;
 	    }

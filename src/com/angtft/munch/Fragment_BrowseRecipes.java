@@ -70,7 +70,7 @@ import com.angtft.munch.library.UserFunctions;
 	                container, false);
 	        
 	        
-	        
+	        ((MainActivity)getActivity()).setTitle("Browse Recipes");
 	        
 	        //final ActionBar actionBar = getActionBar();
 	        
@@ -123,7 +123,7 @@ import com.angtft.munch.library.UserFunctions;
 						Log.i("RecipeListener", selectedRecipeName);
 						// set activity variable to selected recipe
 						((MainActivity)getActivity()).recipeID = Recipe.findIDByName(selectedRecipeName);
-						//((MainActivity)getActivity()).recipeID = position;
+
 						Fragment fragment = new Fragment_ShowRecipe();
 		                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
 		                ft.replace(R.id.frame_container, fragment);
@@ -201,9 +201,7 @@ import com.angtft.munch.library.UserFunctions;
 	            /**
 	             * user is not logged in show login screen
 	             */
-	            
 	            Fragment fragment = new Fragment_Login();
-
                 android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.frame_container, fragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

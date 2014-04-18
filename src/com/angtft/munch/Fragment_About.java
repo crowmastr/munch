@@ -23,7 +23,7 @@ public class Fragment_About extends Fragment_AbstractTop {
         View view = inflater.inflate(R.layout.fragment_about,
                 container, false);
        
-        
+        ((MainActivity)getActivity()).setTitle("About");
         return view;
     }
 }

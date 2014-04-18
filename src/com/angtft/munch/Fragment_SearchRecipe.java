@@ -104,7 +104,6 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 
 							String selectedRecipeName = (String) (recipeListView.getItemAtPosition(position));
 							((MainActivity)getActivity()).recipeID = Recipe.findIDByName(selectedRecipeName);
-							//((MainActivity)getActivity()).recipeID = position;
 							Fragment fragment = new Fragment_ShowRecipe();
 			                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
 			                ft.replace(R.id.frame_container, fragment);
@@ -144,9 +143,7 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 	            /**
 	             * user is not logged in show login screen
 	             */
-	            
 	            Fragment fragment = new Fragment_Login();
-
                 android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.frame_container, fragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

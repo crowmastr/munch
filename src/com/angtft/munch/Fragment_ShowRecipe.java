@@ -64,7 +64,7 @@ public class Fragment_ShowRecipe extends Fragment_AbstractTop {
         View view = inflater.inflate(R.layout.fragment_show_recipe,
                 container, false);
         
-        
+        ((MainActivity)getActivity()).setTitle("Show Recipe");
         /** Used for testing of the token commented out
         DatabaseHandler db = new DatabaseHandler(container.getContext());
         HashMap<String,String> user = new HashMap<String,String>();
@@ -122,9 +122,7 @@ public class Fragment_ShowRecipe extends Fragment_AbstractTop {
             /**
              * user is not logged in show login screen
              */
-            
             Fragment fragment = new Fragment_Login();
-
             android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.frame_container, fragment);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

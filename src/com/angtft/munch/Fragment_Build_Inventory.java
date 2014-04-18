@@ -72,7 +72,7 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 	        View view = inflater.inflate(R.layout.fragment_browse_inventory,
 	                container, false);
 	        
-	        
+	        ((MainActivity)getActivity()).setTitle("Browse Ingredients");
 	        /** Used for DB connections to access the users shoppingList */
 	        DatabaseHandler db = new DatabaseHandler(container.getContext());
 	        HashMap<String,String> user = new HashMap<String,String>();
@@ -194,9 +194,7 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 	            /**
 	             * user is not logged in show login screen
 	             */
-	            
 	            Fragment fragment = new Fragment_Login();
-
                 android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.frame_container, fragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
