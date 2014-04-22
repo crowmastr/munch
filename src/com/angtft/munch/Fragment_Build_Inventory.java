@@ -64,6 +64,7 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 	    private int					 selectedIngredientID; /** keeps track of position in the list that has been seleccted */
 	    private boolean 			 filter = false; /** Flag to determine whether to filter ingredientList before adding to spinner */
 		private String               token;
+		private EditText 			filterEditText;
 
 	    
 	    /** Called when the view is created, Initializes key Variables, and loads the view with any necessary data */
@@ -204,6 +205,7 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 	        return view;
 	    }
 	    
+	    
 
 	    /** Function used to display the ingredients in a spinner allowing the users to select the ones they need. 
 	     * CalledBy: LoadIngredients Class
@@ -342,6 +344,7 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 	     */
 	    public void FilterIngredients()
 	    {
+	    	String filterText;
 	    	Log.i("FilterIngredients", "Entering FilterIngredients");
 	    	/** Clear out current contents. Faster cleaner way to make sure there are no duplicates
 	    	 * than to iterate through list and find if it already exists else add.
@@ -353,13 +356,24 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 	    	{
 	    		Log.i("FilterIngredients", "There is a filter, Apply.");
 		    	EditText filterEditText = (EditText) getActivity().findViewById(R.id.filterEditText);
-		    	String filter = filterEditText.getText().toString();
-
-		    	for(String ingredientName : Ingredient.ingredients.keySet())
-		    	{
-		    		if (ingredientName.toString().toLowerCase().contains(filter.toLowerCase()))
-		    			filteredIngredientList.add(ingredientName);   		
+		    	
+		    	try{
+		    		filterText = filterEditText.getText().toString();
+		    		for(String ingredientName : Ingredient.ingredients.keySet())
+		    		{
+		    			if (ingredientName.toString().toLowerCase().contains(filterText.toLowerCase()))
+		    				filteredIngredientList.add(ingredientName);   		
+		    		}
 		    	}
+		    	catch(NullPointerException npe){
+		    		Log.i("FilterIngredients", "There was no filter, add all ingredients");
+		    		for(String ingredientName : Ingredient.ingredients.keySet())
+		    		{
+		    			Log.i("FilteIngredients", "Adding: " + ingredientName);
+		    			filteredIngredientList.add(ingredientName);
+		    		}
+		    	}
+		    	
 	    	}
 	    	/** Otherwise, add all ingredients in the database */
 	    	else
@@ -374,7 +388,5 @@ import com.angtft.munch.slidingmenu.adapter.NavDrawerListAdapter;
 	    	filteredIngredientAdapter.notifyDataSetChanged();
 		    		
 	    }
-
-	    
-
+	   
 	}

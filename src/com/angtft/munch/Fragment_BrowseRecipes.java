@@ -69,7 +69,11 @@ import com.angtft.munch.library.UserFunctions;
 	        View view = inflater.inflate(R.layout.fragment_browse_recipes,
 	                container, false);
 	        
-	        
+	        if (DataArrays.activeRecipeListId == null)
+	        {
+	        	//if we didn't come to this screen from inventory activeRecipeListId could be null if it is set it to 1.
+	        	DataArrays.activeRecipeListId = 1;
+	        }
 	        ((MainActivity)getActivity()).setTitle("Browse Recipes");
 	        
 	        //final ActionBar actionBar = getActionBar();
@@ -257,13 +261,14 @@ import com.angtft.munch.library.UserFunctions;
 		    	String filter = filterEditText.getText().toString();
 		    	
 		    	switch(DataArrays.activeRecipeListId){
+		    	//all recipes
 		    	case 0: for(String recipeName : Recipe.recipes.keySet())
 		    			{
 			    			if (recipeName.toLowerCase().contains(filter.toLowerCase()))
 			    			recipeAdapter.add(recipeName);    		
 		    			}
 		    			break;
-		    	
+		    	//filtered recipes
 		    	case 1: for(String recipeName : inventoryRecipes){
 		    				if(recipeName.toLowerCase().contains(filter.toLowerCase()))
 		    					recipeAdapter.add(recipeName);

@@ -14,6 +14,7 @@
 package com.angtft.munch;
 
 import android.app.Fragment;
+import android.os.Bundle;
 
 public abstract class Fragment_AbstractTop extends Fragment {
 	
@@ -29,3 +30,4 @@ public abstract class Fragment_AbstractTop extends Fragment {
 	
 	
 }
+
