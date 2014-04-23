@@ -62,7 +62,8 @@ import com.angtft.munch.library.UserFunctions;
 	 	private ListView 			 recipeListView; /** Displays inventoryList */	
 	    private boolean 			 filter = false; /** Flag to determine whether to filter ingredientList before adding to spinner */
 	    private String				 selectedRecipeName = ""; /** Holds the name of the selected inventoryList item, initialized to "" */
-
+	    private String				 filterText;
+	    
 	    /** Called when the view is created, Initializes key Variables, and loads the view with any necessary data */
 	    @Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -258,23 +259,34 @@ import com.angtft.munch.library.UserFunctions;
 	    	{
 	    		Log.i("FilterRecipes", "Filter was true");
 		    	EditText filterEditText = (EditText) getActivity().findViewById(R.id.filterRecipeText);
-		    	String filter = filterEditText.getText().toString();
 		    	
-		    	switch(DataArrays.activeRecipeListId){
-		    	//all recipes
-		    	case 0: for(String recipeName : Recipe.recipes.keySet())
+		    	
+		    	try{
+		    	
+		    		filterText = filterEditText.getText().toString();
+		    		switch(DataArrays.activeRecipeListId){
+		    			//all recipes
+		    			case 0: for(String recipeName : Recipe.recipes.keySet())
 		    			{
-			    			if (recipeName.toLowerCase().contains(filter.toLowerCase()))
-			    			recipeAdapter.add(recipeName);    		
+		    				if (recipeName.toLowerCase().contains(filterText.toLowerCase()))
+		    					recipeAdapter.add(recipeName);    		
 		    			}
 		    			break;
-		    	//filtered recipes
-		    	case 1: for(String recipeName : inventoryRecipes){
-		    				if(recipeName.toLowerCase().contains(filter.toLowerCase()))
+		    			//filtered recipes
+		    			case 1: for(String recipeName : inventoryRecipes){
+		    				if(recipeName.toLowerCase().contains(filterText.toLowerCase()))
 		    					recipeAdapter.add(recipeName);
 		    			}
+		    		}
 		    	}
-
+		    	catch(NullPointerException npe){
+		    		Log.i("BrowseRecipe", "There was no filter, add all recipes");
+		    		for(String recipeName : Recipe.recipes.keySet())
+		    		{
+		    			recipeAdapter.add(recipeName);
+		    			Log.w("Browse Recipes - Filter", "name = " + recipeName);
+		    		}
+		    	}
 	    	}
 	    	/** Otherwise, add all recipes in the database */
 	    	else
