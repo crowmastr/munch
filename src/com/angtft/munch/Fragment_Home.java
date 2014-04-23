@@ -11,6 +11,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -150,7 +151,7 @@ public class Fragment_Home extends Fragment_AbstractTop {
                             	/** Load the json name key into list */
                             	try
                             	{
-                            		String name = json_ingredient.getString("name");
+                            		String name = Html.fromHtml(json_ingredient.getString("name")).toString();
                             		int id = Integer.parseInt(json_ingredient.getString("id"));
                             		if (name != null)
                             			new Ingredient(id, name);
@@ -361,7 +362,7 @@ public class Fragment_Home extends Fragment_AbstractTop {
                             	/** Load the json name key into list */
                             	try
                             	{
-                            		String name = json_recipe.getString("name");
+                            		String name = Html.fromHtml(json_recipe.getString("name")).toString();
                             		int id = Integer.parseInt(json_recipe.getString("id"));
                             		int yield = Integer.parseInt(json_recipe.getString("yield"));
                             		String instructions = json_recipe.getString("instructions");
@@ -373,14 +374,14 @@ public class Fragment_Home extends Fragment_AbstractTop {
                             		
                             		if (name != null)
                             		{
-                            			Recipe r = new Recipe(Integer.parseInt(json_recipe.getString("id")), json_recipe.getString("name"));
+                            			Recipe r = new Recipe(id, name);
                             			r.yield = yield;
                             			r.instructions = instructions;
                             			r.costPerRecipe = cpr;
                             			r.costPerServing = cps;
                             			r.source = source;
                             			r.notes = notes;
-                            			Log.i("LoadArray", "Loaded: " + json_recipe.getString("name") + ": " + json_recipe.getString("id"));
+                            			Log.i("LoadArray", "Loaded: " + name + ": " + id);
      
                             		}
                             	}
