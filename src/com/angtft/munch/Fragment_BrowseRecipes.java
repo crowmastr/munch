@@ -326,7 +326,26 @@ import com.angtft.munch.library.UserFunctions;
 	                            {
 	                            
 	                            	Log.i("SearchRecipes-JSON_Key", key);
-	                            	JSONArray ja = json.getJSONArray(key);
+	                            	JSONArray ja;
+	                            	try
+	                            	{
+	                            		ja = json.getJSONArray(key);
+	                            	}
+	                            	catch (JSONException ex)
+	                            	{
+	                            		// Bleh for 2 elements this returns as a k:v pair.
+	                            		JSONObject o = json.getJSONObject(key);
+	                            		ArrayList<Integer> al = new ArrayList<Integer>();
+	                            		for (Iterator<?> it = o.keys(); it.hasNext();)
+	                            		{
+	                            			String k = (String) it.next();
+	                            			al.add(Integer.parseInt(k));
+	                            			al.add(o.getInt(k));
+	                            		}
+	                            		ja = new JSONArray();
+	                            		for (int i : al)
+	                            			ja.put(i);
+	                            	}
 	                            	Log.i("SearchRecipes-JSONArray Fun", "Objects in JSON: " +Integer.toString(json.length()));
 	                            	Log.i("SearchRecipes-JSONArray Fun", "Objects in JA: " +Integer.toString(ja.length()));
 	                            	Log.i("SearchRecipes-JSONArray Fun" , ja.toString());
