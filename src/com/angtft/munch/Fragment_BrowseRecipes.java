@@ -237,7 +237,7 @@ import com.angtft.munch.library.UserFunctions;
 	     */
 	    
 	    public void DisplayAll(){
-	    	DataArrays.activeRecipeListId = 0;
+	    	DataArrays.activeRecipeListId = 0; 
 	    	recipeAdapter.clear();
 	    	DataArrays.activeRecipes.clear();
 	    	for(String recipeName : Recipe.recipes.keySet()){

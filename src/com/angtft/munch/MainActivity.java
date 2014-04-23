@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main); 
         DataArrays.activeRecipeListId = 0;
         mTitle = mDrawerTitle = getTitle();
  
