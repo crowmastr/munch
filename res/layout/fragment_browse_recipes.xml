@@ -11,7 +11,7 @@
        android:layout_height="wrap_content"
        android:layout_alignParentTop="true"
        android:layout_centerHorizontal="true"
-       android:text="Recipes"
+       android:text="@string/recipes"
        android:textAppearance="?android:attr/textAppearanceSmall"
        android:textColor="@color/white" />
         
@@ -43,6 +43,13 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true" >
 
+        <Button
+            android:id="@+id/btnAllRecipes"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/allRec"
+            android:layout_weight="1" />
         
         <Button
             android:id="@+id/btnInv"
@@ -53,13 +60,7 @@
             android:text="@string/inventoryRec"
             android:layout_weight="1" />
         
-        <Button
-            android:id="@+id/btnAllRecipes"
-            style="?android:attr/buttonStyleSmall"
-			android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/allRec"
-            android:layout_weight="1" />
+
 
     </LinearLayout>
 
